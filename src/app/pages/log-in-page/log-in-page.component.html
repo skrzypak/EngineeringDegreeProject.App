@@ -2,8 +2,9 @@
   <div class="hero-body">
     <div class="container">
       <div class="columns is-centered">
-        <div class="column is-6-tablet is-6-desktop is-6-widescreen">
+        <div class="column is-7-tablet is-7-desktop is-7-widescreen">
           <form [formGroup]="ngForm" (ngSubmit)="onSubmit()" class="box">
+
             <div class="field">
               <label for="username" class="label">Username</label>
               <div class="control has-icons-left">
@@ -28,18 +29,26 @@
                 Remember me
               </label>
             </div>
-            <div class="field">
-              <button type="submit" [disabled]="ngForm.invalid" class="button is-success is-fullwidth"
-                      [ngClass]="{'is-loading': btnLoadingOnSubmit}"
-              >
-                Login
-              </button>
+
+            <hr />
+
+            <div class="columns is-fullwidth is-0-mobile">
+              <div class="column is-four-fifths-desktop has-text-centered">
+                <button type="submit" [disabled]="ngForm.invalid" class="button is-success is-fullwidth" [ngClass]="{'is-loading': btnLoadingOnSubmit}">
+                  Login
+                </button>
+              </div>
+              <div class="column">
+                <button type="button" class="button has-background-info has-text-light is-fullwidth">Sign Up</button>
+              </div>
             </div>
+
             <div class="field" *ngIf="this.message.length">
               <article class="message" [ngClass]="{'is-primary': messageType == 0, 'is-danger': messageType != 0}">
                 <div class="message-body">{{this.message}}</div>
               </article>
             </div>
+
           </form>
         </div>
       </div>

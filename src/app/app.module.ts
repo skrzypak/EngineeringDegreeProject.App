@@ -5,11 +5,13 @@ import { AppComponent } from './app.component';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
+import { SignUpPageComponent } from './pages/sign-up-page/sign-up-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LogInPageComponent
+    LogInPageComponent,
+    SignUpPageComponent
   ],
   imports: [
     BrowserModule,

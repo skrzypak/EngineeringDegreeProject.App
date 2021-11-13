@@ -1,0 +1,144 @@
+<section class="hero is-dark is-fullheight">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-7-tablet is-7-desktop is-7-widescreen">
+          <form [formGroup]="ngForm" (ngSubmit)="onSubmit()" class="box">
+
+            <div class="field">
+              <label for="username" class="label">Username <span class="has-text-danger">*</span></label>
+              <div class="control has-icons-left">
+                <input formControlName="username" id="username" type="text" placeholder="e.g. max-verstappen" class="input" required>
+                <span class="icon is-small is-left">
+                  <i class="fa fa-user"></i>
+                </span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="password" class="label">Password <span class="has-text-danger">*</span></label>
+              <div  class="control has-icons-left">
+                <input formControlName="password" id="password" type="password" placeholder="********"
+                       class="input"
+                       pattern=".{8,}" required>
+                <span class="icon is-small is-left">
+                  <i class="fa fa-lock"></i>
+                </span>
+              </div>
+
+              <div *ngIf="password?.invalid && (password?.dirty || password?.touched)"
+                   class="notification is-danger p-2 mt-3">
+                <div *ngIf="password?.errors?.['required']">
+                  Password is required
+                </div>
+                <div *ngIf="password?.errors?.['minlength']">
+                  Password must be at least 8 characters long
+                </div>
+              </div>
+
+            </div>
+            <div class="field">
+              <label for="repeatPassword" class="label">Repeat password <span class="has-text-danger">*</span></label>
+              <div  class="control has-icons-left ">
+                <input formControlName="repeatPassword" id="repeatPassword" type="password" placeholder="********"
+                       class="input"
+                       pattern=".{8,}" required>
+                <span class="icon is-small is-left">
+                  <i class="fa fa-lock"></i>
+                </span>
+              </div>
+            </div>
+
+            <hr />
+
+            <div class="field">
+              <label for="firstName" class="label">Name <span class="has-text-danger">*</span></label>
+              <div class="control has-icons-left">
+                <input formControlName="firstName" id="firstName" type="text" class="input" required>
+                <span class="icon is-small is-left">
+                  <i class="fa fa-user"></i>
+                </span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="lastName" class="label">Surname <span class="has-text-danger">*</span></label>
+              <div class="control has-icons-left">
+                <input formControlName="lastName" id="lastName" type="text" class="input" required>
+                <span class="icon is-small is-left">
+                  <i class="fa fa-user"></i>
+                </span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="gender" class="label">Gender</label>
+              <div class="control has-icons-left">
+                <div class="select is-fullwidth">
+                  <select formControlName="gender" id="gender">
+                    <option value="0">Man</option>
+                    <option value="1">Woman</option>
+                  </select>
+                </div>
+                <span class="icon is-small is-left">
+                  <i class="fa fa-venus-mars"></i>
+                </span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="email" class="label">Email <span class="has-text-danger">*</span></label>
+              <div class="control has-icons-left">
+                <input formControlName="email" id="email" name="email" type="email"  class="input"
+                       pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" placeholder="mail@gmail.com" required>
+                <span class="icon is-small is-left">
+                  <i class="fa fa-envelope"></i>
+                </span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="phoneNumber" class="label">Phone</label>
+
+              <div class="columns is-mobile is-multiline is-centered">
+                <div class="column is-narrow">
+                  <div class="select">
+                    <select formControlName="phoneNumberPrefix" id="country">
+                      <option value="48">+48</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="column">
+                  <div class="control has-icons-left">
+                    <input formControlName="phoneNumber" id="phoneNumber" name="phoneNumber" type="tel"  class="input"
+                           pattern="[0-9]{9}" placeholder="789234023">
+                    <span class="icon is-small is-left">
+                      <i class="fa fa-phone"></i>
+                    </span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <hr />
+
+            <div class="columns is-1 field">
+              <div class="column is-three-quarters has-text-centered">
+                <button type="submit" [disabled]="ngForm.invalid" class="button is-success is-fullwidth" [ngClass]="{'is-loading': btnLoadingOnSubmit}">
+                  Sign Up
+                </button>
+              </div>
+              <div class="column">
+                <button type="button" class="button has-background-info has-text-light is-fullwidth">Log In</button>
+              </div>
+            </div>
+
+            <div class="field" *ngIf="this.message.length">
+              <article class="message" [ngClass]="{'is-primary': messageType == 0, 'is-danger': messageType != 0}">
+                <div class="message-body">{{this.message}}</div>
+              </article>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
