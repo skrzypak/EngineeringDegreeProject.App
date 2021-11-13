@@ -1,0 +1,48 @@
+<section class="hero is-dark is-fullheight">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-6-tablet is-6-desktop is-6-widescreen">
+          <form [formGroup]="ngForm" (ngSubmit)="onSubmit()" class="box">
+            <div class="field">
+              <label for="username" class="label">Username</label>
+              <div class="control has-icons-left">
+                <input formControlName="username" id="username" name="username" type="text" placeholder="e.g. max-verstappen" class="input" required>
+                <span class="icon is-small is-left">
+                  <i class="fa fa-user"></i>
+                </span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="password" class="label">Password</label>
+              <div  class="control has-icons-left">
+                <input formControlName="password" id="password" name="password" type="password" placeholder="*******" class="input" required>
+                <span class="icon is-small is-left">
+                  <i class="fa fa-lock"></i>
+                </span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="checkbox" class="checkbox">
+                <input id="checkbox" name="checkbox" type="checkbox">
+                Remember me
+              </label>
+            </div>
+            <div class="field">
+              <button type="submit" [disabled]="ngForm.invalid" class="button is-success is-fullwidth"
+                      [ngClass]="{'is-loading': btnLoadingOnSubmit}"
+              >
+                Login
+              </button>
+            </div>
+            <div class="field" *ngIf="this.message.length">
+              <article class="message" [ngClass]="{'is-primary': messageType == 0, 'is-danger': messageType != 0}">
+                <div class="message-body">{{this.message}}</div>
+              </article>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
