@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { AppComponent } from './app.component';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { ReactiveFormsModule } from '@angular/forms';
-import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
+
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+
 import { SignUpPageComponent } from './pages/sign-up-page/sign-up-page.component';
+import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,8 @@ import { SignUpPageComponent } from './pages/sign-up-page/sign-up-page.component
   imports: [
     BrowserModule,
     ReactiveFormsModule,
-    SweetAlert2Module.forRoot()
+    SweetAlert2Module.forRoot(),
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
