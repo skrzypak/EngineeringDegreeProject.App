@@ -23,12 +23,6 @@
                 </span>
               </div>
             </div>
-            <div class="field">
-              <label for="checkbox" class="checkbox">
-                <input id="checkbox" name="checkbox" type="checkbox">
-                Remember me
-              </label>
-            </div>
 
             <hr />
 
@@ -45,7 +39,7 @@
             </div>
 
             <div class="field" *ngIf="this.message.length">
-              <article class="message" [ngClass]="{'is-primary': messageType == 0, 'is-danger': messageType != 0}">
+              <article class="message is-danger">
                 <div class="message-body">{{this.message}}</div>
               </article>
             </div>

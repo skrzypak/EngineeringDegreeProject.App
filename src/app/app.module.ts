@@ -8,12 +8,14 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { SignUpPageComponent } from './pages/sign-up-page/sign-up-page.component';
 import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
+import { AppPageComponent } from './pages/app-page/app-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LogInPageComponent,
-    SignUpPageComponent
+    SignUpPageComponent,
+    AppPageComponent
   ],
   imports: [
     BrowserModule,
@@ -21,7 +23,6 @@ import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
     SweetAlert2Module.forRoot(),
     AppRoutingModule
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
