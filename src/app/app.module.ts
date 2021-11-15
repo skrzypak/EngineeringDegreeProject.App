@@ -9,13 +9,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { SignUpPageComponent } from './pages/sign-up-page/sign-up-page.component';
 import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
 import { AppPageComponent } from './pages/app-page/app-page.component';
+import { NavbarComponent } from './pages/app-page/navbar/navbar.component';
+import { MenuComponent } from './pages/app-page/menu/menu.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LogInPageComponent,
     SignUpPageComponent,
-    AppPageComponent
+    AppPageComponent,
+    NavbarComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,

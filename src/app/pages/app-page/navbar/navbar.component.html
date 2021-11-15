@@ -1,0 +1,52 @@
+<nav class="navbar is-transparent">
+  <div class="navbar-brand">
+    <a class="navbar-item">
+      <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+    </a>
+    <div class="navbar-burger" data-target="navbarExampleTransparentExample">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+
+  <div id="navbarExampleTransparentExample" class="navbar-menu">
+    <div class="navbar-start">
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link" >
+          {{espActive !== null ? espActive.companyName : ""}}
+        </a>
+        <div class="navbar-dropdown ">
+          <div class="navbar-item column" *ngFor="let item of espItems" (click)="changeEnterprise(item)">
+            {{item.companyName}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="field is-grouped">
+          <p class="control">
+            <a class="bd-tw-button button">
+              <span class="icon">
+                <i class="fa fa-cogs"></i>
+              </span>
+              <span>
+                Settings
+              </span>
+            </a>
+          </p>
+          <p class="control">
+            <a class="button is-primary" (click)="sendLogoutRequest()">
+              <span class="icon">
+                <i class="fa fa-sign-out"></i>
+              </span>
+              <span>Logout</span>
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

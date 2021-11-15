@@ -15,7 +15,8 @@ export class AuthService {
 
   public async getStatus() {
     try {
-      await axios.post(`${this.apiBaseURL}/auth/msv/session`, {}, {withCredentials: true});
+      var resp = await axios.get(`${this.apiBaseURL}/auth/msv/session`, {withCredentials: true});
+      console.log(resp)
       return true;
     } catch (e) {
       return false;
@@ -24,7 +25,7 @@ export class AuthService {
 
   async logout() {
     try {
-      await axios.post(`${this.apiBaseURL}/auth/msv/logout`, {}, {withCredentials: true});
+      await axios.delete(`${this.apiBaseURL}/auth/msv/no/logout`, {withCredentials: true});
       await this.router.navigateByUrl('/login');
     } catch (e) {
       throw e;
@@ -37,6 +38,7 @@ export class AuthService {
         "username": username,
         "password": password
       }, {withCredentials: true});
+      console.log(resp)
       await this.router.navigateByUrl('/app');
     } catch (e: any) {
       let msg;

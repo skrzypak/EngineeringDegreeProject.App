@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthService} from "../../services/auth/auth.service";
 
 @Component({
   selector: 'app-app-page',
@@ -8,16 +7,8 @@ import {AuthService} from "../../services/auth/auth.service";
 })
 export class AppPageComponent implements OnInit {
 
-  constructor(private authService : AuthService) { }
+  constructor() { }
 
   ngOnInit(): void {
-  }
-
-  public async sendLogoutRequest() {
-    try {
-      await this.authService.logout();
-    } catch (e) {
-      console.log("Unable logout")
-    }
   }
 }
