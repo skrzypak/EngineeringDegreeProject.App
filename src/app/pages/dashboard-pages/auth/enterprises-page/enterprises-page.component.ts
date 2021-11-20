@@ -2,6 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {EnterprisesService} from "../../../../services/auth-msv/enterprise/enterprises.service";
 import {FormControl, FormGroup} from "@angular/forms";
 import {ModalState} from "../../../../enums/modal-state";
+import {EspService} from "../../../../services/common/local-storage/esp.service";
 
 @Component({
   selector: 'app-enterprises-page',
@@ -10,13 +11,13 @@ import {ModalState} from "../../../../enums/modal-state";
 })
 export class EnterprisesPageComponent implements OnInit {
 
-  modalId: number = 0;
   modalState = ModalState.READ;
   @ViewChild("modal", {read: ElementRef, static: true}) modalRef: ElementRef | undefined;
 
   fetchEnterprises: Array<any> = [];
 
   ngForm = new FormGroup({
+    id: new FormControl(),
     nip: new FormControl(),
     companyName: new FormControl(),
     email: new FormControl(),
@@ -27,7 +28,7 @@ export class EnterprisesPageComponent implements OnInit {
     state: new FormControl()
   });
 
-  constructor(private enterprisesService: EnterprisesService) { }
+  constructor(private enterprisesService: EnterprisesService, private espService: EspService) { }
 
   async ngOnInit(): Promise<void> {
     try {
@@ -39,7 +40,7 @@ export class EnterprisesPageComponent implements OnInit {
       });
 
       try {
-        let currSelectedId = this.enterprisesService.getActiveEspId();
+        let currSelectedId = this.espService.getActiveEspId();
         if(currSelectedId != null) {
           let currSelectedItem = this.fetchEnterprises.find((o:any) => o.id == currSelectedId);
           if(currSelectedItem != null) {
@@ -51,7 +52,7 @@ export class EnterprisesPageComponent implements OnInit {
       } catch (e) {}
 
       // Set first esp as active. Save to local storage
-      this.enterprisesService.setActiveEsp(this.fetchEnterprises[0]);
+      this.espService.setActiveEsp(this.fetchEnterprises[0]);
       this.fetchEnterprises[0].selected = true;
       return;
 
@@ -64,14 +65,14 @@ export class EnterprisesPageComponent implements OnInit {
   onSelectEnterprise(item: any) {
     let selectedItem: any = this.fetchEnterprises.find((o:any) => o.id == item.id);
     if(selectedItem != null){
-      let currSelectedId = this.enterprisesService.getActiveEspId();
+      let currSelectedId = this.espService.getActiveEspId();
       if(currSelectedId != null){
         let currSelectedItem = this.fetchEnterprises.find((o:any) => o.id == currSelectedId);
         if(currSelectedItem != null) {
           currSelectedItem.selected = false
         }
       }
-      this.enterprisesService.setActiveEsp(item);
+      this.espService.setActiveEsp(item);
       selectedItem.selected = true;
     } else {
       console.log("TODO://ERROR")
@@ -91,9 +92,8 @@ export class EnterprisesPageComponent implements OnInit {
     try {
       let resp = await this.enterprisesService.fetchGetEnterpriseById(id);
 
-      this.modalId = resp.id;
-
       this.ngForm.setValue({
+        id: resp.id,
         nip: resp.nip,
         companyName: resp.companyName,
         email: resp.email,
@@ -113,7 +113,9 @@ export class EnterprisesPageComponent implements OnInit {
 
   async onCreateEnterpriseSubmit() {
     try {
-      await this.enterprisesService.fetchCreateEnterprise(this.ngForm.value);
+      let data = this.ngForm.value;
+      delete data.id;
+      await this.enterprisesService.fetchCreateEnterprise(data);
       this.hideModal();
       window.location.reload();
     } catch (e) {
@@ -121,9 +123,9 @@ export class EnterprisesPageComponent implements OnInit {
     }
   }
 
-  onUpdateEnterpriseSubmit(id: number) {
+  onUpdateEnterpriseSubmit() {
     this.hideModal();
-    throw new Error(`TODO://${id}`);
+    throw new Error(`TODO://${this.ngForm.value.id}`);
   }
 
   public showModal(state : ModalState) {
@@ -132,7 +134,6 @@ export class EnterprisesPageComponent implements OnInit {
   }
 
   public hideModal() {
-    this.modalId = 0;
     this.ngForm.reset();
     (this.modalRef?.nativeElement).style.display = 'none';
   }

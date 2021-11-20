@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import axios from "axios";
 import {GlobalConstants} from "../../../common/global-constants";
+import {EspService} from "../../common/local-storage/esp.service";
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ export class EnterprisesService {
 
   apiBaseURL = GlobalConstants.apiBaseURL;
 
-  constructor() { }
+  constructor(private espService: EspService) { }
 
   async fetchGetEnterprises(): Promise<Array<any>> {
     try {
@@ -46,7 +47,7 @@ export class EnterprisesService {
       let resp = await axios.delete(`${this.apiBaseURL}/auth/enterprises/${id}`,{withCredentials: true});
       console.log(resp);
       try {
-        let currEspActiveId = parseInt(this.getActiveEspId())
+        let currEspActiveId = parseInt(this.espService.getActiveEspId())
         if(currEspActiveId == id){
           localStorage.removeItem("esp")
         }
@@ -55,28 +56,6 @@ export class EnterprisesService {
       }
     } catch (e: any) {
       throw new Error(`Can't fetch data: ${e}`);
-    }
-  }
-
-  setActiveEsp(obj: any) {
-    localStorage.setItem("esp", JSON.stringify(obj))
-  }
-
-  getActiveEsp() : any {
-    let retrievedObject = localStorage.getItem('esp');
-    if(retrievedObject !== null) {
-      return JSON.parse(retrievedObject)
-    } else {
-      throw new Error("No active esp");
-    }
-  }
-
-  getActiveEspId() : string {
-    let retrievedObject = localStorage.getItem('esp');
-    if(retrievedObject !== null) {
-      return JSON.parse(retrievedObject).id
-    } else {
-      throw new Error("No active esp");
     }
   }
 

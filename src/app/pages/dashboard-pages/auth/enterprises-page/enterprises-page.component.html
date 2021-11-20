@@ -2,7 +2,7 @@
   <div class="modal-background"></div>
   <div class="modal-card">
     <header class="modal-card-head">
-      <p class="modal-card-title">(Test) ID: {{modalId}}</p>
+      <p class="modal-card-title"></p>
       <button class="delete" aria-label="close" (click)="hideModal()"></button>
     </header>
     <section class="modal-card-body">
@@ -58,7 +58,7 @@
     <footer class="modal-card-foot">
       <button class="button is-success" (click)="onCreateEnterpriseSubmit()"
         [style.display]="this.modalState == 0 ? 'block' : 'none' ">Save changes</button>
-      <button class="button is-success" (click)="onUpdateEnterpriseSubmit(modalId)"
+      <button class="button is-success" (click)="onUpdateEnterpriseSubmit()"
               [style.display]="this.modalState == 2 ? 'block' : 'none' ">Update changes</button>
       <button class="button" (click)="hideModal()">Cancel</button>
     </footer>
