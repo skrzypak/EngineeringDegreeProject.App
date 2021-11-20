@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {MessageType} from "../../enums/message-type";
-import {AuthService} from "../../services/auth/auth.service";
+import {AuthService} from "../../services/auth-msv/auth/auth.service";
 
 @Component({
   selector: 'app-log-in-page',

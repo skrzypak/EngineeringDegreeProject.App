@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthService} from "../../../services/auth/auth.service";
-import {EnterprisesService} from "../../../services/enterprise/enterprises.service";
+import {AuthService} from "../../../services/auth-msv/auth/auth.service";
+import {EnterprisesService} from "../../../services/auth-msv/enterprise/enterprises.service";
 
 @Component({
   selector: 'app-navbar',
@@ -16,7 +16,7 @@ export class NavbarComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     try {
-      this.espItems = await this.esp.getEnterprises()
+      this.espItems = await this.esp.fetchGetEnterprises()
     } catch {
       this.espItems = [];
     }

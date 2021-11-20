@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import axios from "axios";
-import {GlobalConstants} from "../../common/global-constants";
+import {GlobalConstants} from "../../../common/global-constants";
 import {Router} from "@angular/router";
 
 @Injectable({
@@ -15,8 +15,7 @@ export class AuthService {
 
   public async getStatus() {
     try {
-      var resp = await axios.get(`${this.apiBaseURL}/auth/msv/session`, {withCredentials: true});
-      console.log(resp)
+      await axios.get(`${this.apiBaseURL}/auth/msv/session`, {withCredentials: true});
       return true;
     } catch (e) {
       return false;

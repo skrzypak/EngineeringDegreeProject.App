@@ -10,7 +10,10 @@ import { SignUpPageComponent } from './pages/sign-up-page/sign-up-page.component
 import { LogInPageComponent } from './pages/log-in-page/log-in-page.component';
 import { AppPageComponent } from './pages/app-page/app-page.component';
 import { NavbarComponent } from './pages/app-page/navbar/navbar.component';
-import { MenuComponent } from './pages/app-page/menu/menu.component';
+import { ParticipantsPageComponent } from './pages/dashboard-pages/gastronomy/participants-page/participants-page.component';
+import { WarehousePageComponent } from './pages/dashboard-pages/inventory/warehouse-page/warehouse-page.component';
+import { SuppliersPageComponent } from './pages/dashboard-pages/invoicing/suppliers-page/suppliers-page.component';
+import { EnterprisesPageComponent } from './pages/dashboard-pages/auth/enterprises-page/enterprises-page.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +22,10 @@ import { MenuComponent } from './pages/app-page/menu/menu.component';
     SignUpPageComponent,
     AppPageComponent,
     NavbarComponent,
-    MenuComponent
+    ParticipantsPageComponent,
+    WarehousePageComponent,
+    SuppliersPageComponent,
+    EnterprisesPageComponent
   ],
   imports: [
     BrowserModule,

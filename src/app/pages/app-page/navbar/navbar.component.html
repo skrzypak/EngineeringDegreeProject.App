@@ -1,7 +1,9 @@
 <nav class="navbar is-transparent">
   <div class="navbar-brand">
     <a class="navbar-item">
-      <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+      <figure class="image is-32x32">
+        <img class="is-rounded" src="assets/icons/flaticon/meal.png" >
+      </figure>
     </a>
     <div class="navbar-burger" data-target="navbarExampleTransparentExample">
       <span></span>
@@ -11,17 +13,31 @@
   </div>
 
   <div id="navbarExampleTransparentExample" class="navbar-menu">
+<!--    <div class="navbar-start">-->
+<!--      <div class="navbar-item has-dropdown is-hoverable">-->
+<!--        <a class="navbar-link" >-->
+<!--          {{espActive !== null ? espActive.companyName : ""}}-->
+<!--        </a>-->
+<!--        <div class="navbar-dropdown ">-->
+<!--          <div class="navbar-item column" *ngFor="let item of espItems" (click)="changeEnterprise(item)">-->
+<!--            {{item.companyName}}-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
     <div class="navbar-start">
-      <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link" >
-          {{espActive !== null ? espActive.companyName : ""}}
-        </a>
-        <div class="navbar-dropdown ">
-          <div class="navbar-item column" *ngFor="let item of espItems" (click)="changeEnterprise(item)">
-            {{item.companyName}}
-          </div>
-        </div>
-      </div>
+      <a class="navbar-item">
+        Home
+      </a>
+      <a class="navbar-item">
+        Gastronomy
+      </a>
+      <a class="navbar-item">
+        Inventory
+      </a>
+      <a class="navbar-item">
+        Invoicing
+      </a>
     </div>
 
     <div class="navbar-end">
