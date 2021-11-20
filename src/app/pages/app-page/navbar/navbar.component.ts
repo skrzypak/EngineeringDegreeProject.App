@@ -12,7 +12,9 @@ export class NavbarComponent implements OnInit {
   espActive : any = null;
   espItems : any = [];
 
-  constructor(private authService : AuthService, private esp: EnterprisesService) { }
+  constructor(
+    private authService : AuthService,
+    private esp: EnterprisesService) { }
 
   async ngOnInit(): Promise<void> {
     try {

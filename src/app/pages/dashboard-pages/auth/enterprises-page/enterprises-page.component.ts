@@ -38,15 +38,17 @@ export class EnterprisesPageComponent implements OnInit {
         return ('' + a.companyName).localeCompare(b.comapnyName);
       });
 
-      let currSelectedId = this.enterprisesService.getActiveEspId();
-      if(currSelectedId != null) {
-        let currSelectedItem = this.fetchEnterprises.find((o:any) => o.id == currSelectedId);
-        if(currSelectedItem != null) {
-          // Set active esp form local storage
-          currSelectedItem.selected = true;
-          return;
+      try {
+        let currSelectedId = this.enterprisesService.getActiveEspId();
+        if(currSelectedId != null) {
+          let currSelectedItem = this.fetchEnterprises.find((o:any) => o.id == currSelectedId);
+          if(currSelectedItem != null) {
+            // Set active esp form local storage
+            currSelectedItem.selected = true;
+            return;
+          }
         }
-      }
+      } catch (e) {}
 
       // Set first esp as active. Save to local storage
       this.enterprisesService.setActiveEsp(this.fetchEnterprises[0]);

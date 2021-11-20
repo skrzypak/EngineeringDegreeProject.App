@@ -45,6 +45,14 @@ export class EnterprisesService {
     try {
       let resp = await axios.delete(`${this.apiBaseURL}/auth/enterprises/${id}`,{withCredentials: true});
       console.log(resp);
+      try {
+        let currEspActiveId = parseInt(this.getActiveEspId())
+        if(currEspActiveId == id){
+          localStorage.removeItem("esp")
+        }
+      } catch (e) {
+        localStorage.removeItem("esp")
+      }
     } catch (e: any) {
       throw new Error(`Can't fetch data: ${e}`);
     }

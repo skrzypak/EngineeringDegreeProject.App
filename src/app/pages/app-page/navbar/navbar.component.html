@@ -13,29 +13,17 @@
   </div>
 
   <div id="navbarExampleTransparentExample" class="navbar-menu">
-<!--    <div class="navbar-start">-->
-<!--      <div class="navbar-item has-dropdown is-hoverable">-->
-<!--        <a class="navbar-link" >-->
-<!--          {{espActive !== null ? espActive.companyName : ""}}-->
-<!--        </a>-->
-<!--        <div class="navbar-dropdown ">-->
-<!--          <div class="navbar-item column" *ngFor="let item of espItems" (click)="changeEnterprise(item)">-->
-<!--            {{item.companyName}}-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
     <div class="navbar-start">
-      <a class="navbar-item">
+      <a class="navbar-item" routerLink="enterprise">
         Home
       </a>
-      <a class="navbar-item">
+      <a class="navbar-item" routerLink="gastronomy">
         Gastronomy
       </a>
-      <a class="navbar-item">
+      <a class="navbar-item" routerLink="inventory">
         Inventory
       </a>
-      <a class="navbar-item">
+      <a class="navbar-item" routerLink="invoicing">
         Invoicing
       </a>
     </div>
@@ -44,7 +32,7 @@
       <div class="navbar-item">
         <div class="field is-grouped">
           <p class="control">
-            <a class="bd-tw-button button">
+            <a class="bd-tw-button button" routerLink="settings">
               <span class="icon">
                 <i class="fa fa-cogs"></i>
               </span>

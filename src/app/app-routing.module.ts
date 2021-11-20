@@ -10,6 +10,10 @@ import {EnterprisesPageComponent} from "./pages/dashboard-pages/auth/enterprises
 import {ParticipantsPageComponent} from "./pages/dashboard-pages/gastronomy/participants-page/participants-page.component";
 import {WarehousePageComponent} from "./pages/dashboard-pages/inventory/warehouse-page/warehouse-page.component";
 import {SuppliersPageComponent} from "./pages/dashboard-pages/invoicing/suppliers-page/suppliers-page.component";
+import {SettingsPageComponent} from "./pages/settings-page/settings-page.component";
+import {GastronomyComponent} from "./pages/dashboard-pages/gastronomy/gastronomy.component";
+import {InventoryComponent} from "./pages/dashboard-pages/inventory/inventory.component";
+import {InvoicingComponent} from "./pages/dashboard-pages/invoicing/invoicing.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'app', pathMatch: 'full'},
@@ -18,10 +22,30 @@ const routes: Routes = [
   {
     path: 'app', component: AppPageComponent, canActivate: [AuthGuard],
     children: [
+      {path:'', redirectTo: 'enterprise', pathMatch: 'full'},
       {path: 'enterprise', component: EnterprisesPageComponent},
-      {path: 'gastronomy/participants', component: ParticipantsPageComponent},
-      {path: 'inventory/warehouse', component: WarehousePageComponent},
-      {path: 'invoicing/suppliers', component: SuppliersPageComponent},
+      {
+        path: 'gastronomy', component: GastronomyComponent,
+        children: [
+          {path:'', redirectTo: 'participants', pathMatch: 'full'},
+          {path: 'participants', component: ParticipantsPageComponent},
+        ]
+      },
+      {
+        path: 'inventory', component: InventoryComponent,
+        children: [
+          {path:'', redirectTo: 'warehouse', pathMatch: 'full'},
+          {path: 'warehouse', component: WarehousePageComponent},
+        ]
+      },
+      {
+        path: 'invoicing', component: InvoicingComponent,
+        children: [
+          {path:'', redirectTo: 'suppliers', pathMatch: 'full'},
+          {path: 'suppliers', component: SuppliersPageComponent},
+        ]
+      },
+      {path: 'settings', component: SettingsPageComponent},
     ]
   }
 ];
