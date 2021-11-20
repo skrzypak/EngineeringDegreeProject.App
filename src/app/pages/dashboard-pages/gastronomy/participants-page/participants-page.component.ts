@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ParticipantsService} from "../../../../services/gastronomy-msv/participants/participants.service";
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {NutritionGroupService} from "../../../../services/gastronomy-msv/nutrition-groups/nutrition-group.service";
 
 @Component({
   selector: 'app-participants-page',
@@ -10,18 +11,28 @@ import {FormControl, FormGroup} from "@angular/forms";
 export class ParticipantsPageComponent implements OnInit {
 
   fetchParticipants: Array<any> = [];
+  fetchNutritionGroups: Array<any> = [];
 
   ngFormContainer: any = {
-    ngForm: new FormGroup({
+    ngForm: FormGroup,
+    leftNutritionGroups: [],
+    rightNutritionGroups : []
+  }
+
+  constructor(
+    private participantsService: ParticipantsService,
+    private nutritionGroupService : NutritionGroupService,
+    private fb: FormBuilder
+  ) {
+    this.ngFormContainer.ngForm = this.fb.group({
       id: new FormControl(),
       firstName: new FormControl(),
       lastName: new FormControl(),
       description: new FormControl(),
-      nutritionGroups: new FormControl([]),
-    })
+      leftNutritionGroups : new FormControl(),
+      rightNutritionGroups: new FormControl()
+    });
   }
-
-  constructor(private participantsService: ParticipantsService) { }
 
   async ngOnInit(): Promise<void> {
     try {
@@ -30,6 +41,14 @@ export class ParticipantsPageComponent implements OnInit {
     } catch (e) {
       console.log(e);
       this.fetchParticipants = [];
+    }
+
+    try {
+      this.fetchNutritionGroups = await this.nutritionGroupService.fetchGetNutritionGroups();
+      this.ngFormContainer.leftNutritionGroups = this.fetchNutritionGroups;
+    } catch (e) {
+      console.log(e);
+      this.fetchNutritionGroups = [];
     }
   }
 
@@ -42,8 +61,14 @@ export class ParticipantsPageComponent implements OnInit {
         firstName: resp.firstName,
         lastName: resp.lastName,
         description: resp.description,
-        nutritionGroups: resp.nutritionGroups,
+        leftNutritionGroups: [],
+        rightNutritionGroups: []
       });
+
+      this.ngFormContainer.leftNutritionGroups =
+        this.subArrays(this.fetchNutritionGroups, resp.nutritionGroups, "id");
+
+      this.ngFormContainer.rightNutritionGroups = resp.nutritionGroups;
 
     } catch (e) {
       this.ngFormContainer.ngForm.reset();
@@ -51,7 +76,7 @@ export class ParticipantsPageComponent implements OnInit {
     }
   }
 
-  async onSave() {
+  async onCreate() {
     try {
       let data = this.ngFormContainer.ngForm.value
       delete data.id;
@@ -79,5 +104,38 @@ export class ParticipantsPageComponent implements OnInit {
 
   onReset() {
     this.ngFormContainer.ngForm.reset();
+    this.ngFormContainer.leftNutritionGroups = this.fetchNutritionGroups;
+    this.ngFormContainer.rightNutritionGroups = [];
+  }
+
+  itemToLeft() {
+    let rightIds = this.ngFormContainer.ngForm.value.rightNutritionGroups;
+    let rightValues = this.ngFormContainer.rightNutritionGroups.filter((o: any) => rightIds.includes(o.id));
+    this.ngFormContainer.leftNutritionGroups = this.ngFormContainer.leftNutritionGroups.concat(rightValues);
+    this.ngFormContainer.rightNutritionGroups =
+      this.ngFormContainer.rightNutritionGroups.filter((o: any) => !rightIds.includes(o.id));
+    this.itemFormCls();
+  }
+
+  itemToRight() {
+    let leftIds = this.ngFormContainer.ngForm.value.leftNutritionGroups;
+    let leftValues = this.ngFormContainer.leftNutritionGroups.filter((o: any) => leftIds.includes(o.id));
+    this.ngFormContainer.rightNutritionGroups = this.ngFormContainer.rightNutritionGroups.concat(leftValues);
+    this.ngFormContainer.leftNutritionGroups =
+      this.ngFormContainer.leftNutritionGroups.filter((o: any) => !leftIds.includes(o.id));
+    this.itemFormCls();
+  }
+
+  private itemFormCls() {
+    this.ngFormContainer.ngForm.patchValue({
+      leftNutritionGroups: [],
+      rightNutritionGroups: [],
+    });
+  }
+
+  private subArrays(arr1: any, arr2: any, key: string) {
+    return arr1.filter((leftValue: any) => !arr2.some((rightValue: any) =>
+            leftValue[key] == rightValue[key])
+    );
   }
 }

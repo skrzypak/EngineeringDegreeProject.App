@@ -44,12 +44,47 @@
             </div>
           </div>
 
-          <!-- TODO://Groups -->
+          <!-- Groups -->
+          <div class="field">
+            <label for="nutritionGroups" class="label">Nutrition groups</label>
+            <div class="columns has-text-centered is-narrow" id="nutritionGroups">
+              <div class="column">
+                <div class="select is-multiple is-fullwidth">
+                  <label for="availableNutritionGroups" class="label">Available</label>
+                  <select formControlName="leftNutritionGroups" multiple id="availableNutritionGroups"
+                          style="height: 250px" name="availableNutritionGroups" size="4">
+                    <option [value]="f.id"
+                            *ngFor="let f of ngFormContainer.leftNutritionGroups">{{f.name}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="column is-1 is-narrow">
+                <div style="min-height: 100%;" class="control-column-box">
+                  <div class="control-column-arrow">
+                    <span class="is-clickable"><i class="fas fa-chevron-left" (click)="itemToLeft()"></i></span>
+                    <span class="is-clickable"><i class="fas fa-chevron-right" (click)="itemToRight()"></i></span>
+                  </div>
+                </div>
+              </div>
+              <div class="column">
+                <div class="select is-multiple is-fullwidth">
+                  <label for="selectedNutritionGroups" class="label">Selected</label>
+                  <select formControlName="rightNutritionGroups" multiple id="selectedNutritionGroups"
+                          style="height: 250px" name="selectedNutritionGroups" size="4">
+                    <option [value]="f.id"
+                            *ngFor="let f of ngFormContainer.rightNutritionGroups">{{f.name}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <hr />
           <div class="columns">
             <div class="column">
-              <button class="button is-success is-fullwidth" (click)="onSave()">Save</button>
+              <button class="button is-success is-fullwidth" (click)="onCreate()">Create</button>
             </div>
             <div class="column" style="display: none">
               <button class="button is-info is-fullwidth" (click)="onUpdate()">Update</button>
