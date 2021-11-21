@@ -18,7 +18,7 @@ export class NoAuthGuard implements CanActivate {
     if(!status) {
       return true
     } else {
-      await this.router.navigateByUrl('/app');
+      await this.router.navigateByUrl('/enterprise');
       return false;
     }
 

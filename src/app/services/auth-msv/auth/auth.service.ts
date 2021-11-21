@@ -33,12 +33,13 @@ export class AuthService {
 
   async login(username: string, password: string) {
     try {
-      let resp = await axios.post(`${this.apiBaseURL}/auth/msv/no/login`, {
+      await axios.post(`${this.apiBaseURL}/auth/msv/no/login/`, {
         "username": username,
         "password": password
-      }, {withCredentials: true});
-      console.log(resp)
-      await this.router.navigateByUrl('/app');
+      }, {
+        withCredentials: true,
+      });
+      await this.router.navigateByUrl('/');
     } catch (e: any) {
       let msg;
 

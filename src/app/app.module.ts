@@ -20,6 +20,7 @@ import { InventoryComponent } from './pages/dashboard-pages/inventory/inventory.
 import { InvoicingComponent } from './pages/dashboard-pages/invoicing/invoicing.component';
 import { MultiSelectComponent } from './components/multi-select/multi-select.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
+import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     InventoryComponent,
     InvoicingComponent,
     MultiSelectComponent,
-    PaginationComponent
+    PaginationComponent,
+    NotFoundPageComponent
   ],
   imports: [
     BrowserModule,

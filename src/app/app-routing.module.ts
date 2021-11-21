@@ -14,13 +14,14 @@ import {SettingsPageComponent} from "./pages/settings-page/settings-page.compone
 import {GastronomyComponent} from "./pages/dashboard-pages/gastronomy/gastronomy.component";
 import {InventoryComponent} from "./pages/dashboard-pages/inventory/inventory.component";
 import {InvoicingComponent} from "./pages/dashboard-pages/invoicing/invoicing.component";
+import {NotFoundPageComponent} from "./pages/not-found-page/not-found-page.component";
 
 const routes: Routes = [
-  {path: '', redirectTo: 'app', pathMatch: 'full'},
+  {path: '', redirectTo: '/enterprise', pathMatch: 'full'},
   {path: 'signup', component: SignUpPageComponent, canActivate: [NoAuthGuard]},
   {path: 'login', component: LogInPageComponent, canActivate: [NoAuthGuard]},
   {
-    path: 'app', component: AppPageComponent, canActivate: [AuthGuard],
+    path: '', component: AppPageComponent, canActivate: [AuthGuard],
     children: [
       {path:'', redirectTo: 'enterprise', pathMatch: 'full'},
       {path: 'enterprise', component: EnterprisesPageComponent},
@@ -47,7 +48,9 @@ const routes: Routes = [
       },
       {path: 'settings', component: SettingsPageComponent},
     ]
-  }
+  },
+  {path: '404', component: NotFoundPageComponent},
+  {path: '**', redirectTo: '/enterprise'},
 ];
 
 @NgModule({
