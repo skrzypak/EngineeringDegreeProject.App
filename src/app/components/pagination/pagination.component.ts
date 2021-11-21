@@ -15,13 +15,14 @@ import {Observable, Subscription} from "rxjs";
 })
 export class PaginationComponent implements OnDestroy, OnInit {
 
+  @Input() itemToDisplay: number = 15;
   @Input() sourceObservable!: Observable<any>;
   @Output() rendererEmitter = new EventEmitter<any>();
 
   pagination = {
     currPageNum: 1,
     lastPageNum: 1,
-    itemsDisplay: 2,
+    itemsDisplay: this.itemToDisplay,
     navigator: {
       max: 5,
       current: 0,
@@ -133,7 +134,9 @@ export class PaginationComponent implements OnDestroy, OnInit {
         }
       } else {
         this.pagination.currPageNum = this.pagination.lastPageNum;
-        this.pagination.navigator.current = this.pagination.navigator.max + 1;
+        const {max} = this.pagination.navigator
+        const len = this.pagination.navigator.links.middle.length;
+        this.pagination.navigator.current = max > len ? len + 1 : max + 1;
       }
       this.processRenderer();
     }
