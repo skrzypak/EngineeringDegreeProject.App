@@ -1,4 +1,4 @@
-<div class="field" [formGroup]="ngFrmCtrl.frm">
+<div class="field" [formGroup]="getNgFrmCtrl().frm">
   <label for="title" class="label">{{title}}</label>
   <div class="columns has-text-centered is-narrow" id="title">
     <div class="column">
@@ -6,7 +6,7 @@
         <label for="left" class="label">{{leftTitle}}</label>
         <select formControlName="left" multiple id="left"
                 style="height: 250px" name="left" size="4">
-          <option [value]="f.id" *ngFor="let f of ngFrmCtrl.left">{{f.name}}
+          <option [value]="f.id" *ngFor="let f of getNgFrmCtrl().left">{{f.name}}
           </option>
         </select>
       </div>
@@ -24,7 +24,7 @@
         <label for="right" class="label">{{rightTitle}}</label>
         <select formControlName="right" multiple id="right"
                 style="height: 250px" name="right" size="4">
-          <option [value]="f.id" *ngFor="let f of ngFrmCtrl.right">{{f.name}}
+          <option [value]="f.id" *ngFor="let f of getNgFrmCtrl().right">{{f.name}}
           </option>
         </select>
       </div>

@@ -1,35 +1,29 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {ParticipantsService} from "../../../../services/gastronomy-msv/participants/participants.service";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {NutritionGroupService} from "../../../../services/gastronomy-msv/nutrition-groups/nutrition-group.service";
-import {BehaviorSubject} from "rxjs";
+import {Subject} from "rxjs";
+import {MultiSelectComponent} from "../../../../components/multi-select/multi-select.component";
 
 @Component({
   selector: 'app-participants-page',
   templateUrl: './participants-page.component.html',
   styleUrls: ['./participants-page.component.css']
 })
-export class ParticipantsPageComponent implements OnInit {
+export class ParticipantsPageComponent implements OnInit, AfterViewInit {
 
-  fetched : any = {
-    participants: Array<any>(),
-    nutritionGroups: Array<any>()
-  }
+  @ViewChild(MultiSelectComponent) frmNutritionGroupChild!: MultiSelectComponent;
 
   ngFrmCtrl: any = {
     frm: FormGroup,
-    nutritionGroups: {
-      left: [],
-      right: []
-    }
   }
 
-  private rxjsSubjectNutritionGroup = new BehaviorSubject<any>({
-    left: this.fetched.nutritionGroups,
-    right: [],
-  });
-
-  rxjsObservableNutritionGroup = this.rxjsSubjectNutritionGroup.asObservable();
+  fetched: any = {
+    participants: {
+      display: Array<any>(),
+      rxjs: new Subject<any>()
+    }
+  }
 
   constructor(
     private participantsService: ParticipantsService,
@@ -44,25 +38,21 @@ export class ParticipantsPageComponent implements OnInit {
     });
   }
 
-  async ngOnInit(): Promise<void> {
-    await this.triggerFetchParticipants();
-    await this.triggerFetchNutritionGroups();
-  }
-
   async triggerFetchParticipants() {
     try {
-      this.fetched.participants = await this.participantsService.fetchGetParticipants();
-      this.fetched.participants.forEach((o : any) => o["selected"] = false);
+      let data = await this.participantsService.fetchGetParticipants();
+      data.forEach((o : any) => o["selected"] = false);
+      this.rxjsNextParticipants(data);
     } catch (e) {
-      this.fetched.participants = [];
+      this.rxjsNextParticipants([]);
     }
   }
 
   async triggerFetchNutritionGroups() {
     try {
-      this.fetched.nutritionGroups = await this.nutritionGroupService.fetchGetNutritionGroups();
+      this.frmNutritionGroupChild.fetchedData = await this.nutritionGroupService.fetchGetNutritionGroups();
     } catch (e) {
-      this.fetched.nutritionGroups = [];
+      this.frmNutritionGroupChild.fetchedData = [];
     } finally {
       this.onReset();
     }
@@ -79,15 +69,7 @@ export class ParticipantsPageComponent implements OnInit {
         description: resp.description
       });
 
-      this.ngFrmCtrl.nutritionGroups.left =
-        this.subArrays(this.fetched.nutritionGroups, resp.nutritionGroups, "id");
-
-      this.ngFrmCtrl.nutritionGroups.right = resp.nutritionGroups;
-
-      this.rxjsSubjectNutritionGroup.next({
-        left: this.ngFrmCtrl.nutritionGroups.left,
-        right: this.ngFrmCtrl.nutritionGroups.right
-      });
+      this.frmNutritionGroupChild.response = resp.nutritionGroups;
 
     } catch (e) {
       this.ngFrmCtrl.frm.reset();
@@ -99,18 +81,17 @@ export class ParticipantsPageComponent implements OnInit {
     try {
       let data = this.ngFrmCtrl.frm.value
       delete data.id;
-      data.nutritionGroups = this.ngFrmCtrl.nutritionGroups.right.map((o: any) => o.id);
+      data.nutritionGroups = this.frmNutritionGroupChild.localRight;
+      data.nutritionGroups = data.nutritionGroups.map((o: any) => o.id);
       await this.participantsService.fetchCreateParticipant(data);
       window.location.reload();
+      this.onReset()
     } catch (e) {
       console.log(e);
-    } finally {
-      this.onReset()
     }
   }
 
   async onUpdate() {
-
   }
 
   async onDelete() {
@@ -119,30 +100,29 @@ export class ParticipantsPageComponent implements OnInit {
       window.location.reload();
     } catch (e) {
       console.log(e);
-    } finally {
       this.onReset();
     }
   }
 
   onReset() {
     this.ngFrmCtrl.frm.reset();
-    this.ngFrmCtrl.nutritionGroups.left = this.fetched.nutritionGroups;
-    this.ngFrmCtrl.nutritionGroups.right = [];
-
-    this.rxjsSubjectNutritionGroup.next({
-      left: this.ngFrmCtrl.nutritionGroups.left,
-      right: this.ngFrmCtrl.nutritionGroups.right
-    });
+    this.frmNutritionGroupChild.hardReset();
   }
 
-  receiveNutritionGroupMultiSelectEvent(e: any) {
-    this.ngFrmCtrl.nutritionGroups.left = e.left;
-    this.ngFrmCtrl.nutritionGroups.right = e.right;
+  async ngOnInit(): Promise<void> {
+    await this.triggerFetchParticipants();
   }
 
-  private subArrays(arr1: any, arr2: any, key: string) {
-    return arr1.filter((leftValue: any) => !arr2.some((rightValue: any) =>
-            leftValue[key] == rightValue[key])
-    );
+  async ngAfterViewInit(): Promise<void> {
+    await this.triggerFetchNutritionGroups();
   }
+
+  rxjsNextParticipants(o: any) {
+    this.fetched.participants.rxjs.next(o);
+  }
+
+  receiveRenderer(e: any) {
+    this.fetched.participants.display = e;
+  }
+
 }

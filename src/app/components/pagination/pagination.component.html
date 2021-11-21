@@ -1,0 +1,29 @@
+<nav class="pagination is-right p-0" role="navigation">
+  <a class="pagination-previous" (click)="onPreviousClick()">Previous</a>
+  <a class="pagination-next" (click)="onNextClick()">Next page</a>
+  <ul class="pagination-list">
+    <li>
+      <a class="pagination-link is-current"
+         [class.is-current] = "pagination.navigator.current == 0"
+         (click)="onClickPage(1, 0)">{{1}}</a>
+    </li>
+    <li *ngIf="pagination.lastPageNum > pagination.navigator.max">
+      <span class="pagination-ellipsis">&hellip;</span>
+    </li>
+    <li *ngFor="let m of pagination.navigator.links.middle; let i=index">
+      <a class="pagination-link"
+         [class.is-current] = "pagination.navigator.current == i + 1"
+         (click)="onClickPage(m, i + 1)">{{m}}</a>
+    </li>
+    <li *ngIf="pagination.lastPageNum > pagination.navigator.max">
+      <span class="pagination-ellipsis">&hellip;</span>
+    </li>
+    <li [id]="pagination.navigator.links.middle.length + 1" *ngIf="pagination.lastPageNum > 1">
+      <a class="pagination-link"
+         [class.is-current] = "pagination.navigator.current == pagination.navigator.links.middle.length + 1"
+         (click)="onClickPage(pagination.lastPageNum, pagination.navigator.links.middle.length + 1)"
+      >{{pagination.lastPageNum}}</a>
+    </li>
+  </ul>
+</nav>
+
