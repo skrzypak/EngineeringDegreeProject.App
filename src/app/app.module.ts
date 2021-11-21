@@ -18,6 +18,7 @@ import { SettingsPageComponent } from './pages/settings-page/settings-page.compo
 import { GastronomyComponent } from './pages/dashboard-pages/gastronomy/gastronomy.component';
 import { InventoryComponent } from './pages/dashboard-pages/inventory/inventory.component';
 import { InvoicingComponent } from './pages/dashboard-pages/invoicing/invoicing.component';
+import { MultiSelectComponent } from './components/multi-select/multi-select.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { InvoicingComponent } from './pages/dashboard-pages/invoicing/invoicing.
     SettingsPageComponent,
     GastronomyComponent,
     InventoryComponent,
-    InvoicingComponent
+    InvoicingComponent,
+    MultiSelectComponent
   ],
   imports: [
     BrowserModule,

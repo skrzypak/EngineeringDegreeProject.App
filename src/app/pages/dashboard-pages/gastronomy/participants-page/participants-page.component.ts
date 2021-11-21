@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ParticipantsService} from "../../../../services/gastronomy-msv/participants/participants.service";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {NutritionGroupService} from "../../../../services/gastronomy-msv/nutrition-groups/nutrition-group.service";
+import {BehaviorSubject} from "rxjs";
 
 @Component({
   selector: 'app-participants-page',
@@ -10,45 +11,60 @@ import {NutritionGroupService} from "../../../../services/gastronomy-msv/nutriti
 })
 export class ParticipantsPageComponent implements OnInit {
 
-  fetchParticipants: Array<any> = [];
-  fetchNutritionGroups: Array<any> = [];
-
-  ngFormContainer: any = {
-    ngForm: FormGroup,
-    leftNutritionGroups: [],
-    rightNutritionGroups : []
+  fetched : any = {
+    participants: Array<any>(),
+    nutritionGroups: Array<any>()
   }
+
+  ngFrmCtrl: any = {
+    frm: FormGroup,
+    nutritionGroups: {
+      left: [],
+      right: []
+    }
+  }
+
+  private rxjsSubjectNutritionGroup = new BehaviorSubject<any>({
+    left: this.fetched.nutritionGroups,
+    right: [],
+  });
+
+  rxjsObservableNutritionGroup = this.rxjsSubjectNutritionGroup.asObservable();
 
   constructor(
     private participantsService: ParticipantsService,
     private nutritionGroupService : NutritionGroupService,
     private fb: FormBuilder
   ) {
-    this.ngFormContainer.ngForm = this.fb.group({
+    this.ngFrmCtrl.frm = this.fb.group({
       id: new FormControl(),
       firstName: new FormControl(),
       lastName: new FormControl(),
       description: new FormControl(),
-      leftNutritionGroups : new FormControl(),
-      rightNutritionGroups: new FormControl()
     });
   }
 
   async ngOnInit(): Promise<void> {
-    try {
-      this.fetchParticipants = await this.participantsService.fetchGetParticipants();
-      this.fetchParticipants.forEach(item => item["selected"] = false);
-    } catch (e) {
-      console.log(e);
-      this.fetchParticipants = [];
-    }
+    await this.triggerFetchParticipants();
+    await this.triggerFetchNutritionGroups();
+  }
 
+  async triggerFetchParticipants() {
     try {
-      this.fetchNutritionGroups = await this.nutritionGroupService.fetchGetNutritionGroups();
-      this.ngFormContainer.leftNutritionGroups = this.fetchNutritionGroups;
+      this.fetched.participants = await this.participantsService.fetchGetParticipants();
+      this.fetched.participants.forEach((o : any) => o["selected"] = false);
     } catch (e) {
-      console.log(e);
-      this.fetchNutritionGroups = [];
+      this.fetched.participants = [];
+    }
+  }
+
+  async triggerFetchNutritionGroups() {
+    try {
+      this.fetched.nutritionGroups = await this.nutritionGroupService.fetchGetNutritionGroups();
+    } catch (e) {
+      this.fetched.nutritionGroups = [];
+    } finally {
+      this.onReset();
     }
   }
 
@@ -56,35 +72,40 @@ export class ParticipantsPageComponent implements OnInit {
     try {
       let resp = await this.participantsService.fetchGetParticipantById(id);
 
-      this.ngFormContainer.ngForm.setValue({
+      this.ngFrmCtrl.frm.setValue({
         id: resp.id,
         firstName: resp.firstName,
         lastName: resp.lastName,
-        description: resp.description,
-        leftNutritionGroups: [],
-        rightNutritionGroups: []
+        description: resp.description
       });
 
-      this.ngFormContainer.leftNutritionGroups =
-        this.subArrays(this.fetchNutritionGroups, resp.nutritionGroups, "id");
+      this.ngFrmCtrl.nutritionGroups.left =
+        this.subArrays(this.fetched.nutritionGroups, resp.nutritionGroups, "id");
 
-      this.ngFormContainer.rightNutritionGroups = resp.nutritionGroups;
+      this.ngFrmCtrl.nutritionGroups.right = resp.nutritionGroups;
+
+      this.rxjsSubjectNutritionGroup.next({
+        left: this.ngFrmCtrl.nutritionGroups.left,
+        right: this.ngFrmCtrl.nutritionGroups.right
+      });
 
     } catch (e) {
-      this.ngFormContainer.ngForm.reset();
+      this.ngFrmCtrl.frm.reset();
       console.log(e);
     }
   }
 
   async onCreate() {
     try {
-      let data = this.ngFormContainer.ngForm.value
+      let data = this.ngFrmCtrl.frm.value
       delete data.id;
+      data.nutritionGroups = this.ngFrmCtrl.nutritionGroups.right.map((o: any) => o.id);
       await this.participantsService.fetchCreateParticipant(data);
       window.location.reload();
     } catch (e) {
-      this.onReset();
       console.log(e);
+    } finally {
+      this.onReset()
     }
   }
 
@@ -94,43 +115,29 @@ export class ParticipantsPageComponent implements OnInit {
 
   async onDelete() {
     try {
-      await this.participantsService.fetchDeleteParticipant(this.ngFormContainer.ngForm.value.id);
+      await this.participantsService.fetchDeleteParticipant(this.ngFrmCtrl.frm.value.id);
       window.location.reload();
     } catch (e) {
-      this.onReset();
       console.log(e);
+    } finally {
+      this.onReset();
     }
   }
 
   onReset() {
-    this.ngFormContainer.ngForm.reset();
-    this.ngFormContainer.leftNutritionGroups = this.fetchNutritionGroups;
-    this.ngFormContainer.rightNutritionGroups = [];
-  }
+    this.ngFrmCtrl.frm.reset();
+    this.ngFrmCtrl.nutritionGroups.left = this.fetched.nutritionGroups;
+    this.ngFrmCtrl.nutritionGroups.right = [];
 
-  itemToLeft() {
-    let rightIds = this.ngFormContainer.ngForm.value.rightNutritionGroups;
-    let rightValues = this.ngFormContainer.rightNutritionGroups.filter((o: any) => rightIds.includes(o.id));
-    this.ngFormContainer.leftNutritionGroups = this.ngFormContainer.leftNutritionGroups.concat(rightValues);
-    this.ngFormContainer.rightNutritionGroups =
-      this.ngFormContainer.rightNutritionGroups.filter((o: any) => !rightIds.includes(o.id));
-    this.itemFormCls();
-  }
-
-  itemToRight() {
-    let leftIds = this.ngFormContainer.ngForm.value.leftNutritionGroups;
-    let leftValues = this.ngFormContainer.leftNutritionGroups.filter((o: any) => leftIds.includes(o.id));
-    this.ngFormContainer.rightNutritionGroups = this.ngFormContainer.rightNutritionGroups.concat(leftValues);
-    this.ngFormContainer.leftNutritionGroups =
-      this.ngFormContainer.leftNutritionGroups.filter((o: any) => !leftIds.includes(o.id));
-    this.itemFormCls();
-  }
-
-  private itemFormCls() {
-    this.ngFormContainer.ngForm.patchValue({
-      leftNutritionGroups: [],
-      rightNutritionGroups: [],
+    this.rxjsSubjectNutritionGroup.next({
+      left: this.ngFrmCtrl.nutritionGroups.left,
+      right: this.ngFrmCtrl.nutritionGroups.right
     });
+  }
+
+  receiveNutritionGroupMultiSelectEvent(e: any) {
+    this.ngFrmCtrl.nutritionGroups.left = e.left;
+    this.ngFrmCtrl.nutritionGroups.right = e.right;
   }
 
   private subArrays(arr1: any, arr2: any, key: string) {
