@@ -7,6 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InvoicingComponent implements OnInit {
 
+  navs = [
+    {name: 'Documents', routerLink: 'documents'},
+    {name: 'Suppliers', routerLink: 'suppliers'},
+    {name: 'Statistics', routerLink: 'statistics'},
+  ];
+
   constructor() { }
 
   ngOnInit(): void {

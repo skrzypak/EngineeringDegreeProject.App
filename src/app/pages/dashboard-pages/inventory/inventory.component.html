@@ -1,13 +1,6 @@
 <div>
-  <div class="tabs">
-    <ul>
-      <li class="is-active"><a>Warehouse</a></li>
-      <li><a>Products</a></li>
-      <li><a>Categories</a></li>
-      <li><a>Allergens</a></li>
-      <li><a>Statistics</a></li>
-    </ul>
-  </div>
-
+  <app-module-navigation
+    [navs]="navs"
+  ></app-module-navigation>
   <router-outlet></router-outlet>
 </div>

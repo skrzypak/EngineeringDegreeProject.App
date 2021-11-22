@@ -7,6 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GastronomyComponent implements OnInit {
 
+  navs = [
+    {name: 'Groups', routerLink: 'groups'},
+    {name: 'Plans', routerLink: 'plans'},
+    {name: 'Menus', routerLink: 'menus'},
+    {name: 'Participants', routerLink: 'participants'},
+  ];
+
   constructor() { }
 
   ngOnInit(): void {

@@ -1,0 +1,9 @@
+<div class="tabs pt-2 pb-4">
+  <ul>
+    <li *ngFor="let n of navs; let i=index"
+        [class.is-active]="i == active"
+        [routerLink]="n.routerLink"
+        (click)="changeActiveTab(i)"
+    ><a>{{n.name}}</a></li>
+  </ul>
+</div>
