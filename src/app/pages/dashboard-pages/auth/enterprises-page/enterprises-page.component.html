@@ -15,7 +15,7 @@
       <div class="field">
         <label for="nip" class="label">NIP</label>
         <div class="control">
-          <input [readonly]="this.modalState == 1" formControlName="nip" id="nip" name="nip" type="text" class="input">
+          <input [readonly]="this.modalState == 1" placeholder="10 digs" formControlName="nip" id="nip" name="nip" type="text" class="input">
         </div>
       </div>
       <div class="field">
@@ -76,7 +76,7 @@
         </header>
         <footer class="card-footer">
           <a class="card-footer-item" (click)="onShowEnterprise(f.id)">Show</a>
-          <a class="card-footer-item" (click)="onSelectEnterprise(f)">Select</a>
+          <a class="card-footer-item" (click)="onSelectEnterprise(f.id)">Select</a>
           <a class="card-footer-item" (click)="onDeleteEnterprise(f.id)">Delete</a>
         </footer>
       </div>

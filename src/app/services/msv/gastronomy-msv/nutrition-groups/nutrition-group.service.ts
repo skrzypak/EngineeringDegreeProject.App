@@ -1,56 +1,33 @@
 import { Injectable } from '@angular/core';
-import {GlobalConstants} from "../../../../common/global-constants";
-import {EspService} from "../../../common/local-storage/esp.service";
-import axios from "axios";
+import {UrlModuleApi} from "../../../../enums/url-module-api";
+import {UniversalService} from "../../universal.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class NutritionGroupService {
 
-  apiBaseURL = GlobalConstants.apiBaseURL;
+  moduleBaseUri = UrlModuleApi.GASTRONOMY_NUTRITION_GROUPS;
 
-  constructor(private espService: EspService) { }
+  constructor(private universalService: UniversalService) { }
 
   async fetchGetNutritionGroups(): Promise<Array<any>> {
-    try {
-      let espId = this.espService.getActiveEspId();
-      let resp = await axios.get(`${this.apiBaseURL}/gastronomy/nutrition-groups?espId=${espId}`,  {withCredentials: true});
-      return resp.data;
-    } catch (e: any) {
-      if(e.response.status == 404) {
-        throw new Error("Not found any data");
-      }
-      throw new Error("Can't fetch data");
-    }
+    let resp = await this.universalService.fetchGet(this.moduleBaseUri);
+    return resp.data;
   }
 
   async fetchGetNutritionGroupById(id: number) {
-    try {
-      let espId = this.espService.getActiveEspId();
-      let resp = await axios.get(`${this.apiBaseURL}/gastronomy/nutrition-groups/${id}?espId=${espId}`,  {withCredentials: true});
-      return resp.data
-    } catch (e: any) {
-      throw new Error(`Can't fetch data: ${e}`);
-    }
+    let resp = await this.universalService.fetchGetById(this.moduleBaseUri, id);
+    return resp.data;
   }
 
   async fetchCreateNutritionGroup(data: any) {
-    try {
-      let espId = this.espService.getActiveEspId();
-      let resp = await axios.post(`${this.apiBaseURL}/gastronomy/nutrition-groups?espId=${espId}`, data,{withCredentials: true});
-      console.log(resp);
-    } catch (e: any) {
-      throw new Error(`Can't fetch data: ${e}`);
-    }
+    let resp = await this.universalService.fetchPost(this.moduleBaseUri, data);
+    return resp.data;
   }
 
   async fetchDeleteNutritionGroup(id: number) {
-    try {
-      let espId = this.espService.getActiveEspId();
-      await axios.delete(`${this.apiBaseURL}/gastronomy/nutrition-groups/${id}?espId=${espId}`,{withCredentials: true});
-    } catch (e: any) {
-      throw new Error(`Can't fetch data: ${e}`);
-    }
+    let resp = await this.universalService.fetchDelete(this.moduleBaseUri, id);
+    return resp.data;
   }
 }

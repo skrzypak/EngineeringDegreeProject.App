@@ -1,65 +1,33 @@
-import { Injectable } from '@angular/core';
-import {GlobalConstants} from "../../../../common/global-constants";
-import axios from "axios";
-import {EspService} from "../../../common/local-storage/esp.service";
+import {Injectable} from '@angular/core';
+import {UniversalService} from "../../universal.service";
+import {UrlModuleApi} from "../../../../enums/url-module-api";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ParticipantsService {
 
-  apiBaseURL = GlobalConstants.apiBaseURL;
+  moduleBaseUri = UrlModuleApi.GASTRONOMY_PARTICIPANTS;
 
-  constructor(private espService: EspService) { }
+  constructor(private universalService: UniversalService) { }
 
   async fetchGetParticipants(): Promise<Array<any>> {
-    try {
-      let espId = this.espService.getActiveEspId();
-      let resp = await axios.get(
-        `${this.apiBaseURL}/gastronomy/participants?espId=${espId}`,
-        {withCredentials: true});
-      return resp.data;
-    } catch (e: any) {
-      if(e.response.status == 404) {
-        throw new Error("Not found any data");
-      }
-      throw new Error("Can't fetch data");
-    }
+    let resp = await this.universalService.fetchGet(this.moduleBaseUri);
+    return resp.data;
   }
 
   async fetchGetParticipantById(id: number) {
-    try {
-      let espId = this.espService.getActiveEspId();
-      let resp = await axios.get(
-        `${this.apiBaseURL}/gastronomy/participants/${id}?espId=${espId}`,
-        {withCredentials: true});
-      return resp.data
-    } catch (e: any) {
-      throw new Error(`Can't fetch data: ${e}`);
-    }
+    let resp = await this.universalService.fetchGetById(this.moduleBaseUri, id);
+    return resp.data;
   }
 
   async fetchCreateParticipant(data: any) {
-    try {
-      let espId = this.espService.getActiveEspId();
-      let resp = await axios.post(
-        `${this.apiBaseURL}/gastronomy/participants?espId=${espId}`,
-        data,
-        {withCredentials: true});
-      console.log(resp);
-    } catch (e: any) {
-      throw new Error(`Can't fetch data: ${e}`);
-    }
+    let resp = await this.universalService.fetchPost(this.moduleBaseUri, data);
+    return resp.data;
   }
 
   async fetchDeleteParticipant(id: number) {
-    try {
-      let espId = this.espService.getActiveEspId();
-      await axios.delete(
-        `${this.apiBaseURL}/gastronomy/participants/${id}?espId=${espId}`,
-        {withCredentials: true});
-    } catch (e: any) {
-      throw new Error(`Can't fetch data: ${e}`);
-    }
+    let resp = await this.universalService.fetchDelete(this.moduleBaseUri, id);
+    return resp.data;
   }
 }

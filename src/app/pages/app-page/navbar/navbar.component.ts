@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../../../services/msv/auth-msv/auth.service";
 import {EnterprisesService} from "../../../services/msv/auth-msv/enterprise/enterprises.service";
-import {EspService} from "../../../services/common/local-storage/esp.service";
+import {EspService} from "../../../services/common/local-managments/esp.service";
 
 @Component({
   selector: 'app-navbar',
@@ -18,7 +18,7 @@ export class NavbarComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     try {
-      this.espActive = this.espService.getActiveEsp();
+      this.espActive = this.espService.getEsp();
     } catch {
       this.espActive = null;
     }

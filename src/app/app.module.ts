@@ -22,6 +22,10 @@ import { MultiSelectComponent } from './components/multi-select/multi-select.com
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 import { ModuleNavigationComponent } from './components/module-navigation/module-navigation.component';
+import { DishesPageComponent } from './pages/dashboard-pages/gastronomy/dishes-page/dishes-page.component';
+import { MenusPagesComponent } from './pages/dashboard-pages/gastronomy/menus-pages/menus-pages.component';
+import { PlansPagesComponent } from './pages/dashboard-pages/gastronomy/plans-pages/plans-pages.component';
+import { GroupsPagesComponent } from './pages/dashboard-pages/gastronomy/groups-pages/groups-pages.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +45,11 @@ import { ModuleNavigationComponent } from './components/module-navigation/module
     MultiSelectComponent,
     PaginationComponent,
     NotFoundPageComponent,
-    ModuleNavigationComponent
+    ModuleNavigationComponent,
+    DishesPageComponent,
+    MenusPagesComponent,
+    PlansPagesComponent,
+    GroupsPagesComponent
   ],
   imports: [
     BrowserModule,

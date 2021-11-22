@@ -1,123 +1,127 @@
 import {Injectable} from '@angular/core';
-import axios from "axios";
-import {GlobalConstants} from "../../../../common/global-constants";
-import {EspService} from "../../../common/local-storage/esp.service";
+import {UrlModuleApi} from "../../../../enums/url-module-api";
+import {UniversalService} from "../../universal.service";
+import {EspService} from "../../../common/local-managments/esp.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class EnterprisesService {
 
-  apiBaseURL = GlobalConstants.apiBaseURL;
+  private fetched: Array<any> = [];
 
-  constructor(private espService: EspService) {
+  moduleBaseUri = UrlModuleApi.AUTH_ENTERPRISES;
+
+  constructor(private universalService: UniversalService, private espService: EspService) {
+  }
+
+  setupEnterpriseActive(espId: number) {
+    if(this.fetched.length > 0) {
+      let item = this.fetched.find((o: any) => o.id == espId);
+      if (item != null) {
+        this.espService.setEsp(item);
+      } else {
+        throw new Error("ENTERPRISE NOT EXISTS");
+      }
+    } else {
+      throw new Error("404");
+    }
+  }
+
+  getActiveEnterpriseId() : string {
+    if(this.fetched.length > 0) {
+      if(!this.checkEspLocalStorage()) {
+        // Saved esp not exits - set new
+        this.espService.setEsp(this.fetched[0]);
+        return this.fetched[0].id;
+      } else  {
+        return this.espService.getEspId();
+      }
+    } else {
+      throw Error("404");
+    }
+  }
+
+  checkEspLocalStorage() : boolean {
+    if(this.fetched.length > 0) {
+      try {
+        return this.fetched.some((o: any) => o.id == this.espService.getEspId());
+      } catch (e) {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  getLocalEnterprises(): Array<any> {
+    return this.fetched;
+  }
+
+  getLocalEnterprise(id: number): any {
+    return this.fetched.find((o: any) => o.id == id);
   }
 
   async fetchGetEnterprises(): Promise<Array<any>> {
-    try {
-      let resp = await axios.get(
-        `${this.apiBaseURL}/auth/enterprises`,
-        {withCredentials: true});
+    let item = this.getLocalEnterprises();
+
+    if(item.length > 0) {
+      return item;
+    } else {
+      let resp = await this.universalService.fetchCustomGet(this.moduleBaseUri, false);
+      this.fetched = resp.data;
       return resp.data;
-    } catch (e: any) {
-      if (e.response.status == 404) {
-        throw new Error("Not found any data");
-      }
-      throw new Error("Can't fetch data");
     }
   }
 
   async fetchGetEnterpriseById(id: number) {
-    try {
-      let resp = await axios.get(
-        `${this.apiBaseURL}/auth/enterprises/${id}`,
-        {withCredentials: true});
-      return resp.data
-    } catch (e: any) {
-      throw new Error(`Can't fetch data: ${e}`);
-    }
+    let resp = await this.universalService.fetchGetById(this.moduleBaseUri, id);
+    return resp.data;
   }
 
   async fetchGetEnterpriseUsers(enterpriseId: number) {
-    try {
-      let resp = await axios.get(
-        `${this.apiBaseURL}/auth/enterprises/${enterpriseId}/users`,
-        {withCredentials: true});
-      return resp.data
-    } catch (e: any) {
-      throw new Error(`Can't fetch data: ${e}`);
-    }
+    let resp = await this.universalService.fetchCustomGet(`${this.moduleBaseUri}/${enterpriseId}/users`);
+    return resp.data;
   }
 
   async fetchCreateEnterprise(data: any) {
-    try {
-      let resp = await axios.post(
-        `${this.apiBaseURL}/auth/enterprises`,
-        data,
-        {withCredentials: true});
-    } catch (e: any) {
-      throw new Error(`Can't fetch data: ${e}`);
-    }
+    let resp = await this.universalService.fetchCustomPost(this.moduleBaseUri, data, false);
+    return resp.data;
   }
 
   async fetchUpdateEnterprise(enterpriseId: number, data: any) {
-    try {
-      let resp = await axios.put(
-        `${this.apiBaseURL}/auth/enterprises/${enterpriseId}`,
-        data,
-        {withCredentials: true});
-    } catch (e: any) {
-      throw new Error(`Can't fetch data: ${e}`);
-    }
+    let resp = await this.universalService.fetchPut(this.moduleBaseUri, enterpriseId, data);
+    return resp.data;
   }
 
   async fetchAddEnterpriseUser(enterpriseId: number, username: string, email: string) {
-    try {
-      let resp = await axios.patch(
-        `${this.apiBaseURL}/auth/enterprises/${enterpriseId}/users/users?username=${username}&email=${email}`,
-        {},
-        {withCredentials: true});
-    } catch (e: any) {
-      throw new Error(`Can't fetch data: ${e}`);
-    }
+    let resp = await this.universalService
+      .fetchCustomPatch(`${this.moduleBaseUri}/${enterpriseId}/users/users?username=${username}&email=${email}`, {});
+    return resp.data;
   }
 
   async fetchDeleteEnterprise(id: number) {
+    await this.universalService.fetchDelete(this.moduleBaseUri, id);
+
     try {
-      let resp = await axios.delete(
-        `${this.apiBaseURL}/auth/enterprises/${id}`,
-        {withCredentials: true});
-      try {
-        let currEspActiveId = parseInt(this.espService.getActiveEspId())
-        if (currEspActiveId == id) {
-          localStorage.removeItem("esp")
-        }
-      } catch (e) {
+      if (parseInt(this.espService.getEspId()) == id) {
         localStorage.removeItem("esp")
       }
-    } catch (e: any) {
-      throw new Error(`Can't fetch data: ${e}`);
+    } catch (e: any) {} finally {
+      window.location.reload();
     }
   }
 
   async fetchRemoveEnterpriseUser(id: number, enterpriseUserId: number) {
-    try {
-      await axios.delete(
-      `${this.apiBaseURL}/auth/enterprises/${id}/users?enterpriseUserId=${enterpriseUserId}`,
-      {withCredentials: true});
-    } catch (e: any) {
-      throw new Error(`Can't fetch data: ${e}`);
-    }
+    let resp = await this.universalService
+      .fetchCustomDelete(`${this.moduleBaseUri}/${id}/users?enterpriseUserId=${enterpriseUserId}`);
+    return resp.data;
   }
 
   async fetchLeftFromEnterprise(id: number) {
-    try {
-      await axios.delete(
-      `${this.apiBaseURL}/auth/enterprises/${id}/left`,
-      {withCredentials: true});
-    } catch (e: any) {
-      throw new Error(`Can't fetch data: ${e}`);
-    }
+    let resp = await this.universalService
+      .fetchCustomDelete(`${this.moduleBaseUri}/${id}/left`);
+    return resp.data;
   }
 
 }

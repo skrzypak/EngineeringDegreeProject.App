@@ -1,34 +1,23 @@
 import { Injectable } from '@angular/core';
-import axios from "axios";
-import {GlobalConstants} from "../../../../common/global-constants";
+import {UrlModuleApi} from "../../../../enums/url-module-api";
+import {UniversalService} from "../../universal.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PersonsService {
 
-  apiBaseURL = GlobalConstants.apiBaseURL;
+  moduleBaseUri = UrlModuleApi.AUTH_PERSONS;
 
-  constructor() { }
+  constructor(private universalService: UniversalService) { }
 
   public async fetchGetUserDetails() {
-    try {
-      return await axios.get(
-        `${this.apiBaseURL}/auth/person/account`,
-        {withCredentials: true});
-    } catch (e) {
-      throw e;
-    }
+    let resp = await this.universalService.fetchCustomGet(`${this.moduleBaseUri}/account`, false);
+    return resp.data;
   }
 
   public async fetchUpdateUserDetails(data: any) {
-    try {
-      return await axios.put(
-        `${this.apiBaseURL}/auth/person/account`,
-        {data},
-        {withCredentials: true});
-    } catch (e) {
-      throw e;
-    }
+    let resp = await this.universalService.fetchCustomPut(`${this.moduleBaseUri}/account`, data, false);
+    return resp.data;
   }
 }

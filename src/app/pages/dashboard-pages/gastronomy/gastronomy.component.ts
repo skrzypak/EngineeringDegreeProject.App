@@ -11,6 +11,7 @@ export class GastronomyComponent implements OnInit {
     {name: 'Groups', routerLink: 'groups'},
     {name: 'Plans', routerLink: 'plans'},
     {name: 'Menus', routerLink: 'menus'},
+    {name: 'Dishes', routerLink: 'dishes'},
     {name: 'Participants', routerLink: 'participants'},
   ];
 

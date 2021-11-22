@@ -15,6 +15,10 @@ import {GastronomyComponent} from "./pages/dashboard-pages/gastronomy/gastronomy
 import {InventoryComponent} from "./pages/dashboard-pages/inventory/inventory.component";
 import {InvoicingComponent} from "./pages/dashboard-pages/invoicing/invoicing.component";
 import {NotFoundPageComponent} from "./pages/not-found-page/not-found-page.component";
+import {DishesPageComponent} from "./pages/dashboard-pages/gastronomy/dishes-page/dishes-page.component";
+import {GroupsPagesComponent} from "./pages/dashboard-pages/gastronomy/groups-pages/groups-pages.component";
+import {PlansPagesComponent} from "./pages/dashboard-pages/gastronomy/plans-pages/plans-pages.component";
+import {MenusPagesComponent} from "./pages/dashboard-pages/gastronomy/menus-pages/menus-pages.component";
 
 const routes: Routes = [
   {path: '', redirectTo: '/enterprise', pathMatch: 'full'},
@@ -28,7 +32,11 @@ const routes: Routes = [
       {
         path: 'gastronomy', component: GastronomyComponent,
         children: [
-          {path:'', redirectTo: 'participants', pathMatch: 'full'},
+          {path:'', redirectTo: 'groups', pathMatch: 'full'},
+          {path: 'groups', component: GroupsPagesComponent},
+          {path: 'plans', component: PlansPagesComponent},
+          {path: 'menus', component: MenusPagesComponent},
+          {path: 'dishes', component: DishesPageComponent},
           {path: 'participants', component: ParticipantsPageComponent},
         ]
       },

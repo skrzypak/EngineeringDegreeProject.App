@@ -2,7 +2,6 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {EnterprisesService} from "../../../../services/msv/auth-msv/enterprise/enterprises.service";
 import {FormControl, FormGroup} from "@angular/forms";
 import {ModalState} from "../../../../enums/modal-state";
-import {EspService} from "../../../../services/common/local-storage/esp.service";
 
 @Component({
   selector: 'app-enterprises-page',
@@ -28,54 +27,38 @@ export class EnterprisesPageComponent implements OnInit {
     state: new FormControl()
   });
 
-  constructor(private enterprisesService: EnterprisesService, private espService: EspService) { }
+  constructor(private enterprisesService: EnterprisesService) { }
 
   async ngOnInit(): Promise<void> {
     try {
       this.fetchEnterprises = await this.enterprisesService.fetchGetEnterprises();
       this.fetchEnterprises.forEach(item => item["selected"] = false)
-
       this.fetchEnterprises.sort((a: any, b: any) => {
         return ('' + a.companyName).localeCompare(b.comapnyName);
       });
 
       try {
-        let currSelectedId = this.espService.getActiveEspId();
-        if(currSelectedId != null) {
-          let currSelectedItem = this.fetchEnterprises.find((o:any) => o.id == currSelectedId);
-          if(currSelectedItem != null) {
-            // Set active esp form local storage
-            currSelectedItem.selected = true;
-            return;
-          }
-        }
-      } catch (e) {}
-
-      // Set first esp as active. Save to local storage
-      this.espService.setActiveEsp(this.fetchEnterprises[0]);
-      this.fetchEnterprises[0].selected = true;
-      return;
+        let espId = this.enterprisesService.getActiveEnterpriseId();
+        this.fetchEnterprises.find((o: any) => o.id == espId).selected = true;
+      } catch (e) {
+        console.log(e)
+        this.showModal(ModalState.CREATE);
+      }
 
     } catch (e) {
-      console.log(e);
       this.fetchEnterprises = [];
+      this.showModal(ModalState.CREATE);
     }
   }
 
-  onSelectEnterprise(item: any) {
-    let selectedItem: any = this.fetchEnterprises.find((o:any) => o.id == item.id);
-    if(selectedItem != null){
-      let currSelectedId = this.espService.getActiveEspId();
-      if(currSelectedId != null){
-        let currSelectedItem = this.fetchEnterprises.find((o:any) => o.id == currSelectedId);
-        if(currSelectedItem != null) {
-          currSelectedItem.selected = false
-        }
-      }
-      this.espService.setActiveEsp(item);
-      selectedItem.selected = true;
-    } else {
-      console.log("TODO://ERROR")
+  onSelectEnterprise(id: number) {
+    try {
+      let prevId = this.enterprisesService.getActiveEnterpriseId();
+      this.enterprisesService.setupEnterpriseActive(id);
+      this.fetchEnterprises.find((o: any) => o.id == prevId).selected = false;
+      this.fetchEnterprises.find((o: any) => o.id == id).selected = true;
+    } catch (e: any) {
+      console.log(e)
     }
   }
 
@@ -83,9 +66,7 @@ export class EnterprisesPageComponent implements OnInit {
     try {
       await this.enterprisesService.fetchDeleteEnterprise(id);
       window.location.reload();
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   }
 
   async onShowEnterprise(id: number) {
@@ -107,7 +88,6 @@ export class EnterprisesPageComponent implements OnInit {
       this.showModal(ModalState.READ);
     } catch (e) {
       this.ngForm.reset();
-      console.log(e);
     }
   }
 
@@ -118,9 +98,7 @@ export class EnterprisesPageComponent implements OnInit {
       await this.enterprisesService.fetchCreateEnterprise(data);
       this.hideModal();
       window.location.reload();
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   }
 
   onUpdateEnterpriseSubmit() {
@@ -134,8 +112,10 @@ export class EnterprisesPageComponent implements OnInit {
   }
 
   public hideModal() {
-    this.ngForm.reset();
-    (this.modalRef?.nativeElement).style.display = 'none';
+    if (this.fetchEnterprises.length > 0) {
+      this.ngForm.reset();
+      (this.modalRef?.nativeElement).style.display = 'none';
+    }
   }
 
 }
