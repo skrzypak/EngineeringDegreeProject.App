@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {EnterprisesService} from "../../../../services/auth-msv/enterprise/enterprises.service";
+import {EnterprisesService} from "../../../../services/msv/auth-msv/enterprise/enterprises.service";
 import {FormControl, FormGroup} from "@angular/forms";
 import {ModalState} from "../../../../enums/modal-state";
 import {EspService} from "../../../../services/common/local-storage/esp.service";

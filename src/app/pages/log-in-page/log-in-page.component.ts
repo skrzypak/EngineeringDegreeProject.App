@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {MessageType} from "../../enums/message-type";
-import {AuthService} from "../../services/auth-msv/auth/auth.service";
+import {AuthService} from "../../services/msv/auth-msv/auth.service";
 
 @Component({
   selector: 'app-log-in-page',
@@ -31,7 +31,7 @@ export class LogInPageComponent implements OnInit {
     this.btnLoadingOnSubmit = true;
 
     try {
-      await this.authService.login(this.ngForm.value.username, this.ngForm.value.password)
+      await this.authService.fetchLogin(this.ngForm.value.username, this.ngForm.value.password)
       this.message = ''
     } catch (error: any) {
       this.messageType = MessageType.Error;

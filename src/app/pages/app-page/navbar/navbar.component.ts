@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthService} from "../../../services/auth-msv/auth/auth.service";
-import {EnterprisesService} from "../../../services/auth-msv/enterprise/enterprises.service";
+import {AuthService} from "../../../services/msv/auth-msv/auth.service";
+import {EnterprisesService} from "../../../services/msv/auth-msv/enterprise/enterprises.service";
 import {EspService} from "../../../services/common/local-storage/esp.service";
 
 @Component({
@@ -26,7 +26,7 @@ export class NavbarComponent implements OnInit {
 
   public async sendLogoutRequest() {
     try {
-      await this.authService.logout();
+      await this.authService.fetchLogout();
     } catch (e) {
       console.log("Unable logout")
     }

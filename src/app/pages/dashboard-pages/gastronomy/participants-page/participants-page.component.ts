@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {ParticipantsService} from "../../../../services/gastronomy-msv/participants/participants.service";
+import {ParticipantsService} from "../../../../services/msv/gastronomy-msv/participants/participants.service";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
-import {NutritionGroupService} from "../../../../services/gastronomy-msv/nutrition-groups/nutrition-group.service";
+import {NutritionGroupService} from "../../../../services/msv/gastronomy-msv/nutrition-groups/nutrition-group.service";
 import {Subject} from "rxjs";
 import {MultiSelectComponent} from "../../../../components/multi-select/multi-select.component";
 

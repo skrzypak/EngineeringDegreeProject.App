@@ -1,21 +1,23 @@
 import { Injectable } from '@angular/core';
-import {GlobalConstants} from "../../../common/global-constants";
-import {EspService} from "../../common/local-storage/esp.service";
+import {GlobalConstants} from "../../../../common/global-constants";
 import axios from "axios";
+import {EspService} from "../../../common/local-storage/esp.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class NutritionGroupService {
+export class ParticipantsService {
 
   apiBaseURL = GlobalConstants.apiBaseURL;
 
   constructor(private espService: EspService) { }
 
-  async fetchGetNutritionGroups(): Promise<Array<any>> {
+  async fetchGetParticipants(): Promise<Array<any>> {
     try {
       let espId = this.espService.getActiveEspId();
-      let resp = await axios.get(`${this.apiBaseURL}/gastronomy/nutrition-groups?espId=${espId}`,  {withCredentials: true});
+      let resp = await axios.get(
+        `${this.apiBaseURL}/gastronomy/participants?espId=${espId}`,
+        {withCredentials: true});
       return resp.data;
     } catch (e: any) {
       if(e.response.status == 404) {
@@ -25,30 +27,37 @@ export class NutritionGroupService {
     }
   }
 
-  async fetchGetNutritionGroupById(id: number) {
+  async fetchGetParticipantById(id: number) {
     try {
       let espId = this.espService.getActiveEspId();
-      let resp = await axios.get(`${this.apiBaseURL}/gastronomy/nutrition-groups/${id}?espId=${espId}`,  {withCredentials: true});
+      let resp = await axios.get(
+        `${this.apiBaseURL}/gastronomy/participants/${id}?espId=${espId}`,
+        {withCredentials: true});
       return resp.data
     } catch (e: any) {
       throw new Error(`Can't fetch data: ${e}`);
     }
   }
 
-  async fetchCreateNutritionGroup(data: any) {
+  async fetchCreateParticipant(data: any) {
     try {
       let espId = this.espService.getActiveEspId();
-      let resp = await axios.post(`${this.apiBaseURL}/gastronomy/nutrition-groups?espId=${espId}`, data,{withCredentials: true});
+      let resp = await axios.post(
+        `${this.apiBaseURL}/gastronomy/participants?espId=${espId}`,
+        data,
+        {withCredentials: true});
       console.log(resp);
     } catch (e: any) {
       throw new Error(`Can't fetch data: ${e}`);
     }
   }
 
-  async fetchDeleteNutritionGroup(id: number) {
+  async fetchDeleteParticipant(id: number) {
     try {
       let espId = this.espService.getActiveEspId();
-      await axios.delete(`${this.apiBaseURL}/gastronomy/nutrition-groups/${id}?espId=${espId}`,{withCredentials: true});
+      await axios.delete(
+        `${this.apiBaseURL}/gastronomy/participants/${id}?espId=${espId}`,
+        {withCredentials: true});
     } catch (e: any) {
       throw new Error(`Can't fetch data: ${e}`);
     }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
-import {AuthService} from "../../auth-msv/auth/auth.service";
+import {AuthService} from "../../msv/auth-msv/auth.service";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Promise<boolean> {
 
-    let status = await this.authService.getStatus();
+    let status = await this.authService.fetchSession();
 
     if(status) {
       return true

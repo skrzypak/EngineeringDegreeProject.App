@@ -3,6 +3,7 @@ import {GlobalConstants} from "../../common/global-constants";
 import {MessageType} from "../../enums/message-type";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import axios from "axios";
+import {AuthService} from "../../services/msv/auth-msv/auth.service";
 
 @Component({
   selector: 'app-sign-up-page',
@@ -39,7 +40,7 @@ export class SignUpPageComponent implements OnInit {
   get password() { return this.ngForm.get('password'); }
   get repeatPassword() { return this.ngForm.get('repeatPassword'); }
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
   }
@@ -48,41 +49,16 @@ export class SignUpPageComponent implements OnInit {
     this.btnLoadingOnSubmit = true;
 
     try {
-      const response = await axios({
-        method: 'post',
-        url: `${this.apiBaseURL}/auth/msv/no/register`,
-        headers: {},
-        data: {
-          "username": this.ngForm.value.username,
-          "password": this.ngForm.value.password,
-          "confirmedPassword": this.ngForm.value.repeatPassword,
-          "person": {
-            "firstName": this.ngForm.value.firstName,
-            "lastName": this.ngForm.value.lastName,
-            "gender": this.ngForm.value.gender,
-            "email": this.ngForm.value.email,
-            "phoneNumber": this.ngForm.value.phoneNumber === '' ? '' :
-              `+${this.ngForm.value.phoneNumberPrefix}${this.ngForm.value.phoneNumber}`
-          }
-        }
-      });
-
+      await this.authService.fetchRegister(this.ngForm.value);
       this.messageType = MessageType.Success;
-
-      if(response.status == 204) {
-        this.message = "Register complete successfully"
-      }
-
+      this.message = "Register complete successfully";
     } catch (error: any) {
-
       this.messageType = MessageType.Error;
-
       if(error.response.status != 500) {
         this.message = error.response.data
       } else {
         this.message = "Unable complete register";
       }
-
     } finally {
       this.btnLoadingOnSubmit = false;
     }
