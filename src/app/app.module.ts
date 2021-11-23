@@ -26,6 +26,8 @@ import { DishesPageComponent } from './pages/dashboard-pages/gastronomy/dishes-p
 import { MenusPagesComponent } from './pages/dashboard-pages/gastronomy/menus-pages/menus-pages.component';
 import { PlansPagesComponent } from './pages/dashboard-pages/gastronomy/plans-pages/plans-pages.component';
 import { GroupsPagesComponent } from './pages/dashboard-pages/gastronomy/groups-pages/groups-pages.component';
+import { MultiSelectSearchComponent } from './components/multi-select-search/multi-select-search.component';
+import { UniversalTableComponent } from './components/universal-table/universal-table.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,9 @@ import { GroupsPagesComponent } from './pages/dashboard-pages/gastronomy/groups-
     DishesPageComponent,
     MenusPagesComponent,
     PlansPagesComponent,
-    GroupsPagesComponent
+    GroupsPagesComponent,
+    MultiSelectSearchComponent,
+    UniversalTableComponent
   ],
   imports: [
     BrowserModule,

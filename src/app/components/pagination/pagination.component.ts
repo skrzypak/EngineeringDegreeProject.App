@@ -15,14 +15,14 @@ import {Observable, Subscription} from "rxjs";
 })
 export class PaginationComponent implements OnDestroy, OnInit {
 
-  @Input() itemToDisplay: number = 15;
+  @Input() itemToDisplay: number = 5;
   @Input() sourceObservable!: Observable<any>;
   @Output() rendererEmitter = new EventEmitter<any>();
 
   pagination = {
     currPageNum: 1,
     lastPageNum: 1,
-    itemsDisplay: this.itemToDisplay,
+    itemsDisplay: 15,
     navigator: {
       max: 5,
       current: 0,
@@ -39,6 +39,7 @@ export class PaginationComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
+    this.pagination.itemsDisplay = this.itemToDisplay;
     this.subscription = this.sourceObservable.subscribe((o: any) => {
       this.data = o;
       this.setupPages();
@@ -66,7 +67,7 @@ export class PaginationComponent implements OnDestroy, OnInit {
 
   private processRenderer() {
     let start = (this.pagination.currPageNum - 1) * this.pagination.itemsDisplay;
-    let count = start + (this.pagination.itemsDisplay - 1);
+    let count = start + this.pagination.itemsDisplay;
     this.sendRendererData(this.data.slice(start, count));
   }
 

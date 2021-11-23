@@ -5,7 +5,7 @@
         <div class="box">
           <app-pagination
             [sourceObservable]="fetched.participants.rxjs.asObservable()"
-            (rendererEmitter)="receiveRenderer($event)"
+            (rendererEmitter)="subscribeRenderer($event)"
           ></app-pagination>
         </div>
       </section>
@@ -52,7 +52,8 @@
             <div class="field">
               <label for="description" class="label">Description</label>
               <div class="control">
-                <input formControlName="description" id="description" name="description" type="text" class="input">
+                <textarea formControlName="description"
+                          id="description" name="description" class="textarea" placeholder="3000"></textarea>
               </div>
             </div>
 

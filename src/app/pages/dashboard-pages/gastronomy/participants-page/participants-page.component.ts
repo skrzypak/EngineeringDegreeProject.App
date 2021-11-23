@@ -38,17 +38,17 @@ export class ParticipantsPageComponent implements OnInit, AfterViewInit {
     });
   }
 
-  async triggerFetchParticipants() {
+  async trigFetchParticipants() {
     try {
       let data = await this.participantsService.fetchGetParticipants();
       data.forEach((o : any) => o["selected"] = false);
-      this.rxjsNextParticipants(data);
+      this.publishParticipants(data);
     } catch (e) {
-      this.rxjsNextParticipants([]);
+      this.publishParticipants([]);
     }
   }
 
-  async triggerFetchNutritionGroups() {
+  async trigFetchNutritionGroups() {
     try {
       this.frmNutritionGroupChild.fetchedData = await this.nutritionGroupService.fetchGetNutritionGroups();
     } catch (e) {
@@ -72,8 +72,8 @@ export class ParticipantsPageComponent implements OnInit, AfterViewInit {
       this.frmNutritionGroupChild.response = resp.nutritionGroups;
 
     } catch (e) {
+      console.log(e)
       this.ngFrmCtrl.frm.reset();
-      console.log(e);
     }
   }
 
@@ -87,7 +87,7 @@ export class ParticipantsPageComponent implements OnInit, AfterViewInit {
       window.location.reload();
       this.onReset()
     } catch (e) {
-      console.log(e);
+      console.log(e)
     }
   }
 
@@ -99,7 +99,7 @@ export class ParticipantsPageComponent implements OnInit, AfterViewInit {
       await this.participantsService.fetchDeleteParticipant(this.ngFrmCtrl.frm.value.id);
       window.location.reload();
     } catch (e) {
-      console.log(e);
+      console.log(e)
       this.onReset();
     }
   }
@@ -110,18 +110,18 @@ export class ParticipantsPageComponent implements OnInit, AfterViewInit {
   }
 
   async ngOnInit(): Promise<void> {
-    await this.triggerFetchParticipants();
+    await this.trigFetchParticipants();
   }
 
   async ngAfterViewInit(): Promise<void> {
-    await this.triggerFetchNutritionGroups();
+    await this.trigFetchNutritionGroups();
   }
 
-  rxjsNextParticipants(o: any) {
+  publishParticipants(o: any) {
     this.fetched.participants.rxjs.next(o);
   }
 
-  receiveRenderer(e: any) {
+  subscribeRenderer(e: any) {
     this.fetched.participants.display = e;
   }
 

@@ -1,6 +1,7 @@
 <nav class="pagination is-right p-0" role="navigation">
   <a class="pagination-previous" (click)="onPreviousClick()">Previous</a>
   <a class="pagination-next" (click)="onNextClick()">Next page</a>
+  <span class="mr-2">{{data.length}} Results</span>
   <ul class="pagination-list">
     <li>
       <a class="pagination-link is-current"
