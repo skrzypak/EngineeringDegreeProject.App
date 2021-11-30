@@ -4,6 +4,8 @@ import {BehaviorSubject} from "rxjs";
 import {DishesService} from "../../../../services/msv/gastronomy-msv/dishes/dishes.service";
 import {ProductsService} from "../../../../services/msv/gastronomy-msv/products/products.service";
 import {MultiSelectSearchComponent} from "../../../../components/multi-select-search/multi-select-search.component";
+import {LoaderService} from "../../../../services/common/loader/loader.service";
+import {SpinnerWrapperComponent} from "../../../../components/spinner-wrapper/spinner-wrapper.component";
 
 @Component({
   selector: 'app-dishes-page',
@@ -13,6 +15,7 @@ import {MultiSelectSearchComponent} from "../../../../components/multi-select-se
 export class DishesPageComponent implements OnInit {
 
   @ViewChild(MultiSelectSearchComponent) frmProductsChild!: MultiSelectSearchComponent;
+  @ViewChild(SpinnerWrapperComponent) frmProductsChildSpinner!: SpinnerWrapperComponent;
 
   ngFrmCtrl: any = {
     frm: FormGroup,
@@ -30,6 +33,7 @@ export class DishesPageComponent implements OnInit {
     currentBtnKey: "All",
     btnSetup: new Map<any, any>([
       ["List", {
+        tmp: Array<any>(),
         color: "is-primary",
         func: () => {
           this.productsSearch.currentBtnKey = "List";
@@ -37,6 +41,7 @@ export class DishesPageComponent implements OnInit {
         }
       }],
       ["All", {
+        tmp: Array<any>(),
         color: "is-warning",
         func: () => {
           this.productsSearch.currentBtnKey = "All";
@@ -59,7 +64,10 @@ export class DishesPageComponent implements OnInit {
     }
   }
 
-  constructor(private dishesService: DishesService, private productsService: ProductsService, private fb: FormBuilder) {
+  constructor(
+    private dishesService: DishesService,
+    private productsService: ProductsService,
+    private fb: FormBuilder) {
     this.ngFrmCtrl.frm = this.fb.group({
       id: new FormControl(),
       name: new FormControl(),
@@ -100,7 +108,6 @@ export class DishesPageComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     await this.trigFetchDishes();
     await this.trigFetchProducts();
-    this.showProducts()
   }
 
   subscribeRenderer(e: any) {
@@ -134,7 +141,26 @@ export class DishesPageComponent implements OnInit {
   }
 
   async onCreate() {
+    try {
+      this.frmProductsChildSpinner.setState(true);
+      await this.dishesService.fetchCreateDish({
+        "name": this.ngFrmCtrl.frm.value.name,
+        "description": this.ngFrmCtrl.frm.value.description,
+        "ingredients": [
+          // {
+          //   "valueOfUse": 0,
+          //   "productId": 0
+          // }
+        ]
+      });
 
+      this.onReset();
+      window.location.reload();
+    } catch (e) {
+      console.log(e)
+    } finally {
+      this.frmProductsChildSpinner.setState(false);
+    }
   }
 
   async onUpdate() {
@@ -143,15 +169,18 @@ export class DishesPageComponent implements OnInit {
 
   async onDelete() {
     try {
+      this.frmProductsChildSpinner.setState(true);
       await this.dishesService.fetchDeleteDish(this.ngFrmCtrl.frm.value.id);
       window.location.reload();
     } catch (e) {
       console.log(e)
-      this.onReset();
+    } finally {
+      this.frmProductsChildSpinner.setState(false);
     }
   }
 
   onReset() {
+    this.productsSearch.fetched.list = [];
     this.ngFrmCtrl.frm.reset();
   }
 

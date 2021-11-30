@@ -29,6 +29,8 @@ import { GroupsPagesComponent } from './pages/dashboard-pages/gastronomy/groups-
 import { MultiSelectSearchComponent } from './components/multi-select-search/multi-select-search.component';
 import { UniversalTableComponent } from './components/universal-table/universal-table.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
+import {LoaderService} from "./services/common/loader/loader.service";
+import { SpinnerWrapperComponent } from './components/spinner-wrapper/spinner-wrapper.component';
 
 @NgModule({
   declarations: [
@@ -55,13 +57,17 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     GroupsPagesComponent,
     MultiSelectSearchComponent,
     UniversalTableComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    SpinnerWrapperComponent
   ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
     SweetAlert2Module.forRoot(),
     AppRoutingModule,
+  ],
+  providers: [
+    LoaderService
   ],
   bootstrap: [AppComponent],
 })
