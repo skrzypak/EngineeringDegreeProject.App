@@ -15,9 +15,9 @@ import {Observable, Subscription} from "rxjs";
 })
 export class PaginationComponent implements OnDestroy, OnInit {
 
-  @Input() itemToDisplay: number = 5;
-  @Input() sourceObservable!: Observable<any>;
-  @Output() rendererEmitter = new EventEmitter<any>();
+  @Input() maxItemsDisplay: number = 5;
+  @Input() numOfItemsObservable!: Observable<number>;
+  @Output() rendererEmitter = new EventEmitter<Array<number>>();
 
   pagination = {
     currPageNum: 1,
@@ -33,15 +33,15 @@ export class PaginationComponent implements OnDestroy, OnInit {
   }
 
   subscription!: Subscription;
-  data: Array<any> = new Array<any>();
+  numOfItems = 0;
 
   constructor() {
   }
 
   ngOnInit(): void {
-    this.pagination.itemsDisplay = this.itemToDisplay;
-    this.subscription = this.sourceObservable.subscribe((o: any) => {
-      this.data = o;
+    this.pagination.itemsDisplay = this.maxItemsDisplay;
+    this.subscription = this.numOfItemsObservable.subscribe((o: number) => {
+      this.numOfItems = o;
       this.setupPages();
       this.processRenderer();
     });
@@ -52,23 +52,30 @@ export class PaginationComponent implements OnDestroy, OnInit {
   }
 
   private setupPages() {
-    let len = this.data.length;
+    let len = this.numOfItems;
     this.pagination.lastPageNum = Math.max(1, Math.ceil(len / this.pagination.itemsDisplay));
 
     if(this.pagination.currPageNum > this.pagination.lastPageNum) {
       this.pagination.currPageNum = this.pagination.lastPageNum;
+      this.pagination.navigator.current = this.pagination.currPageNum - 1;
+    } else {
+      this.pagination.currPageNum = 1;
+      this.pagination.navigator.current = 1;
     }
+
+    this.pagination.navigator.links.middle = [];
 
     for(let i = 2, j = 0; i < this.pagination.lastPageNum && j < this.pagination.navigator.max; i++, j++) {
       this.pagination.navigator.links.middle.push(i);
     }
 
+    this.onClickPage(1, 0);
   }
 
   private processRenderer() {
     let start = (this.pagination.currPageNum - 1) * this.pagination.itemsDisplay;
     let count = start + this.pagination.itemsDisplay;
-    this.sendRendererData(this.data.slice(start, count));
+    this.sendRendererData(start, count);
   }
 
   onClickPage(pageNum: number, linkIndex: number) {
@@ -143,8 +150,8 @@ export class PaginationComponent implements OnDestroy, OnInit {
     }
   }
 
-  private sendRendererData(data: any) {
-    this.rendererEmitter.emit(data);
+  private sendRendererData(start: number, end: number) {
+    this.rendererEmitter.emit([start, end]);
   }
 
 }

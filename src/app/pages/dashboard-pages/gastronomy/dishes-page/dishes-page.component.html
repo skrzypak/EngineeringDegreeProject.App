@@ -4,7 +4,7 @@
       <section class="section px-5 py-0">
         <div class="box">
           <app-pagination
-            [sourceObservable]="fetched.dishes.rxjs.asObservable()"
+            [numOfItemsObservable]="fetched.dishes.rxjs.asObservable()"
             (rendererEmitter)="subscribeRenderer($event)"
           ></app-pagination>
         </div>
@@ -53,7 +53,46 @@
             </div>
 
             <!-- Ingredients -->
-            <app-multi-select-search></app-multi-select-search>
+            <div class="field">
+              <div class="control">
+                <button class="button is-info is-disabled is-fullwidth" (click)="showProducts()">Show products</button>
+                <app-multi-select-search
+                  id="ingredients"
+                  [btnSetup]="productsSearch.btnSetup"
+                  [numberOfItemsObservable]="productsSearch.fetched.rxjs.asObservable()"
+                  (rendererEmitter)="subscribeRendererProductsPagination($event)"
+                >
+                  <div class="table-container content">
+                    <table class="table is-fullwidth is-striped">
+                      <thead>
+                      <tr>
+                        <ng-container *ngFor="let kD of this.productsSearch.fetched.headers | keyvalue: zero">
+                          <th *ngIf="kD.value !== false">
+                            {{kD.value !== true ?  kD.value : kD.key}}
+                          </th>
+                        </ng-container>
+                        <th class="th-btn-Z">
+                          Z
+                        </th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr class="is-clickable" *ngFor="let item of this.productsSearch.fetched.display; let i=index">
+                        <ng-container *ngFor="let itm of item | keyvalue: zero">
+                          <td class="py-1" *ngIf="this.productsSearch.fetched.headers.get(itm.key) !== false">
+                            {{itm.value}}
+                          </td>
+                        </ng-container>
+                        <td class="td-btn-Z">
+                          <button class="button">Button</button>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </app-multi-select-search>
+              </div>
+            </div>
 
             <hr />
             <div class="columns">

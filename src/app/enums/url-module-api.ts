@@ -8,6 +8,7 @@ export enum UrlModuleApi {
   GASTRONOMY_NUTRITION_GROUPS = "gastronomy/nutrition-groups",
   GASTRONOMY_NUTRITION_PLANS = "gastronomy/nutrition-plans",
   GASTRONOMY_PARTICIPANTS = "gastronomy/participants",
+  GASTRONOMY_PRODUCTS = "gastronomy/products",
 
   INVENTORY_MSV = "inventory/msv",
   INVENTORY_ALLERGENS = "inventory/allergens",

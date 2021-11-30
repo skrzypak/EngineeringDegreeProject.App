@@ -1,43 +1,25 @@
 <div class="modal" [class.is-active]="this.visible">
   <div class="modal-background" (click)="close()"></div>
-  <div  class="modal-card" style="overflow: auto; width: 85%">
+  <div class="modal-card" style="overflow: auto; width: 85%">
     <div class="modal-card-head">
       <div style="width: 100%">
         <app-pagination
-          [itemToDisplay]="2"
-          [sourceObservable]="rxjs.asObservable()"
+          [maxItemsDisplay]="2"
+          [numOfItemsObservable]="numberOfItemsObservable"
           (rendererEmitter)="subscribeRenderer($event)"
         ></app-pagination>
       </div>
     </div>
     <div class="modal-card-body">
-      <div class="table-container">
-        <table class="table is-fullwidth is-striped">
-          <thead>
-            <tr>
-              <ng-container *ngFor="let kD of keysDisplay | keyvalue: zero">
-                <th *ngIf="kD.value !== false">
-                  {{kD.value !== true ?  kD.value : kD.key}}
-                </th>
-              </ng-container>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="is-clickable" *ngFor="let item of searchable">
-              <ng-container *ngFor="let itm of item | keyvalue: zero">
-                <td class="py-1" *ngIf="keysDisplay.get(itm.key) !== false">{{itm.value}}</td>
-              </ng-container>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <ng-content select=".content"></ng-content>
     </div>
     <div class="modal-card-foot">
       <nav class="level is-fullwidth" style="width: 100%">
         <!-- Left side -->
         <div class="level-left" style="width: 30%">
-          <p class="level-item"><a class="button is-primary" (click)="showSelected()">Selected</a></p>
-          <p class="level-item"><a class="button is-warning" (click)="showAvailables()">Availables</a></p>
+          <p class="level-item" *ngFor="let s of btnSetup | keyvalue: zero">
+            <a class="button {{s.value.color}}" (click)="s.value.func()">{{s.key}}</a>
+          </p>
         </div>
 
         <!-- Right side -->

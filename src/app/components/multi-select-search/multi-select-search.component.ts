@@ -1,5 +1,5 @@
-import {Component, ElementRef, HostListener, Input, OnInit} from '@angular/core';
-import {BehaviorSubject, Subject} from "rxjs";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-multi-select-search',
@@ -8,59 +8,17 @@ import {BehaviorSubject, Subject} from "rxjs";
 })
 export class MultiSelectSearchComponent implements OnInit {
 
-  //@Input() rxjs: Subject<any> = new Subject<any>();
-  //@Input() keysDisplay: Map<any, any> = [];
-  //@Input() searchable: Array<any> = [];
+  @Input() btnSetup: Map<any, any> = new Map<any, any>();
+  @Input() numberOfItemsObservable!: Observable<number>;
+  @Output() rendererEmitter = new EventEmitter<Array<number>>();
 
-  rxjs: BehaviorSubject<any> = new BehaviorSubject<any>('');
-  keysDisplay : Map<any, any> = new Map<any, any>();
-  searchable = [];
+  visible: boolean = false;
 
-  visible: boolean = true;
-
-  example = [
-    {
-      "id": 0,
-      "nip": "asdf",
-      "companyName": "asdfasdf"
-    },
-    {
-      "id": 1,
-      "nip": "adf",
-      "companyName": "adf"
-    },
-    {
-      "id": 2,
-      "nip": "qerw",
-      "companyName": "qewr"
-    },
-    {
-      "id": 3,
-      "nip": "string",
-      "companyName": "string"
-    },
-    {
-      "id": 4,
-      "nip": "string",
-      "companyName": "string"
-    }
-  ]
-
-  constructor() { }
-
-  async ngOnInit(): Promise<void> {
-    this.keysDisplay.set('id', true);
-    this.keysDisplay.set('nip', true);
-    this.keysDisplay.set('companyName', 'Company name');
-    await this.rxjs.next(this.example);
+  constructor() {
   }
 
-  showSelected() {
-
-  }
-
-  showAvailables() {
-
+  change(key: string) {
+    this.btnSetup.get(key).func();
   }
 
   close() {
@@ -71,7 +29,15 @@ export class MultiSelectSearchComponent implements OnInit {
     return 0
   }
 
-  subscribeRenderer(e: any) {
-    this.searchable = e;
+  ngOnInit(): void {
+
+  }
+
+  subscribeRenderer(e: Array<number>) {
+    this.rendererEmitter.emit(e);
+  }
+
+  show() {
+    this.visible = true;
   }
 }

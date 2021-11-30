@@ -2,7 +2,7 @@ import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {ParticipantsService} from "../../../../services/msv/gastronomy-msv/participants/participants.service";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {NutritionGroupService} from "../../../../services/msv/gastronomy-msv/nutrition-groups/nutrition-group.service";
-import {Subject} from "rxjs";
+import {BehaviorSubject, Subject} from "rxjs";
 import {MultiSelectComponent} from "../../../../components/multi-select/multi-select.component";
 
 @Component({
@@ -21,7 +21,8 @@ export class ParticipantsPageComponent implements OnInit, AfterViewInit {
   fetched: any = {
     participants: {
       display: Array<any>(),
-      rxjs: new Subject<any>()
+      data: Array<any>(),
+      rxjs: new BehaviorSubject<number>(0)
     }
   }
 
@@ -117,12 +118,13 @@ export class ParticipantsPageComponent implements OnInit, AfterViewInit {
     await this.trigFetchNutritionGroups();
   }
 
-  publishParticipants(o: any) {
-    this.fetched.participants.rxjs.next(o);
+  publishParticipants(o: Array<any>) {
+    this.fetched.participants.data = o;
+    this.fetched.participants.rxjs.next(o.length);
   }
 
   subscribeRenderer(e: any) {
-    this.fetched.participants.display = e;
+    this.fetched.participants.display = this.fetched.participants.data.slice(e[0], e[1]);
   }
 
 }

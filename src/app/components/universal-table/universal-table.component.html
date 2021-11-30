@@ -1,1 +1,20 @@
-<p>universal-table works!</p>
+<div class="table-container">
+  <table class="table is-fullwidth is-striped">
+    <thead>
+    <tr>
+      <ng-container *ngFor="let kD of keysDisplay | keyvalue: zero">
+        <th *ngIf="kD.value !== false">
+          {{kD.value !== true ?  kD.value : kD.key}}
+        </th>
+      </ng-container>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="is-clickable" *ngFor="let item of data" (click)="click(item)">
+      <ng-container *ngFor="let itm of item | keyvalue: zero">
+        <td class="py-1" *ngIf="keysDisplay.get(itm.key) !== false">{{itm.value}}</td>
+      </ng-container>
+    </tr>
+    </tbody>
+  </table>
+</div>
