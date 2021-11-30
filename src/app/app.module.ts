@@ -28,6 +28,7 @@ import { PlansPagesComponent } from './pages/dashboard-pages/gastronomy/plans-pa
 import { GroupsPagesComponent } from './pages/dashboard-pages/gastronomy/groups-pages/groups-pages.component';
 import { MultiSelectSearchComponent } from './components/multi-select-search/multi-select-search.component';
 import { UniversalTableComponent } from './components/universal-table/universal-table.component';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -53,14 +54,15 @@ import { UniversalTableComponent } from './components/universal-table/universal-
     PlansPagesComponent,
     GroupsPagesComponent,
     MultiSelectSearchComponent,
-    UniversalTableComponent
+    UniversalTableComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
     SweetAlert2Module.forRoot(),
-    AppRoutingModule
+    AppRoutingModule,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

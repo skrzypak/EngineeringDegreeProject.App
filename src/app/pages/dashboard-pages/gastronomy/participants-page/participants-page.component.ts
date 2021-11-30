@@ -2,7 +2,7 @@ import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {ParticipantsService} from "../../../../services/msv/gastronomy-msv/participants/participants.service";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {NutritionGroupService} from "../../../../services/msv/gastronomy-msv/nutrition-groups/nutrition-group.service";
-import {BehaviorSubject, Subject} from "rxjs";
+import {BehaviorSubject} from "rxjs";
 import {MultiSelectComponent} from "../../../../components/multi-select/multi-select.component";
 
 @Component({
@@ -29,7 +29,7 @@ export class ParticipantsPageComponent implements OnInit, AfterViewInit {
   constructor(
     private participantsService: ParticipantsService,
     private nutritionGroupService : NutritionGroupService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
   ) {
     this.ngFrmCtrl.frm = this.fb.group({
       id: new FormControl(),

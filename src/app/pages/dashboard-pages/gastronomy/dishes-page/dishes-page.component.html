@@ -66,25 +66,39 @@
                     <table class="table is-fullwidth is-striped">
                       <thead>
                       <tr>
-                        <ng-container *ngFor="let kD of this.productsSearch.fetched.headers | keyvalue: zero">
-                          <th *ngIf="kD.value !== false">
-                            {{kD.value !== true ?  kD.value : kD.key}}
+                        <ng-container *ngFor="let header of this.productsSearch.fetched.headers | keyvalue: zero">
+                          <th *ngIf="header.value !== false">
+                            {{header.value !== true ?  header.value : header.key}}
                           </th>
                         </ng-container>
-                        <th class="th-btn-Z">
-                          Z
+                        <th class="btn-action" style="text-align: center">
+                          A
                         </th>
                       </tr>
                       </thead>
                       <tbody>
-                      <tr class="is-clickable" *ngFor="let item of this.productsSearch.fetched.display; let i=index">
-                        <ng-container *ngFor="let itm of item | keyvalue: zero">
-                          <td class="py-1" *ngIf="this.productsSearch.fetched.headers.get(itm.key) !== false">
-                            {{itm.value}}
+                      <tr *ngFor="let item of this.productsSearch.fetched.display">
+                        <ng-container *ngFor="let header of this.productsSearch.fetched.headers | keyvalue: zero">
+                          <td class="py-1" style="vertical-align: middle" *ngIf="header.value !== false">
+                            {{item[header.key]}}
                           </td>
                         </ng-container>
-                        <td class="td-btn-Z">
-                          <button class="button">Button</button>
+                        <td class="btn-action">
+                          <div class="level" *ngIf="this.productsSearch.currentBtnKey === 'All'">
+                            <div class="level-left"></div>
+                            <div class="level-right">
+                              <div class="level-item">
+                                <input class="input is-micro" type="number" min="0" value="1" max="20" placeholder="100">
+                              </div>
+                              <div class="level-item">
+                                <button class="button is-primary">+</button>
+                              </div>
+                            </div>
+                          </div>
+                          <button *ngIf="this.productsSearch.currentBtnKey === 'List'"
+                                  class="button is-danger is-fullwidth">
+                            Remove
+                          </button>
                         </td>
                       </tr>
                       </tbody>

@@ -47,7 +47,9 @@ export class DishesPageComponent implements OnInit {
     fetched: {
       headers: new Map<any, any>([
         ["id", false],
+        ["name", "Name"],
         ["code", "Code"],
+        ["unit", "Unit"],
         ["description", "Description"],
       ]),
       list: Array<any>(),
@@ -68,7 +70,7 @@ export class DishesPageComponent implements OnInit {
   async trigFetchDishes() {
     try {
       let data = await this.dishesService.fetchGetDishes();
-      data.forEach((o : any) => o["selected"] = false);
+      // data.forEach((o : any) => o["selected"] = false);
       this.fetched.dishes.data = data;
       this.publishDishes(data.length);
     } catch (e) {
@@ -79,7 +81,7 @@ export class DishesPageComponent implements OnInit {
   async trigFetchProducts() {
     try {
       let data = await this.productsService.fetchGetProducts();
-      data.forEach((o : any) => o["selected"] = false);
+      // data.forEach((o : any) => o["selected"] = false);
       this.productsSearch.fetched.all = data;
       this.publishProducts(data.length);
     } catch (e) {
@@ -98,6 +100,7 @@ export class DishesPageComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     await this.trigFetchDishes();
     await this.trigFetchProducts();
+    this.showProducts()
   }
 
   subscribeRenderer(e: any) {
