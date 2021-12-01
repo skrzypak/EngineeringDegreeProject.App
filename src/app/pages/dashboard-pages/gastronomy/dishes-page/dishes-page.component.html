@@ -4,8 +4,8 @@
       <section class="section px-5 py-0">
         <div class="box">
           <app-pagination
-            [numOfItemsObservable]="fetched.dishes.rxjs.asObservable()"
             (rendererEmitter)="subscribeRenderer($event)"
+            [numOfItemsObservable]="fetched.dishes.rxjs.asObservable()"
           ></app-pagination>
         </div>
       </section>
@@ -19,10 +19,13 @@
             <div class="table-container">
               <table class="table is-fullwidth is-striped">
                 <thead>
-                <tr><th>Name</th><th>Description</th></tr>
+                <tr>
+                  <th>Name</th>
+                  <th>Description</th>
+                </tr>
                 </thead>
                 <tbody>
-                <tr class="is-clickable" *ngFor="let f of this.fetched.dishes.display" (click)="onSelectDish(f.id)">
+                <tr (click)="onSelectDish(f.id)" *ngFor="let f of this.fetched.dishes.display" class="is-clickable">
                   <td class="py-2">{{f.name}}</td>
                   <td class="py-2">{{f.description}}</td>
                 </tr>
@@ -35,101 +38,78 @@
     </div>
 
     <div class="column is-6">
-        <section class="section px-5 py-5">
-          <div class="container">
-            <app-spinner-wrapper>
-            <div class="box" [formGroup]="ngFrmCtrl.frm">
+      <section class="section px-5 py-5">
+        <div class="container">
+          <app-spinner-wrapper>
+            <div [formGroup]="ngFrmCtrl.frm" class="box">
               <div class="field">
-                <label for="name" class="label">Name</label>
+                <label class="label" for="name">Name</label>
                 <div class="control">
-                  <input formControlName="name" id="name" name="name" type="text" class="input">
+                  <input class="input" formControlName="name" id="name" name="name" type="text">
                 </div>
               </div>
               <div class="field">
-                <label for="description" class="label">Description</label>
+                <label class="label" for="description">Description</label>
                 <div class="control">
-                <textarea formControlName="description"
-                          id="description" name="description" class="textarea" placeholder="3000"></textarea>
+                <textarea class="textarea"
+                          formControlName="description" id="description" name="description"
+                          placeholder="3000"></textarea>
                 </div>
               </div>
 
               <!-- Ingredients -->
               <div class="field">
                 <div class="control">
-                  <button class="button is-info is-disabled is-fullwidth" (click)="showProducts()">Show products</button>
+                  <button (click)="showProducts()" class="button is-info is-disabled is-fullwidth">Manage products
+                  </button>
                   <app-multi-select-search
-                    id="ingredients"
-                    [btnSetup]="productsSearch.btnSetup"
-                    [numberOfItemsObservable]="productsSearch.fetched.rxjs.asObservable()"
                     (rendererEmitter)="subscribeRendererProductsPagination($event)"
+                    [btnSetup]="ingredientsSearchable.btnSetup"
+                    [numberOfItemsObservable]="ingredientsSearchable.rxjs.asObservable()"
                   >
-                    <div class="table-container content">
-                      <table class="table is-fullwidth is-striped">
-                        <thead>
-                        <tr>
-                          <ng-container *ngFor="let header of this.productsSearch.fetched.headers | keyvalue: zero">
-                            <th *ngIf="header.value !== false">
-                              {{header.value !== true ?  header.value : header.key}}
-                            </th>
-                          </ng-container>
-                          <th class="btn-action" style="text-align: center">
-                            A
-                          </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr *ngFor="let item of this.productsSearch.fetched.display">
-                          <ng-container *ngFor="let header of this.productsSearch.fetched.headers | keyvalue: zero">
-                            <td class="py-1" style="vertical-align: middle" *ngIf="header.value !== false">
-                              {{item[header.key]}}
-                            </td>
-                          </ng-container>
-                          <td class="btn-action">
-                            <div class="level" *ngIf="this.productsSearch.currentBtnKey === 'All'">
-                              <div class="level-left"></div>
-                              <div class="level-right">
-                                <div class="level-item">
-                                  <input class="input is-micro" type="number" min="0" value="1" max="32767" placeholder="100">
-                                </div>
-                                <div class="level-item">
-                                  <button class="button is-primary">+</button>
-                                </div>
-                              </div>
-                            </div>
-                            <button *ngIf="this.productsSearch.currentBtnKey === 'List'"
-                                    class="button is-danger is-fullwidth">
-                              Remove
-                            </button>
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table>
+                    <div class="content" [ngSwitch]="ingredientsSearchable.currentBtnKey">
+                      <app-table-content-products
+                        [headers]="ingredientsSearchable.btnSetup.get(btnSetupKeys.products).headers"
+                        [display]="ingredientsSearchable.btnSetup.get(btnSetupKeys.products).display"
+                        (subscribeAction)="addIngredientView($event)"
+                        *ngSwitchCase="btnSetupKeys.products"
+                      ></app-table-content-products>
+                      <app-table-content-ingredients
+                        class="content"
+                        [headers]="ingredientsSearchable.btnSetup.get(btnSetupKeys.ingredients).headers"
+                        [display]="ingredientsSearchable.btnSetup.get(btnSetupKeys.ingredients).display"
+                        (subscribeAction)="removeIngredientView($event)"
+                        *ngSwitchCase="btnSetupKeys.ingredients">
+                      </app-table-content-ingredients>
                     </div>
+
                   </app-multi-select-search>
                 </div>
               </div>
 
-              <hr />
+              <hr/>
               <div class="columns">
                 <div class="column">
-                  <button class="button is-success is-fullwidth" (click)="onCreate()">Create</button>
+                  <button (click)="onCreate()" class="button is-success is-fullwidth">Create</button>
                 </div>
                 <div class="column">
-                  <button class="button is-info is-disabled is-fullwidth" (click)="onUpdate()" disabled>Update</button>
+                  <button (click)="onUpdate()" class="button is-info is-disabled is-fullwidth" disabled>Update</button>
                 </div>
                 <div class="column">
-                  <button class="button is-danger is-fullwidth" (click)="onDelete()"
+                  <button (click)="onDelete()"
                           [disabled]="(ngFrmCtrl.frm.value != null && ngFrmCtrl.frm.value.id == null)"
-                  >Delete</button>
+                          class="button is-danger is-fullwidth"
+                  >Delete
+                  </button>
                 </div>
                 <div class="column">
-                  <button class="button is-warning is-fullwidth" (click)="onReset()">Reset</button>
+                  <button (click)="onReset()" class="button is-warning is-fullwidth">Reset</button>
                 </div>
               </div>
             </div>
-            </app-spinner-wrapper>
-          </div>
-        </section>
+          </app-spinner-wrapper>
+        </div>
+      </section>
     </div>
   </div>
 

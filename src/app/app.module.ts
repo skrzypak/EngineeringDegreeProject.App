@@ -31,6 +31,8 @@ import { UniversalTableComponent } from './components/universal-table/universal-
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import {LoaderService} from "./services/common/loader/loader.service";
 import { SpinnerWrapperComponent } from './components/spinner-wrapper/spinner-wrapper.component';
+import { TableContentIngredientsComponent } from './pages/dashboard-pages/gastronomy/dishes-page/table-content-ingredients/table-content-ingredients.component';
+import { TableContentProductsComponent } from './pages/dashboard-pages/gastronomy/dishes-page/table-content-products/table-content-products.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +60,9 @@ import { SpinnerWrapperComponent } from './components/spinner-wrapper/spinner-wr
     MultiSelectSearchComponent,
     UniversalTableComponent,
     SpinnerComponent,
-    SpinnerWrapperComponent
+    SpinnerWrapperComponent,
+    TableContentIngredientsComponent,
+    TableContentProductsComponent,
   ],
   imports: [
     BrowserModule,

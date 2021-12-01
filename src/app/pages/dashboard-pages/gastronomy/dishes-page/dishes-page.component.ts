@@ -18,6 +18,7 @@ export class DishesPageComponent implements OnInit {
   @ViewChild(SpinnerWrapperComponent) frmProductsChildSpinner!: SpinnerWrapperComponent;
 
   ngFrmCtrl: any = {
+    currId: 0,
     frm: FormGroup,
   }
 
@@ -29,39 +30,50 @@ export class DishesPageComponent implements OnInit {
     }
   }
 
-  productsSearch = {
-    currentBtnKey: "All",
+  btnSetupKeys: any = {
+    ingredients: "Ingredients",
+    products: "Products",
+  }
+
+  ingredientsSearchable = {
+    currentBtnKey: this.btnSetupKeys.products,
     btnSetup: new Map<any, any>([
-      ["List", {
-        tmp: Array<any>(),
+      [this.btnSetupKeys.ingredients, {
+        headers: new Map<any, any>([
+          ["name", "Name"],
+          ["code", "Code"],
+          ["valueOfUse", "Value"],
+          ["unit", "Unit"],
+        ]),
+        tmp: {
+          add: new Array<any>(),
+          remove: new Array<any>(),
+        },
         color: "is-primary",
+        display: Array<any>(),
+        fetched: Array<any>(),
         func: () => {
-          this.productsSearch.currentBtnKey = "List";
-          this.publishProducts(this.productsSearch.fetched.list.length);
+          this.ingredientsSearchable.currentBtnKey = this.btnSetupKeys.ingredients;
+          this.publishProductsPaginationLength(this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).fetched.length);
         }
       }],
-      ["All", {
-        tmp: Array<any>(),
+      [this.btnSetupKeys.products, {
+        headers:  new Map<any, any>([
+          ["name", "Name"],
+          ["code", "Code"],
+          ["description", "Description"],
+          ["unit", "Unit"],
+        ]),
         color: "is-warning",
+        display: Array<any>(),
+        fetched: Array<any>(),
         func: () => {
-          this.productsSearch.currentBtnKey = "All";
-          this.publishProducts(this.productsSearch.fetched.all.length);
+          this.ingredientsSearchable.currentBtnKey = this.btnSetupKeys.products;
+          this.publishProductsPaginationLength(this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.products).fetched.length);
         }
       }],
     ]),
-    fetched: {
-      headers: new Map<any, any>([
-        ["id", false],
-        ["name", "Name"],
-        ["code", "Code"],
-        ["unit", "Unit"],
-        ["description", "Description"],
-      ]),
-      list: Array<any>(),
-      all: Array<any>(),
-      display: Array<any>(),
-      rxjs: new BehaviorSubject<number>(0),
-    }
+    rxjs: new BehaviorSubject<number>(0),
   }
 
   constructor(
@@ -80,9 +92,9 @@ export class DishesPageComponent implements OnInit {
       let data = await this.dishesService.fetchGetDishes();
       // data.forEach((o : any) => o["selected"] = false);
       this.fetched.dishes.data = data;
-      this.publishDishes(data.length);
+      this.publishDishesPaginationLength(data.length);
     } catch (e) {
-      this.publishDishes(0);
+      this.publishDishesPaginationLength(0);
     }
   }
 
@@ -90,19 +102,19 @@ export class DishesPageComponent implements OnInit {
     try {
       let data = await this.productsService.fetchGetProducts();
       // data.forEach((o : any) => o["selected"] = false);
-      this.productsSearch.fetched.all = data;
-      this.publishProducts(data.length);
+      this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.products).fetched = data;
+      this.publishProductsPaginationLength(data.length);
     } catch (e) {
-      this.publishProducts(0);
+      this.publishProductsPaginationLength(0);
     }
   }
 
-  publishDishes(o: number) {
+  publishDishesPaginationLength(o: number) {
     this.fetched.dishes.rxjs.next(o);
   }
 
-  publishProducts(o: number) {
-    this.productsSearch.fetched.rxjs.next(o);
+  publishProductsPaginationLength(o: number) {
+    this.ingredientsSearchable.rxjs.next(o);
   }
 
   async ngOnInit(): Promise<void> {
@@ -115,12 +127,19 @@ export class DishesPageComponent implements OnInit {
   }
 
   subscribeRendererProductsPagination(e: Array<number>) {
-    switch (this.productsSearch.currentBtnKey) {
-      case "List":
-        this.productsSearch.fetched.display = this.productsSearch.fetched.list.slice(e[0], e[1]);
+    let item: any;
+    const ingredients = this.btnSetupKeys.ingredients;
+    const products = this.btnSetupKeys.products;
+
+    switch (this.ingredientsSearchable.currentBtnKey) {
+      case this.btnSetupKeys.ingredients:
+        item = this.ingredientsSearchable.btnSetup.get(ingredients);
+        let arr =  item.fetched.concat(item.tmp.add)
+        this.ingredientsSearchable.btnSetup.get(ingredients).display = arr.slice(e[0], e[1]);
         break;
       default:
-        this.productsSearch.fetched.display = this.productsSearch.fetched.all.slice(e[0], e[1]);
+        item = this.ingredientsSearchable.btnSetup.get(products);
+        this.ingredientsSearchable.btnSetup.get(products).display = item.fetched.slice(e[0], e[1]);
     }
   }
 
@@ -134,6 +153,9 @@ export class DishesPageComponent implements OnInit {
         description: resp.description
       });
 
+      this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).fetched = resp.ingredients;
+      this.ingredientsSearchable.currentBtnKey = this.btnSetupKeys.ingredients
+      this.publishProductsPaginationLength(resp.ingredients.length);
     } catch (e) {
       console.log(e)
       this.ngFrmCtrl.frm.reset();
@@ -143,15 +165,15 @@ export class DishesPageComponent implements OnInit {
   async onCreate() {
     try {
       this.frmProductsChildSpinner.setState(true);
+
+      let ingredients = this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.add.map((o: any) => {
+        return (({ productId, valueOfUse }) => ({ productId, valueOfUse }))(o);
+      })
+
       await this.dishesService.fetchCreateDish({
         "name": this.ngFrmCtrl.frm.value.name,
         "description": this.ngFrmCtrl.frm.value.description,
-        "ingredients": [
-          // {
-          //   "valueOfUse": 0,
-          //   "productId": 0
-          // }
-        ]
+        "ingredients": ingredients
       });
 
       this.onReset();
@@ -180,7 +202,11 @@ export class DishesPageComponent implements OnInit {
   }
 
   onReset() {
-    this.productsSearch.fetched.list = [];
+    this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).fetched = [];
+    this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).display = [];
+    this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.add = [];
+    this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.remove = [];
+    this.ingredientsSearchable.currentBtnKey = this.btnSetupKeys.products;
     this.ngFrmCtrl.frm.reset();
   }
 
@@ -190,6 +216,29 @@ export class DishesPageComponent implements OnInit {
 
   zero() {
     return 0
+  }
+
+  addIngredientView(e: any) {
+    this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.add.push(e);
+  }
+
+  removeIngredientView(e: any) {
+    if(e.toString().includes("TMP_")) {
+      this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.add =
+        this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.add.filter((o: any) => {
+          return o.id != e;
+        });
+    } else {
+      this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).fetched =
+        this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).fetched.filter((o: any) => {
+          return o.id != e;
+        });
+      this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.remove.push(e)
+    }
+
+    let len = this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).fetched.length;
+    len += this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.add.length;
+    this.publishProductsPaginationLength(len);
   }
 
 }
