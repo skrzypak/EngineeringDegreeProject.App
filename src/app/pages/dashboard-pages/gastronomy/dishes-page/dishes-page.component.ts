@@ -35,7 +35,7 @@ export class DishesPageComponent implements OnInit {
     products: "Products",
   }
 
-  ingredientsSearchable = {
+  searchable = {
     currentBtnKey: this.btnSetupKeys.products,
     btnSetup: new Map<any, any>([
       [this.btnSetupKeys.ingredients, {
@@ -53,8 +53,8 @@ export class DishesPageComponent implements OnInit {
         display: Array<any>(),
         fetched: Array<any>(),
         func: () => {
-          this.ingredientsSearchable.currentBtnKey = this.btnSetupKeys.ingredients;
-          this.publishProductsPaginationLength(this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).fetched.length);
+          this.searchable.currentBtnKey = this.btnSetupKeys.ingredients;
+          this.publishSearchableLength(this.searchable.btnSetup.get(this.btnSetupKeys.ingredients).fetched.length);
         }
       }],
       [this.btnSetupKeys.products, {
@@ -68,8 +68,8 @@ export class DishesPageComponent implements OnInit {
         display: Array<any>(),
         fetched: Array<any>(),
         func: () => {
-          this.ingredientsSearchable.currentBtnKey = this.btnSetupKeys.products;
-          this.publishProductsPaginationLength(this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.products).fetched.length);
+          this.searchable.currentBtnKey = this.btnSetupKeys.products;
+          this.publishSearchableLength(this.searchable.btnSetup.get(this.btnSetupKeys.products).fetched.length);
         }
       }],
     ]),
@@ -87,39 +87,40 @@ export class DishesPageComponent implements OnInit {
     });
   }
 
-  async trigFetchDishes() {
+  async ngOnInit(): Promise<void> {
+    await this.fetchMain();
+    await this.fetchSearchable();
+  }
+
+
+  async fetchMain() {
     try {
       let data = await this.dishesService.fetchGetDishes();
       // data.forEach((o : any) => o["selected"] = false);
       this.fetched.dishes.data = data;
-      this.publishDishesPaginationLength(data.length);
+      this.publishMainLength(data.length);
     } catch (e) {
-      this.publishDishesPaginationLength(0);
+      this.publishMainLength(0);
     }
   }
 
-  async trigFetchProducts() {
+  async fetchSearchable() {
     try {
       let data = await this.productsService.fetchGetProducts();
       // data.forEach((o : any) => o["selected"] = false);
-      this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.products).fetched = data;
-      this.publishProductsPaginationLength(data.length);
+      this.searchable.btnSetup.get(this.btnSetupKeys.products).fetched = data;
+      this.publishSearchableLength(data.length);
     } catch (e) {
-      this.publishProductsPaginationLength(0);
+      this.publishSearchableLength(0);
     }
   }
 
-  publishDishesPaginationLength(o: number) {
+  publishMainLength(o: number) {
     this.fetched.dishes.rxjs.next(o);
   }
 
-  publishProductsPaginationLength(o: number) {
-    this.ingredientsSearchable.rxjs.next(o);
-  }
-
-  async ngOnInit(): Promise<void> {
-    await this.trigFetchDishes();
-    await this.trigFetchProducts();
+  publishSearchableLength(o: number) {
+    this.searchable.rxjs.next(o);
   }
 
   subscribeRenderer(e: any) {
@@ -131,15 +132,15 @@ export class DishesPageComponent implements OnInit {
     const ingredients = this.btnSetupKeys.ingredients;
     const products = this.btnSetupKeys.products;
 
-    switch (this.ingredientsSearchable.currentBtnKey) {
+    switch (this.searchable.currentBtnKey) {
       case this.btnSetupKeys.ingredients:
-        item = this.ingredientsSearchable.btnSetup.get(ingredients);
+        item = this.searchable.btnSetup.get(ingredients);
         let arr =  item.fetched.concat(item.tmp.add)
-        this.ingredientsSearchable.btnSetup.get(ingredients).display = arr.slice(e[0], e[1]);
+        this.searchable.btnSetup.get(ingredients).display = arr.slice(e[0], e[1]);
         break;
       default:
-        item = this.ingredientsSearchable.btnSetup.get(products);
-        this.ingredientsSearchable.btnSetup.get(products).display = item.fetched.slice(e[0], e[1]);
+        item = this.searchable.btnSetup.get(products);
+        this.searchable.btnSetup.get(products).display = item.fetched.slice(e[0], e[1]);
     }
   }
 
@@ -153,9 +154,9 @@ export class DishesPageComponent implements OnInit {
         description: resp.description
       });
 
-      this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).fetched = resp.ingredients;
-      this.ingredientsSearchable.currentBtnKey = this.btnSetupKeys.ingredients
-      this.publishProductsPaginationLength(resp.ingredients.length);
+      this.searchable.btnSetup.get(this.btnSetupKeys.ingredients).fetched = resp.ingredients;
+      this.searchable.currentBtnKey = this.btnSetupKeys.ingredients
+      this.publishSearchableLength(resp.ingredients.length);
     } catch (e) {
       console.log(e)
       this.ngFrmCtrl.frm.reset();
@@ -166,7 +167,7 @@ export class DishesPageComponent implements OnInit {
     try {
       this.frmProductsChildSpinner.setState(true);
 
-      let ingredients = this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.add.map((o: any) => {
+      let ingredients = this.searchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.add.map((o: any) => {
         return (({ productId, valueOfUse }) => ({ productId, valueOfUse }))(o);
       })
 
@@ -202,11 +203,11 @@ export class DishesPageComponent implements OnInit {
   }
 
   onReset() {
-    this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).fetched = [];
-    this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).display = [];
-    this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.add = [];
-    this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.remove = [];
-    this.ingredientsSearchable.currentBtnKey = this.btnSetupKeys.products;
+    this.searchable.btnSetup.get(this.btnSetupKeys.ingredients).fetched = [];
+    this.searchable.btnSetup.get(this.btnSetupKeys.ingredients).display = [];
+    this.searchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.add = [];
+    this.searchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.remove = [];
+    this.searchable.currentBtnKey = this.btnSetupKeys.products;
     this.ngFrmCtrl.frm.reset();
   }
 
@@ -219,26 +220,26 @@ export class DishesPageComponent implements OnInit {
   }
 
   addIngredientView(e: any) {
-    this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.add.push(e);
+    this.searchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.add.push(e);
   }
 
   removeIngredientView(e: any) {
     if(e.toString().includes("TMP_")) {
-      this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.add =
-        this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.add.filter((o: any) => {
+      this.searchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.add =
+        this.searchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.add.filter((o: any) => {
           return o.id != e;
         });
     } else {
-      this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).fetched =
-        this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).fetched.filter((o: any) => {
+      this.searchable.btnSetup.get(this.btnSetupKeys.ingredients).fetched =
+        this.searchable.btnSetup.get(this.btnSetupKeys.ingredients).fetched.filter((o: any) => {
           return o.id != e;
         });
-      this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.remove.push(e)
+      this.searchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.remove.push(e)
     }
 
-    let len = this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).fetched.length;
-    len += this.ingredientsSearchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.add.length;
-    this.publishProductsPaginationLength(len);
+    let len = this.searchable.btnSetup.get(this.btnSetupKeys.ingredients).fetched.length;
+    len += this.searchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.add.length;
+    this.publishSearchableLength(len);
   }
 
 }

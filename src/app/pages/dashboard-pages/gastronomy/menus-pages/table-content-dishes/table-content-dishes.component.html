@@ -1,0 +1,46 @@
+<div class="table-container">
+  <table class="table is-fullwidth is-striped">
+    <thead>
+    <tr>
+      <ng-container
+        *ngFor="let header of headers | keyvalue: zero">
+        <th *ngIf="header.value !== false">
+          {{header.value !== true ? header.value : header.key}}
+        </th>
+      </ng-container>
+      <th class="btn-action" style="text-align: center"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-container *ngFor="let item of display">
+      <tr>
+        <td *ngFor="let header of headers | keyvalue: zero" class="py-1"
+            style="vertical-align: middle">
+          {{item[header.key]}}
+        </td>
+        <td class="btn-action">
+          <div class="level">
+            <div class="level-left"></div>
+            <div class="level-right">
+              <div class="level-item">
+                <div class="select">
+                  <select [id]="item.id">
+                    <option [value]="mealType.Breakfast">Breakfast</option>
+                    <option [value]="mealType.FirstDish">First dish</option>
+                    <option [value]="mealType.MainCourse">Main course</option>
+                    <option [value]="mealType.Tea">Tea</option>
+                    <option [value]="mealType.Supper">Supper</option>
+                  </select>
+                </div>
+              </div>
+              <div class="level-item">
+                <button class="button is-primary" (click)="action(item)">Add</button>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </ng-container>
+    </tbody>
+  </table>
+</div>

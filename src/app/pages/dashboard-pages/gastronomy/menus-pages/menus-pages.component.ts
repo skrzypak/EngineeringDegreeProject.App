@@ -1,4 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {MenusService} from "../../../../services/msv/gastronomy-msv/menus/menus.service";
+import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {BehaviorSubject} from "rxjs";
+import {DishesService} from "../../../../services/msv/gastronomy-msv/dishes/dishes.service";
+import {MultiSelectSearchComponent} from "../../../../components/multi-select-search/multi-select-search.component";
+import {MealType} from "../../../../enums/meal-type";
+import {SpinnerWrapperComponent} from "../../../../components/spinner-wrapper/spinner-wrapper.component";
 
 @Component({
   selector: 'app-menus-pages',
@@ -7,9 +14,261 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MenusPagesComponent implements OnInit {
 
-  constructor() { }
+  @ViewChild(MultiSelectSearchComponent) frmMealsChild!: MultiSelectSearchComponent;
+  @ViewChild(SpinnerWrapperComponent) frmMenuChildSpinner!: SpinnerWrapperComponent;
 
-  ngOnInit(): void {
+  ngFrmCtrl: any = {
+    frm: FormGroup,
+  }
+
+  fetched: any = {
+    menus: {
+      display: Array<any>(),
+      data: Array<any>(),
+      rxjs: new BehaviorSubject<number>(0)
+    }
+  }
+
+  btnSetupKeys: any = {
+    dishes: "Dishes",
+    meals: "Meals",
+  }
+
+  searchable = {
+    currentBtnKey: this.btnSetupKeys.dishes,
+    btnSetup: new Map<any, any>([
+      [this.btnSetupKeys.dishes, {
+        headers: new Map<any, any>([
+          ["name", "Name"],
+          ["description", "Description"],
+        ]),
+        color: "is-primary",
+        display: Array<any>(),
+        fetched: Array<any>(),
+        func: () => {
+          this.searchable.currentBtnKey = this.btnSetupKeys.dishes;
+          this.publishSearchableLength(this.searchable.btnSetup.get(this.btnSetupKeys.dishes).fetched.length);
+        }
+      }],
+      [this.btnSetupKeys.meals, {
+        headers:  new Map<any, any>([
+          ["name", "Name"],
+          ["description", "Description"],
+        ]),
+        color: "is-warning",
+        tmp: {
+          add: new Array<any>(),
+          remove: new Array<any>(),
+        },
+        display: Array<any>(),
+        fetched: Array<any>(),
+        currMeal: MealType.Breakfast,
+        func: () => {
+          this.searchable.currentBtnKey = this.btnSetupKeys.meals;
+          this.changeMealView(MealType.Breakfast);
+        }
+      }],
+    ]),
+    rxjs: new BehaviorSubject<number>(0),
+  }
+
+  constructor(private menusService: MenusService, private dishesService: DishesService, private fb: FormBuilder) {
+    this.ngFrmCtrl.frm = this.fb.group({
+      id: new FormControl(),
+      code: new FormControl(),
+      name: new FormControl(),
+      description: new FormControl(),
+    });
+  }
+
+  async ngOnInit(): Promise<void> {
+    await this.fetchMain();
+    await this.fetchSearchable();
+  }
+
+  async fetchMain() {
+    try {
+      let data = await this.menusService.fetchGetMenus();
+      // data.forEach((o : any) => o["selected"] = false);
+      this.fetched.menus.data = data;
+      this.publishMainLength(data.length);
+    } catch (e) {
+      this.publishMainLength(0);
+    }
+  }
+
+  async fetchSearchable() {
+    try {
+      let data = await this.dishesService.fetchGetDishes();
+      // data.forEach((o : any) => o["selected"] = false);
+      this.searchable.btnSetup.get(this.btnSetupKeys.dishes).fetched = data;
+      this.publishSearchableLength(data.length);
+    } catch (e) {
+      this.publishSearchableLength(0);
+    }
+  }
+
+  publishMainLength(o: number) {
+    this.fetched.menus.rxjs.next(o);
+  }
+
+  publishSearchableLength(o: number) {
+    this.searchable.rxjs.next(o);
+  }
+
+  subscribeRenderer(e: any) {
+    this.fetched.menus.display = this.fetched.menus.data.slice(e[0], e[1]);
+  }
+
+  subscribeRendererDishesPagination(e: Array<number>) {
+    let item: any;
+    const dishes = this.btnSetupKeys.dishes;
+    const meals = this.btnSetupKeys.meals;
+
+    switch (this.searchable.currentBtnKey) {
+      case this.btnSetupKeys.meals:
+        let arr = this.getCurrentMealDishes();
+        this.searchable.btnSetup.get(meals).display = arr.slice(e[0], e[1]);
+        break;
+      default:
+        item = this.searchable.btnSetup.get(dishes);
+        this.searchable.btnSetup.get(dishes).display = item.fetched.slice(e[0], e[1]);
+    }
+  }
+
+  async onSelectMenu(id: number) {
+    try {
+      let resp = await this.menusService.fetchGetMenuById(id);
+
+      this.ngFrmCtrl.frm.setValue({
+        id: resp.key.menuId,
+        code: resp.key.code,
+        name: resp.key.name,
+        description: resp.key.description
+      });
+
+      this.searchable.btnSetup.get(this.btnSetupKeys.meals).fetched = resp.meals;
+
+      this.searchable.currentBtnKey = this.btnSetupKeys.meals;
+
+      this.changeMealView(this.searchable.btnSetup.get(this.btnSetupKeys.meals).currMeal);
+    } catch (e) {
+      console.log(e)
+      this.ngFrmCtrl.frm.reset();
+    }
+  }
+
+  async onCreate() {
+    try {
+      this.frmMenuChildSpinner.setState(true);
+
+      let dishes = this.searchable.btnSetup.get(this.btnSetupKeys.meals).tmp.add.map((o: any) => {
+        return {
+          "dish": o.value.dishId,
+          "mealType": parseInt(o.meal)
+        }
+      })
+
+      await this.menusService.fetchCreateMenu({
+        "name": this.ngFrmCtrl.frm.value.name,
+        "code": this.ngFrmCtrl.frm.value.code,
+        "description": this.ngFrmCtrl.frm.value.description,
+        "dishes": dishes
+      });
+
+      this.onReset();
+      window.location.reload();
+    } catch (e) {
+      console.log(e)
+    } finally {
+      this.frmMenuChildSpinner.setState(false);
+    }
+  }
+
+  async onUpdate() {
+
+  }
+
+  async onDelete() {
+    try {
+      await this.menusService.fetchDeleteMenu(this.ngFrmCtrl.frm.value.id);
+      window.location.reload();
+    } catch (e) {
+      console.log(e)
+    } finally {
+    }
+  }
+
+  onReset() {
+    this.searchable.btnSetup.get(this.btnSetupKeys.meals).fetched = [];
+    this.searchable.btnSetup.get(this.btnSetupKeys.meals).display = [];
+    this.searchable.btnSetup.get(this.btnSetupKeys.meals).tmp.add = [];
+    this.searchable.btnSetup.get(this.btnSetupKeys.meals).tmp.remove = [];
+    this.searchable.currentBtnKey = this.btnSetupKeys.available;
+    this.ngFrmCtrl.frm.reset();
+  }
+
+  showDishes() {
+    this.frmMealsChild.show();
+  }
+
+  zero() {
+    return 0
+  }
+
+  changeMealView(e: MealType) {
+    this.searchable.btnSetup.get(this.btnSetupKeys.meals).currMeal = e;
+    let arr = this.getCurrentMealDishes();
+    this.publishSearchableLength(arr.length);
+  }
+
+  getCurrentMealDishes(): Array<any> {
+    let item = this.searchable.btnSetup.get(this.btnSetupKeys.meals);
+
+    let mealFetchedDishes = this.searchable.btnSetup.get(this.btnSetupKeys.meals).fetched.find((o: any) => o.key.meal == item.currMeal);
+    mealFetchedDishes  = mealFetchedDishes != null ? mealFetchedDishes.dishes : [];
+
+    let mealAddedDishes = item.tmp.add.filter((o: any) => o.meal == item.currMeal);
+
+    if(mealAddedDishes != null) {
+      mealAddedDishes = mealAddedDishes.map((o: any) => {
+        return o.value;
+      })
+    } else {
+      mealAddedDishes =  [];
+    }
+
+    return mealFetchedDishes.concat(mealAddedDishes);
+  }
+
+  addDishToMeal(e: any) {
+    this.searchable.btnSetup.get(this.btnSetupKeys.meals).tmp.add.push(e);
+  }
+
+  removeDishFromMeal(e: any) {
+
+    let currMealKey = this.searchable.btnSetup.get(this.btnSetupKeys.meals).currMeal;
+
+    if(e.toString().includes("TMP_")) {
+      this.searchable.btnSetup.get(this.btnSetupKeys.meals).tmp.add =
+        this.searchable.btnSetup.get(this.btnSetupKeys.meals).tmp.add.filter((o: any) => {
+          return o.value.menuDishId != e;
+        });
+    } else {
+      let fetched = this.searchable.btnSetup.get(this.btnSetupKeys.meals).fetched;
+
+      for(let x = 0; x < fetched.length; x++) {
+        if(fetched[x].key.meal === currMealKey) {
+          fetched[x].dishes = fetched[x].dishes.filter((itm: any) => itm.menuDishId != e);
+          break;
+        }
+      }
+
+      this.searchable.btnSetup.get(this.btnSetupKeys.meals).fetched = fetched;
+      this.searchable.btnSetup.get(this.btnSetupKeys.meals).tmp.remove.push(e)
+    }
+
+    this.changeMealView(currMealKey);
   }
 
 }

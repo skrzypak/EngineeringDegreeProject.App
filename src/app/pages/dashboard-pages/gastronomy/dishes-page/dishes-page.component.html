@@ -13,7 +13,7 @@
   </div>
   <div class="columns">
     <div class="column is-6">
-      <section class="section px-5 py-5">
+      <section class="section px-5 py-5" *ngIf="this.fetched.dishes.display.length > 0">
         <div class="container">
           <div class="box">
             <div class="table-container">
@@ -64,20 +64,20 @@
                   </button>
                   <app-multi-select-search
                     (rendererEmitter)="subscribeRendererProductsPagination($event)"
-                    [btnSetup]="ingredientsSearchable.btnSetup"
-                    [numberOfItemsObservable]="ingredientsSearchable.rxjs.asObservable()"
+                    [btnSetup]="searchable.btnSetup"
+                    [numberOfItemsObservable]="searchable.rxjs.asObservable()"
                   >
-                    <div class="content" [ngSwitch]="ingredientsSearchable.currentBtnKey">
+                    <div class="content" [ngSwitch]="searchable.currentBtnKey">
                       <app-table-content-products
-                        [headers]="ingredientsSearchable.btnSetup.get(btnSetupKeys.products).headers"
-                        [display]="ingredientsSearchable.btnSetup.get(btnSetupKeys.products).display"
+                        [headers]="searchable.btnSetup.get(btnSetupKeys.products).headers"
+                        [display]="searchable.btnSetup.get(btnSetupKeys.products).display"
                         (subscribeAction)="addIngredientView($event)"
                         *ngSwitchCase="btnSetupKeys.products"
                       ></app-table-content-products>
                       <app-table-content-ingredients
                         class="content"
-                        [headers]="ingredientsSearchable.btnSetup.get(btnSetupKeys.ingredients).headers"
-                        [display]="ingredientsSearchable.btnSetup.get(btnSetupKeys.ingredients).display"
+                        [headers]="searchable.btnSetup.get(btnSetupKeys.ingredients).headers"
+                        [display]="searchable.btnSetup.get(btnSetupKeys.ingredients).display"
                         (subscribeAction)="removeIngredientView($event)"
                         *ngSwitchCase="btnSetupKeys.ingredients">
                       </app-table-content-ingredients>

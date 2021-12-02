@@ -33,6 +33,8 @@ import {LoaderService} from "./services/common/loader/loader.service";
 import { SpinnerWrapperComponent } from './components/spinner-wrapper/spinner-wrapper.component';
 import { TableContentIngredientsComponent } from './pages/dashboard-pages/gastronomy/dishes-page/table-content-ingredients/table-content-ingredients.component';
 import { TableContentProductsComponent } from './pages/dashboard-pages/gastronomy/dishes-page/table-content-products/table-content-products.component';
+import { TableContentDishesComponent } from './pages/dashboard-pages/gastronomy/menus-pages/table-content-dishes/table-content-dishes.component';
+import { TableContentMealsComponent } from './pages/dashboard-pages/gastronomy/menus-pages/table-content-meals/table-content-meals.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +65,8 @@ import { TableContentProductsComponent } from './pages/dashboard-pages/gastronom
     SpinnerWrapperComponent,
     TableContentIngredientsComponent,
     TableContentProductsComponent,
+    TableContentDishesComponent,
+    TableContentMealsComponent,
   ],
   imports: [
     BrowserModule,

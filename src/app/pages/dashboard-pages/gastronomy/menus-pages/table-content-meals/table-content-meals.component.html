@@ -1,0 +1,36 @@
+<div class="table-container">
+  <div class="tabs pt-2 pb-4">
+    <ul class="ml-0">
+      <li *ngFor="let n of navs;"
+          [class.is-active]="n.value == active"
+          (click)="changeActiveTab(n.value)"
+      ><a>{{n.name}}</a></li>
+    </ul>
+  </div>
+  <table class="table is-fullwidth is-striped">
+    <thead>
+    <tr>
+      <ng-container
+        *ngFor="let header of headers | keyvalue: zero">
+        <th *ngIf="header.value !== false">
+          {{header.value !== true ? header.value : header.key}}
+        </th>
+      </ng-container>
+      <th class="btn-action" style="text-align: center"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-container *ngFor="let item of display">
+      <tr>
+        <td *ngFor="let header of headers | keyvalue: zero" class="py-1"
+            style="vertical-align: middle">
+          {{item[header.key]}}
+        </td>
+        <td class="btn-action">
+          <button class="button is-danger is-fullwidth" (click)="action(item.menuDishId)">Remove</button>
+        </td>
+      </tr>
+    </ng-container>
+    </tbody>
+  </table>
+</div>
