@@ -95,7 +95,7 @@ export class DishesPageComponent implements OnInit {
 
   async fetchMain() {
     try {
-      let data = await this.dishesService.fetchGetDishes();
+      let data = await this.dishesService.fetchGet();
       // data.forEach((o : any) => o["selected"] = false);
       this.fetched.dishes.data = data;
       this.publishMainLength(data.length);
@@ -106,7 +106,7 @@ export class DishesPageComponent implements OnInit {
 
   async fetchSearchable() {
     try {
-      let data = await this.productsService.fetchGetProducts();
+      let data = await this.productsService.fetchGet();
       // data.forEach((o : any) => o["selected"] = false);
       this.searchable.btnSetup.get(this.btnSetupKeys.products).fetched = data;
       this.publishSearchableLength(data.length);
@@ -146,7 +146,7 @@ export class DishesPageComponent implements OnInit {
 
   async onSelectDish(id: number) {
     try {
-      let resp = await this.dishesService.fetchGetDishById(id);
+      let resp = await this.dishesService.fetchGetById(id);
 
       this.ngFrmCtrl.frm.setValue({
         id: resp.id,
@@ -171,7 +171,7 @@ export class DishesPageComponent implements OnInit {
         return (({ productId, valueOfUse }) => ({ productId, valueOfUse }))(o);
       })
 
-      await this.dishesService.fetchCreateDish({
+      await this.dishesService.fetchCreate({
         "name": this.ngFrmCtrl.frm.value.name,
         "description": this.ngFrmCtrl.frm.value.description,
         "ingredients": ingredients
@@ -193,7 +193,7 @@ export class DishesPageComponent implements OnInit {
   async onDelete() {
     try {
       this.frmProductsChildSpinner.setState(true);
-      await this.dishesService.fetchDeleteDish(this.ngFrmCtrl.frm.value.id);
+      await this.dishesService.fetchDelete(this.ngFrmCtrl.frm.value.id);
       window.location.reload();
     } catch (e) {
       console.log(e)

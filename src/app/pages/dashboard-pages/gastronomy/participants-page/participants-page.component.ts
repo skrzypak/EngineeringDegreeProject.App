@@ -39,9 +39,9 @@ export class ParticipantsPageComponent implements OnInit, AfterViewInit {
     });
   }
 
-  async trigFetchParticipants() {
+  async fetchParticipants() {
     try {
-      let data = await this.participantsService.fetchGetParticipants();
+      let data = await this.participantsService.fetchGet();
       data.forEach((o : any) => o["selected"] = false);
       this.publishParticipants(data);
     } catch (e) {
@@ -49,9 +49,9 @@ export class ParticipantsPageComponent implements OnInit, AfterViewInit {
     }
   }
 
-  async trigFetchNutritionGroups() {
+  async fetchNutritionGroups() {
     try {
-      this.frmNutritionGroupChild.fetchedData = await this.nutritionGroupService.fetchGetNutritionGroups();
+      this.frmNutritionGroupChild.fetchedData = await this.nutritionGroupService.fetchGet();
     } catch (e) {
       this.frmNutritionGroupChild.fetchedData = [];
     } finally {
@@ -61,7 +61,7 @@ export class ParticipantsPageComponent implements OnInit, AfterViewInit {
 
   async onSelectParticipant(id: number) {
     try {
-      let resp = await this.participantsService.fetchGetParticipantById(id);
+      let resp = await this.participantsService.fetchGetById(id);
 
       this.ngFrmCtrl.frm.setValue({
         id: resp.id,
@@ -84,7 +84,7 @@ export class ParticipantsPageComponent implements OnInit, AfterViewInit {
       delete data.id;
       data.nutritionGroups = this.frmNutritionGroupChild.localRight;
       data.nutritionGroups = data.nutritionGroups.map((o: any) => o.id);
-      await this.participantsService.fetchCreateParticipant(data);
+      await this.participantsService.fetchCreate(data);
       window.location.reload();
       this.onReset()
     } catch (e) {
@@ -97,7 +97,7 @@ export class ParticipantsPageComponent implements OnInit, AfterViewInit {
 
   async onDelete() {
     try {
-      await this.participantsService.fetchDeleteParticipant(this.ngFrmCtrl.frm.value.id);
+      await this.participantsService.fetchDelete(this.ngFrmCtrl.frm.value.id);
       window.location.reload();
     } catch (e) {
       console.log(e)
@@ -111,11 +111,11 @@ export class ParticipantsPageComponent implements OnInit, AfterViewInit {
   }
 
   async ngOnInit(): Promise<void> {
-    await this.trigFetchParticipants();
+    await this.fetchParticipants();
   }
 
   async ngAfterViewInit(): Promise<void> {
-    await this.trigFetchNutritionGroups();
+    await this.fetchNutritionGroups();
   }
 
   publishParticipants(o: Array<any>) {

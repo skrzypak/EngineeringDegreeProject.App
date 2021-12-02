@@ -88,7 +88,7 @@ export class MenusPagesComponent implements OnInit {
 
   async fetchMain() {
     try {
-      let data = await this.menusService.fetchGetMenus();
+      let data = await this.menusService.fetchGet();
       // data.forEach((o : any) => o["selected"] = false);
       this.fetched.menus.data = data;
       this.publishMainLength(data.length);
@@ -99,7 +99,7 @@ export class MenusPagesComponent implements OnInit {
 
   async fetchSearchable() {
     try {
-      let data = await this.dishesService.fetchGetDishes();
+      let data = await this.dishesService.fetchGet();
       // data.forEach((o : any) => o["selected"] = false);
       this.searchable.btnSetup.get(this.btnSetupKeys.dishes).fetched = data;
       this.publishSearchableLength(data.length);
@@ -138,7 +138,7 @@ export class MenusPagesComponent implements OnInit {
 
   async onSelectMenu(id: number) {
     try {
-      let resp = await this.menusService.fetchGetMenuById(id);
+      let resp = await this.menusService.fetchGetById(id);
 
       this.ngFrmCtrl.frm.setValue({
         id: resp.key.menuId,
@@ -169,7 +169,7 @@ export class MenusPagesComponent implements OnInit {
         }
       })
 
-      await this.menusService.fetchCreateMenu({
+      await this.menusService.fetchCreate({
         "name": this.ngFrmCtrl.frm.value.name,
         "code": this.ngFrmCtrl.frm.value.code,
         "description": this.ngFrmCtrl.frm.value.description,
@@ -191,7 +191,7 @@ export class MenusPagesComponent implements OnInit {
 
   async onDelete() {
     try {
-      await this.menusService.fetchDeleteMenu(this.ngFrmCtrl.frm.value.id);
+      await this.menusService.fetchDelete(this.ngFrmCtrl.frm.value.id);
       window.location.reload();
     } catch (e) {
       console.log(e)

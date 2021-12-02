@@ -31,7 +31,7 @@ export class EnterprisesPageComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     try {
-      this.fetchEnterprises = await this.enterprisesService.fetchGetEnterprises();
+      this.fetchEnterprises = await this.enterprisesService.fetchGet();
       this.fetchEnterprises.forEach(item => item["selected"] = false)
       this.fetchEnterprises.sort((a: any, b: any) => {
         return ('' + a.companyName).localeCompare(b.comapnyName);
@@ -64,14 +64,14 @@ export class EnterprisesPageComponent implements OnInit {
 
   async onDeleteEnterprise(id: number) {
     try {
-      await this.enterprisesService.fetchDeleteEnterprise(id);
+      await this.enterprisesService.fetchDelete(id);
       window.location.reload();
     } catch (e) {}
   }
 
   async onShowEnterprise(id: number) {
     try {
-      let resp = await this.enterprisesService.fetchGetEnterpriseById(id);
+      let resp = await this.enterprisesService.fetchGetById(id);
 
       this.ngForm.setValue({
         id: resp.id,
@@ -95,7 +95,7 @@ export class EnterprisesPageComponent implements OnInit {
     try {
       let data = this.ngForm.value;
       delete data.id;
-      await this.enterprisesService.fetchCreateEnterprise(data);
+      await this.enterprisesService.fetchCreate(data);
       this.hideModal();
       window.location.reload();
     } catch (e) {}

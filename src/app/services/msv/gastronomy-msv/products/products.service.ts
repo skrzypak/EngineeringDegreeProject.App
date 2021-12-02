@@ -11,7 +11,7 @@ export class ProductsService {
 
   constructor(private universalService: UniversalService) { }
 
-  async fetchGetProducts(): Promise<Array<any>> {
+  async fetchGet(): Promise<Array<any>> {
     let resp = await this.universalService.fetchGet(this.moduleBaseUri);
     return resp.data;
   }

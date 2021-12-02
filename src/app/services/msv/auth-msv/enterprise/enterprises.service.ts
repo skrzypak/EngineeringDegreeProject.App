@@ -62,7 +62,7 @@ export class EnterprisesService {
     return this.fetched.find((o: any) => o.id == id);
   }
 
-  async fetchGetEnterprises(): Promise<Array<any>> {
+  async fetchGet(): Promise<Array<any>> {
     let item = this.getLocalEnterprises();
 
     if(item.length > 0) {
@@ -74,33 +74,33 @@ export class EnterprisesService {
     }
   }
 
-  async fetchGetEnterpriseById(id: number) {
+  async fetchGetById(id: number) {
     let resp = await this.universalService.fetchGetById(this.moduleBaseUri, id);
     return resp.data;
   }
 
-  async fetchGetEnterpriseUsers(enterpriseId: number) {
+  async fetchGetUsers(enterpriseId: number) {
     let resp = await this.universalService.fetchCustomGet(`${this.moduleBaseUri}/${enterpriseId}/users`);
     return resp.data;
   }
 
-  async fetchCreateEnterprise(data: any) {
+  async fetchCreate(data: any) {
     let resp = await this.universalService.fetchCustomPost(this.moduleBaseUri, data, false);
     return resp.data;
   }
 
-  async fetchUpdateEnterprise(enterpriseId: number, data: any) {
+  async fetchUpdate(enterpriseId: number, data: any) {
     let resp = await this.universalService.fetchPut(this.moduleBaseUri, enterpriseId, data);
     return resp.data;
   }
 
-  async fetchAddEnterpriseUser(enterpriseId: number, username: string, email: string) {
+  async fetchAddUser(enterpriseId: number, username: string, email: string) {
     let resp = await this.universalService
       .fetchCustomPatch(`${this.moduleBaseUri}/${enterpriseId}/users/users?username=${username}&email=${email}`, {});
     return resp.data;
   }
 
-  async fetchDeleteEnterprise(id: number) {
+  async fetchDelete(id: number) {
     await this.universalService.fetchDelete(this.moduleBaseUri, id);
 
     try {
@@ -112,13 +112,13 @@ export class EnterprisesService {
     }
   }
 
-  async fetchRemoveEnterpriseUser(id: number, enterpriseUserId: number) {
+  async fetchRemoveUser(id: number, enterpriseUserId: number) {
     let resp = await this.universalService
       .fetchCustomDelete(`${this.moduleBaseUri}/${id}/users?enterpriseUserId=${enterpriseUserId}`);
     return resp.data;
   }
 
-  async fetchLeftFromEnterprise(id: number) {
+  async fetchLeftYourself(id: number) {
     let resp = await this.universalService
       .fetchCustomDelete(`${this.moduleBaseUri}/${id}/left`);
     return resp.data;

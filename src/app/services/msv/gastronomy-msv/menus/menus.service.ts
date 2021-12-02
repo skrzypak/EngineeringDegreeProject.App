@@ -11,22 +11,22 @@ export class MenusService {
 
   constructor(private universalService: UniversalService) { }
 
-  async fetchGetMenus(): Promise<Array<any>> {
+  async fetchGet(): Promise<Array<any>> {
     let resp = await this.universalService.fetchGet(this.moduleBaseUri);
     return resp.data;
   }
 
-  async fetchGetMenuById(id: number) {
+  async fetchGetById(id: number) {
     let resp = await this.universalService.fetchGetById(this.moduleBaseUri, id);
     return resp.data;
   }
 
-  async fetchCreateMenu(data: any) {
+  async fetchCreate(data: any) {
     let resp = await this.universalService.fetchPost(this.moduleBaseUri, data);
     return resp.data;
   }
 
-  async fetchDeleteMenu(id: number) {
+  async fetchDelete(id: number) {
     let resp = await this.universalService.fetchDelete(this.moduleBaseUri, id);
     return resp.data;
   }
