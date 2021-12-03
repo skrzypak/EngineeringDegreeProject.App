@@ -18,7 +18,7 @@
         <!-- Left side -->
         <div class="level-left" style="width: 30%">
           <p class="level-item" *ngFor="let s of btnSetup | keyvalue: zero">
-            <a class="button {{s.value.color}}" (click)="s.value.func()">{{s.key}}</a>
+            <a class="button {{s.value.color}}" (click)="action(s.value.func)">{{s.key}}</a>
           </p>
         </div>
 

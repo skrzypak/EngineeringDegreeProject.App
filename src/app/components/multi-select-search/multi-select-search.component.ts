@@ -40,4 +40,8 @@ export class MultiSelectSearchComponent implements OnInit {
   show() {
     this.visible = true;
   }
+
+  action(func: Function) {
+    func();
+  }
 }

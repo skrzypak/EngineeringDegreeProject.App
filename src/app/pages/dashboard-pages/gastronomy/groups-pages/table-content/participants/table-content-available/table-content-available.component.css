@@ -1,0 +1,10 @@
+.btn-action {
+  width: 400px;
+  min-width: 400px;
+  max-width: 400px;
+  text-align: center;
+}
+
+.is-micro {
+  width: 90px;
+}

@@ -25,7 +25,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr (click)="onSelectPlan(f.id)" *ngFor="let f of this.fetched.groups.display" class="is-clickable">
+                <tr (click)="onSelectGroup(f.id)" *ngFor="let f of this.fetched.groups.display" class="is-clickable">
                   <td class="py-2">{{f.name}}</td>
                   <td class="py-2">{{f.description}}</td>
                 </tr>
@@ -57,35 +57,67 @@
                 </div>
               </div>
 
-              <!-- Menus -->
-              <!--              <div class="field">-->
-              <!--                <div class="control">-->
-              <!--                  <button (click)="showProducts()" class="button is-info is-disabled is-fullwidth">Manage products-->
-              <!--                  </button>-->
-              <!--                  <app-multi-select-search-->
-              <!--                    (rendererEmitter)="subscribeRendererProductsPagination($event)"-->
-              <!--                    [btnSetup]="searchable.btnSetup"-->
-              <!--                    [numberOfItemsObservable]="searchable.rxjs.asObservable()"-->
-              <!--                  >-->
-              <!--                    <div class="content" [ngSwitch]="searchable.currentBtnKey">-->
-              <!--                      <app-table-content-products-->
-              <!--                        [headers]="searchable.btnSetup.get(btnSetupKeys.products).headers"-->
-              <!--                        [display]="searchable.btnSetup.get(btnSetupKeys.products).display"-->
-              <!--                        (subscribeAction)="addIngredientView($event)"-->
-              <!--                        *ngSwitchCase="btnSetupKeys.products"-->
-              <!--                      ></app-table-content-products>-->
-              <!--                      <app-table-content-ingredients-->
-              <!--                        class="content"-->
-              <!--                        [headers]="searchable.btnSetup.get(btnSetupKeys.ingredients).headers"-->
-              <!--                        [display]="searchable.btnSetup.get(btnSetupKeys.ingredients).display"-->
-              <!--                        (subscribeAction)="removeIngredientView($event)"-->
-              <!--                        *ngSwitchCase="btnSetupKeys.ingredients">-->
-              <!--                      </app-table-content-ingredients>-->
-              <!--                    </div>-->
+              <!-- Plans -->
+              <div class="field">
+                <div class="control">
+                  <button (click)="showPlans()" class="button is-info is-disabled is-fullwidth">Nutrition Plans
+                  </button>
+                  <app-multi-select-search
+                    #multiSelectPlans
+                    (rendererEmitter)="subscribeRendererPlansPagination($event)"
+                    [btnSetup]="searchable.plans.btnSetup"
+                    [numberOfItemsObservable]="searchable.plans.rxjs.asObservable()"
+                  >
+                    <div class="content" [ngSwitch]="searchable.plans.current">
+                      <app-table-content-plans
+                        [headers]="searchable.plans.btnSetup.get(searchable.plans.keys.plans).headers"
+                        [display]="searchable.plans.btnSetup.get(searchable.plans.keys.plans).display"
+                        (subscribeAction)="addNutritionPlan($event)"
+                        *ngSwitchCase="searchable.plans.keys.plans"
+                      ></app-table-content-plans>
+                      <app-table-content-list
+                        class="content"
+                        [headers]="searchable.plans.btnSetup.get(searchable.plans.keys.list).headers"
+                        [display]="searchable.plans.btnSetup.get(searchable.plans.keys.list).display"
+                        (subscribeAction)="removeNutritionPlan($event)"
+                        *ngSwitchCase="searchable.plans.keys.list">
+                      </app-table-content-list>
+                    </div>
 
-              <!--                  </app-multi-select-search>-->
-              <!--                </div>-->
-              <!--              </div>-->
+                  </app-multi-select-search>
+                </div>
+              </div>
+
+              <!-- Participants -->
+              <div class="field">
+                <div class="control">
+                  <button (click)="showParticipants()" class="button is-info is-disabled is-fullwidth">Participants
+                  </button>
+                  <app-multi-select-search
+                    #multiSelectParticipants
+                    (rendererEmitter)="subscribeRendererParticipantsPagination($event)"
+                    [btnSetup]="searchable.participants.btnSetup"
+                    [numberOfItemsObservable]="searchable.participants.rxjs.asObservable()"
+                  >
+                    <div class="content" [ngSwitch]="searchable.participants.current">
+                      <app-table-content-available
+                        [headers]="searchable.participants.btnSetup.get(searchable.participants.keys.available).headers"
+                        [display]="searchable.participants.btnSetup.get(searchable.participants.keys.available).display"
+                        (subscribeAction)="addParticipant($event)"
+                        *ngSwitchCase="searchable.participants.keys.available"
+                      ></app-table-content-available>
+                      <app-table-content-selected
+                        class="content"
+                        [headers]="searchable.participants.btnSetup.get(searchable.participants.keys.selected).headers"
+                        [display]="searchable.participants.btnSetup.get(searchable.participants.keys.selected).display"
+                        (subscribeAction)="removeParticipant($event)"
+                        *ngSwitchCase="searchable.participants.keys.selected">
+                      </app-table-content-selected>
+                    </div>
+
+                  </app-multi-select-search>
+                </div>
+              </div>
 
               <hr/>
               <div class="columns">

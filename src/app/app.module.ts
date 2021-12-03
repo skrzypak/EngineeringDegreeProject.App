@@ -37,6 +37,10 @@ import { TableContentDishesComponent } from './pages/dashboard-pages/gastronomy/
 import { TableContentMealsComponent } from './pages/dashboard-pages/gastronomy/menus-pages/table-content-meals/table-content-meals.component';
 import { TableContentMenusComponent } from './pages/dashboard-pages/gastronomy/plans-pages/table-content-menus/table-content-menus.component';
 import { TableContentPlanDetailsComponent } from './pages/dashboard-pages/gastronomy/plans-pages/table-content-plan-details/table-content-plan-details.component';
+import { TableContentPlansComponent } from './pages/dashboard-pages/gastronomy/groups-pages/table-content/plans/table-content-plans/table-content-plans.component';
+import { TableContentListComponent } from './pages/dashboard-pages/gastronomy/groups-pages/table-content/plans/table-content-list/table-content-list.component';
+import { TableContentSelectedComponent } from './pages/dashboard-pages/gastronomy/groups-pages/table-content/participants/table-content-selected/table-content-selected.component';
+import { TableContentAvailableComponent } from './pages/dashboard-pages/gastronomy/groups-pages/table-content/participants/table-content-available/table-content-available.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +75,10 @@ import { TableContentPlanDetailsComponent } from './pages/dashboard-pages/gastro
     TableContentMealsComponent,
     TableContentMenusComponent,
     TableContentPlanDetailsComponent,
+    TableContentPlansComponent,
+    TableContentListComponent,
+    TableContentSelectedComponent,
+    TableContentAvailableComponent,
   ],
   imports: [
     BrowserModule,

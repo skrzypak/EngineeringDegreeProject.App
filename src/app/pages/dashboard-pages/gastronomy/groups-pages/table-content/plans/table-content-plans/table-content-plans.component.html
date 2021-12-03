@@ -1,0 +1,51 @@
+<div class="table-container">
+  <table class="table is-fullwidth is-striped">
+    <thead>
+    <tr>
+      <ng-container
+        *ngFor="let header of headers | keyvalue: zero">
+        <th *ngIf="header.value !== false">
+          {{header.value !== true ? header.value : header.key}}
+        </th>
+      </ng-container>
+      <th class="btn-action" style="text-align: center"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-container *ngFor="let item of display">
+      <tr>
+        <td *ngFor="let header of headers | keyvalue: zero" class="py-1"
+            style="vertical-align: middle">
+          {{item[header.key]}}
+        </td>
+        <td class="btn-action">
+          <div class="level">
+            <div class="level-left"></div>
+            <div class="level-right">
+              <div class="level-item">
+                <input
+                  id="{{item.id}}_start_date"
+                  class="input is-micro is-transparent"
+                  placeholder="Start date"
+                  type="text"
+                  style="width: 145px"
+                  onfocus="(this.type='date')">
+                <input
+                  id="{{item.id}}_end_date"
+                  class="input is-micro is-transparent"
+                  placeholder="End date"
+                  type="text"
+                  style="width: 145px"
+                  onfocus="(this.type='date')">
+              </div>
+              <div class="level-item">
+                <button class="button is-primary" (click)="action(item)">Init</button>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </ng-container>
+    </tbody>
+  </table>
+</div>

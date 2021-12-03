@@ -4,7 +4,6 @@ import {SpinnerWrapperComponent} from "../../../../components/spinner-wrapper/sp
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {BehaviorSubject} from "rxjs";
 import {NutritionPlansService} from "../../../../services/msv/gastronomy-msv/nutrition-plans/nutrition-plans.service";
-import {MenusService} from "../../../../services/msv/gastronomy-msv/menus/menus.service";
 import {NutritionGroupService} from "../../../../services/msv/gastronomy-msv/nutrition-groups/nutrition-group.service";
 import {ParticipantsService} from "../../../../services/msv/gastronomy-msv/participants/participants.service";
 
@@ -15,16 +14,9 @@ import {ParticipantsService} from "../../../../services/msv/gastronomy-msv/parti
 })
 export class GroupsPagesComponent implements OnInit {
 
-  // {
-  //   "name": "string",
-  //   "description": "string",
-  //   "participants": [
-  //     0
-  //   ]
-  // }
+  @ViewChild('multiSelectPlans') multiSelectPlans!: MultiSelectSearchComponent;
+  @ViewChild('multiSelectParticipants') multiSelectParticipants!: MultiSelectSearchComponent;
 
-  //@ViewChild(MultiSelectSearchComponent) frmPlansChild!: MultiSelectSearchComponent;
-  //@ViewChild(MultiSelectSearchComponent) frmParticipantsChild!: MultiSelectSearchComponent;
   @ViewChild(SpinnerWrapperComponent) frmNutritionGroupsChildSpinner!: SpinnerWrapperComponent;
 
   ngFrmCtrl: any = {
@@ -39,47 +31,106 @@ export class GroupsPagesComponent implements OnInit {
     }
   }
 
-
-  btnSetupKeys: any = {
-    details: "Details",
-    menus: "Menus",
-  }
-
   searchable = {
-    currentBtnKey: this.btnSetupKeys.dishes,
-    btnSetup: new Map<any, any>([
-      [this.btnSetupKeys.menus, {
-        headers: new Map<any, any>([
-          ["name", "Name"],
-          ["description", "Description"],
-        ]),
-        color: "is-primary",
-        display: Array<any>(),
-        fetched: Array<any>(),
-        func: () => {
-          this.searchable.currentBtnKey = this.btnSetupKeys.menus;
-          this.publishSearchableLength(this.searchable.btnSetup.get(this.btnSetupKeys.menus).fetched.length);
-        }
-      }],
-      [this.btnSetupKeys.details, {
-        headers:  new Map<any, any>([
-          ["name", "Name"],
-          ["description", "Description"],
-        ]),
-        color: "is-warning",
-        tmp: {
-          add: new Array<any>(),
-          remove: new Array<any>(),
-        },
-        display: Array<any>(),
-        fetched: Array<any>(),
-        func: () => {
-          this.searchable.currentBtnKey = this.btnSetupKeys.details;
-          this.publishSearchableLength(this.searchable.btnSetup.get(this.btnSetupKeys.details).fetched.length);
-        }
-      }],
-    ]),
-    rxjs: new BehaviorSubject<number>(0),
+    plans: {
+      keys: {
+        list: "List",
+        plans: "Plans",
+      },
+      current: "Plans",
+      btnSetup: new Map<any, any>([
+        ["List", {
+          headers: new Map<any, any>([
+            ["name", "Name"],
+            ["code", "Code"],
+            ["description", "Description"],
+            ["startDate", "Start"],
+            ["endDate", "End"],
+          ]),
+          color: "is-primary",
+          display: Array<any>(),
+          fetched: Array<any>(),
+          tmp: {
+            add: new Array<any>(),
+            remove: new Array<any>(),
+          },
+          func: () => {
+            const {list} = this.searchable.plans.keys
+            this.searchable.plans.current = list;
+            const {btnSetup} = this.searchable.plans;
+            let len = btnSetup.get(list).fetched.length;
+            len += btnSetup.get(list).tmp.add.length;
+            this.publishSearchablePlansLength(len);
+          }
+        }],
+        ["Plans", {
+          headers:  new Map<any, any>([
+            ["name", "Name"],
+            ["code", "Code"],
+            ["description", "Description"],
+          ]),
+          color: "is-warning",
+          display: Array<any>(),
+          fetched: Array<any>(),
+          func: () => {
+            const {plans} = this.searchable.plans.keys
+            const {btnSetup} = this.searchable.plans;
+            this.searchable.plans.current = plans;
+            this.publishSearchablePlansLength(btnSetup.get(plans).fetched.length);
+          }
+        }],
+      ]),
+      rxjs: new BehaviorSubject<number>(0),
+    },
+
+    participants: {
+      keys: {
+        available: "Available",
+        selected: "Selected",
+      },
+      current: "Available",
+      btnSetup: new Map<any, any>([
+        ["Available", {
+          headers: new Map<any, any>([
+            ["fullName", "Full Name"],
+            ["description", "Description"],
+          ]),
+          color: "is-primary",
+          display: Array<any>(),
+          fetched: Array<any>(),
+          func: () => {
+            const {available} = this.searchable.participants.keys
+            const {btnSetup} = this.searchable.participants;
+            this.searchable.participants.current = available;
+            this.publishSearchableParticipantsLength(btnSetup.get(available).fetched.length);
+          }
+        }],
+        ["Selected", {
+          headers:  new Map<any, any>([
+            ["fullName", "Full name"],
+            ["description", "Description"],
+            ["startDate", "Start Date"],
+            ["endDate", "End Date"],
+          ]),
+          color: "is-warning",
+          display: Array<any>(),
+          fetched: Array<any>(),
+          tmp: {
+            add: new Array<any>(),
+            remove: new Array<any>(),
+          },
+          func: () => {
+            const {selected} = this.searchable.participants.keys
+            this.searchable.participants.current = selected;
+            const {btnSetup} = this.searchable.participants;
+            let len = btnSetup.get(selected).fetched.length;
+            len += btnSetup.get(selected).tmp.add.length;
+            this.publishSearchableParticipantsLength(len);
+          }
+        }],
+      ]),
+      rxjs: new BehaviorSubject<number>(0),
+    }
   }
 
   constructor(
@@ -96,7 +147,8 @@ export class GroupsPagesComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     await this.fetchMain();
-    // await this.fetchSearchable();
+    await this.fetchSearchablePlans();
+    await this.fetchSearchableParticipants();
   }
 
 
@@ -105,37 +157,53 @@ export class GroupsPagesComponent implements OnInit {
       let data = await this.nutritionGroupService.fetchGet();
       // data.forEach((o : any) => o["selected"] = false);
       this.fetched.groups.data = data;
-
       this.publishMainLength(data.length);
     } catch (e) {
       this.publishMainLength(0);
     }
   }
 
-  // async fetchSearchable() {
-  //   try {
-  //     let data = await this.menusService.fetchGet();
-  //     // data.forEach((o : any) => o["selected"] = false);
-  //     this.searchable.btnSetup.get(this.btnSetupKeys.products).fetched = data;
-  //     this.publishSearchableLength(data.length);
-  //   } catch (e) {
-  //     this.publishSearchableLength(0);
-  //   }
-  // }
+  async fetchSearchablePlans() {
+    try {
+      let data = await this.nutritionPlansService.fetchGet();
+      // data.forEach((o : any) => o["selected"] = false);
+      const {plans} = this.searchable.plans.keys
+      this.searchable.plans.btnSetup.get(plans).fetched = data;
+      this.publishSearchablePlansLength(data.length);
+    } catch (e) {
+      this.publishSearchablePlansLength(0);
+    }
+  }
+
+  async fetchSearchableParticipants() {
+    try {
+      let data = await this.participantsService.fetchGet();
+      // data.forEach((o : any) => o["selected"] = false);
+      const {available} = this.searchable.participants.keys
+      this.searchable.participants.btnSetup.get(available).fetched = data;
+      this.publishSearchableParticipantsLength(data.length);
+    } catch (e) {
+      this.publishSearchableParticipantsLength(0);
+    }
+  }
 
   publishMainLength(o: number) {
     this.fetched.groups.rxjs.next(o);
   }
 
-  publishSearchableLength(o: number) {
-    this.searchable.rxjs.next(o);
+  publishSearchablePlansLength(o: number) {
+    this.searchable.plans.rxjs.next(o);
+  }
+
+  publishSearchableParticipantsLength(o: number) {
+    this.searchable.participants.rxjs.next(o);
   }
 
   subscribeRenderer(e: any) {
     this.fetched.groups.display = this.fetched.groups.data.slice(e[0], e[1]);
   }
 
-  async onSelectPlan(id: number) {
+  async onSelectGroup(id: number) {
     try {
 
       let resp = await this.nutritionGroupService.fetchGetById(id);
@@ -146,9 +214,10 @@ export class GroupsPagesComponent implements OnInit {
         description: resp.description
       });
 
-      // this.searchable.btnSetup.get(this.btnSetupKeys.ingredients).fetched = resp.participants;
-      // this.searchable.currentBtnKey = this.btnSetupKeys.ingredients
-      // this.publishSearchableLength(resp.ingredients.length);
+      const {list} = this.searchable.plans.keys
+      this.searchable.plans.btnSetup.get(list).fetched = resp.participants;
+      this.searchable.plans.current = list;
+      this.publishSearchablePlansLength(resp.participants.length);
     } catch (e) {
       console.log(e)
       this.ngFrmCtrl.frm.reset();
@@ -159,15 +228,23 @@ export class GroupsPagesComponent implements OnInit {
     try {
       this.frmNutritionGroupsChildSpinner.setState(true);
 
-      // let ingredients = this.searchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.add.map((o: any) => {
-      //   return (({ productId, valueOfUse }) => ({ productId, valueOfUse }))(o);
-      // })
-      //
+      const {selected} = this.searchable.participants.keys
+      let participants = this.searchable.participants.btnSetup.get(selected).tmp.add.map((o: any) => {
+        return (({ participantId, startDate, endDate }) => ({ participantId, startDate, endDate }))(o)
+      })
+
+      const {list} = this.searchable.plans.keys
+      let plans = this.searchable.plans.btnSetup.get(list).tmp.add.map((o: any) => {
+        return (({ nutritionPlanId, startDate, endDate }) => ({ nutritionPlanId, startDate, endDate }))(o);
+      })
+
+      console.log(participants, plans)
 
       await this.nutritionGroupService.fetchCreate({
         "name": this.ngFrmCtrl.frm.value.name,
         "description": this.ngFrmCtrl.frm.value.description,
-        "participants": []
+        "participants": participants,
+        "plans": plans
       });
 
       this.onReset();
@@ -195,25 +272,144 @@ export class GroupsPagesComponent implements OnInit {
     }
   }
 
-  onReset() {
-    // this.searchable.btnSetup.get(this.btnSetupKeys.ingredients).fetched = [];
-    // this.searchable.btnSetup.get(this.btnSetupKeys.ingredients).display = [];
-    // this.searchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.add = [];
-    // this.searchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.remove = [];
-    // this.searchable.currentBtnKey = this.btnSetupKeys.products;
+  onResetPlans() {
+    const {list, plans} = this.searchable.plans.keys
+    this.searchable.plans.current = plans;
+    this.searchable.plans.btnSetup.get(list).fetched = [];
+    this.searchable.plans.btnSetup.get(list).display = [];
+    this.searchable.plans.btnSetup.get(list).tmp.add = [];
+    this.searchable.plans.btnSetup.get(list).tmp.remove = [];
+    this.ngFrmCtrl.frm.reset();
+  }
+
+  onResetParticipants() {
+    const {selected, available} = this.searchable.participants.keys
+    this.searchable.participants.current = available;
+    this.searchable.participants.btnSetup.get(selected).fetched = [];
+    this.searchable.participants.btnSetup.get(selected).display = [];
+    this.searchable.participants.btnSetup.get(selected).tmp.add = [];
+    this.searchable.participants.btnSetup.get(selected).tmp.remove = [];
     this.ngFrmCtrl.frm.reset();
   }
 
   showPlans() {
-    //this.frmPlansChild.show();
+    this.multiSelectPlans.show();
   }
 
   showParticipants() {
-    //this.frmParticipantsChild.show();
+    this.multiSelectParticipants.show();
   }
 
   zero() {
     return 0
   }
 
+  onReset() {
+    this.onResetPlans()
+    this.onResetParticipants()
+  }
+
+  subscribeRendererPlansPagination(e: Array<number>) {
+    let item: any;
+    const {plans, list} = this.searchable.plans.keys;
+
+    switch (this.searchable.plans.current) {
+      case list:
+        item = this.searchable.plans.btnSetup.get(list);
+        let arr =  item.fetched.concat(item.tmp.add)
+        this.searchable.plans.btnSetup.get(list).display = arr.slice(e[0], e[1]);
+        break;
+      default:
+        item = this.searchable.plans.btnSetup.get(plans);
+        this.searchable.plans.btnSetup.get(plans).display = item.fetched.slice(e[0], e[1]);
+    }
+  }
+
+  addNutritionPlan(e: any) {
+    const {list} = this.searchable.plans.keys;
+    this.searchable.plans.btnSetup.get(list).tmp.add.push(e);
+  }
+
+  removeNutritionPlan(e: any) {
+    const {list} = this.searchable.plans.keys;
+    if(e.toString().includes("TMP_")) {
+      this.searchable.plans.btnSetup.get(list).tmp.add =
+        this.searchable.plans.btnSetup.get(list).tmp.add.filter((o: any) => {
+          return o.id != e;
+        });
+    } else {
+      this.searchable.plans.btnSetup.get(list).fetched =
+        this.searchable.plans.btnSetup.get(list).fetched.filter((o: any) => {
+          return o.id != e;
+        });
+      this.searchable.plans.btnSetup.get(list).tmp.remove.push(e)
+    }
+
+    let len = this.searchable.plans.btnSetup.get(list).fetched.length;
+    len += this.searchable.plans.btnSetup.get(list).tmp.add.length;
+    this.publishSearchablePlansLength(len);
+  }
+
+  subscribeRendererParticipantsPagination(e: Array<number>) {
+    let item: any;
+    const {selected, available} = this.searchable.participants.keys;
+
+    switch (this.searchable.participants.current) {
+      case selected:
+        item = this.searchable.participants.btnSetup.get(selected);
+        let arr =  item.fetched.concat(item.tmp.add)
+        this.searchable.participants.btnSetup.get(selected).display = arr.slice(e[0], e[1]);
+        break;
+      default:
+        item = this.searchable.participants.btnSetup.get(available);
+        this.searchable.participants.btnSetup.get(available).display = item.fetched.slice(e[0], e[1]);
+    }
+  }
+
+  addParticipant(e: any) {
+    const {selected, available} = this.searchable.participants.keys;
+
+    this.searchable.participants.btnSetup.get(selected).tmp.add.push(e);
+
+    // Update available part
+    this.searchable.participants.btnSetup.get(available).fetched =
+      this.searchable.participants.btnSetup.get(available).fetched.filter((o: any) => {
+        return o.id != e.participantId;
+      });
+
+    this.searchable.participants.btnSetup.get(selected).tmp.remove =
+      this.searchable.participants.btnSetup.get(selected).fetched.filter((o: number) => {
+        return o != e.participantId;
+      });
+
+    this.publishSearchableParticipantsLength(this.searchable.participants.btnSetup.get(available).fetched.length);
+  }
+
+  removeParticipant(e: any) {
+    const {selected, available} = this.searchable.participants.keys;
+
+    let id = e.id;
+
+    if(id.toString().includes("TMP_")) {
+      this.searchable.participants.btnSetup.get(selected).tmp.add =
+        this.searchable.participants.btnSetup.get(selected).tmp.add.filter((o: any) => {
+          return o.id != id;
+        });
+    } else {
+      this.searchable.participants.btnSetup.get(selected).fetched =
+        this.searchable.participants.btnSetup.get(selected).fetched.filter((o: any) => {
+          return o.id != id;
+        });
+      this.searchable.participants.btnSetup.get(selected).tmp.remove.push(id)
+    }
+
+    // Restore to original fetch
+    e.id = e.participantId;
+    delete e.participantId;
+    this.searchable.participants.btnSetup.get(available).fetched.push(e)
+
+    let len = this.searchable.participants.btnSetup.get(selected).fetched.length;
+    len += this.searchable.participants.btnSetup.get(selected).tmp.add.length;
+    this.publishSearchableParticipantsLength(len);
+  }
 }
