@@ -35,6 +35,8 @@ import { TableContentIngredientsComponent } from './pages/dashboard-pages/gastro
 import { TableContentProductsComponent } from './pages/dashboard-pages/gastronomy/dishes-page/table-content-products/table-content-products.component';
 import { TableContentDishesComponent } from './pages/dashboard-pages/gastronomy/menus-pages/table-content-dishes/table-content-dishes.component';
 import { TableContentMealsComponent } from './pages/dashboard-pages/gastronomy/menus-pages/table-content-meals/table-content-meals.component';
+import { TableContentMenusComponent } from './pages/dashboard-pages/gastronomy/plans-pages/table-content-menus/table-content-menus.component';
+import { TableContentPlanDetailsComponent } from './pages/dashboard-pages/gastronomy/plans-pages/table-content-plan-details/table-content-plan-details.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +69,8 @@ import { TableContentMealsComponent } from './pages/dashboard-pages/gastronomy/m
     TableContentProductsComponent,
     TableContentDishesComponent,
     TableContentMealsComponent,
+    TableContentMenusComponent,
+    TableContentPlanDetailsComponent,
   ],
   imports: [
     BrowserModule,

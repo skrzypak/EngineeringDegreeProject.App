@@ -4,7 +4,6 @@ import {BehaviorSubject} from "rxjs";
 import {DishesService} from "../../../../services/msv/gastronomy-msv/dishes/dishes.service";
 import {ProductsService} from "../../../../services/msv/gastronomy-msv/products/products.service";
 import {MultiSelectSearchComponent} from "../../../../components/multi-select-search/multi-select-search.component";
-import {LoaderService} from "../../../../services/common/loader/loader.service";
 import {SpinnerWrapperComponent} from "../../../../components/spinner-wrapper/spinner-wrapper.component";
 
 @Component({
@@ -18,7 +17,6 @@ export class DishesPageComponent implements OnInit {
   @ViewChild(SpinnerWrapperComponent) frmProductsChildSpinner!: SpinnerWrapperComponent;
 
   ngFrmCtrl: any = {
-    currId: 0,
     frm: FormGroup,
   }
 

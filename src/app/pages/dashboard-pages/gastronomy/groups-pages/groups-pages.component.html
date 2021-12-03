@@ -1,1 +1,116 @@
-<p>groups-pages works!</p>
+<div class="is-fullwidth">
+  <div class="columns">
+    <div class="column is-narrow is-12">
+      <section class="section px-5 py-0">
+        <div class="box">
+          <app-pagination
+            (rendererEmitter)="subscribeRenderer($event)"
+            [numOfItemsObservable]="fetched.groups.rxjs.asObservable()"
+          ></app-pagination>
+        </div>
+      </section>
+    </div>
+  </div>
+  <div class="columns">
+    <div class="column is-6">
+      <section class="section px-5 py-5" *ngIf="this.fetched.groups.display.length > 0">
+        <div class="container">
+          <div class="box">
+            <div class="table-container">
+              <table class="table is-fullwidth is-striped">
+                <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr (click)="onSelectPlan(f.id)" *ngFor="let f of this.fetched.groups.display" class="is-clickable">
+                  <td class="py-2">{{f.name}}</td>
+                  <td class="py-2">{{f.description}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="column is-6">
+      <section class="section px-5 py-5">
+        <div class="container">
+          <app-spinner-wrapper>
+            <div [formGroup]="ngFrmCtrl.frm" class="box">
+              <div class="field">
+                <label class="label" for="name">Name</label>
+                <div class="control">
+                  <input class="input" formControlName="name" id="name" name="name" type="text">
+                </div>
+              </div>
+              <div class="field">
+                <label class="label" for="description">Description</label>
+                <div class="control">
+                <textarea class="textarea"
+                          formControlName="description" id="description" name="description"
+                          placeholder="3000"></textarea>
+                </div>
+              </div>
+
+              <!-- Menus -->
+              <!--              <div class="field">-->
+              <!--                <div class="control">-->
+              <!--                  <button (click)="showProducts()" class="button is-info is-disabled is-fullwidth">Manage products-->
+              <!--                  </button>-->
+              <!--                  <app-multi-select-search-->
+              <!--                    (rendererEmitter)="subscribeRendererProductsPagination($event)"-->
+              <!--                    [btnSetup]="searchable.btnSetup"-->
+              <!--                    [numberOfItemsObservable]="searchable.rxjs.asObservable()"-->
+              <!--                  >-->
+              <!--                    <div class="content" [ngSwitch]="searchable.currentBtnKey">-->
+              <!--                      <app-table-content-products-->
+              <!--                        [headers]="searchable.btnSetup.get(btnSetupKeys.products).headers"-->
+              <!--                        [display]="searchable.btnSetup.get(btnSetupKeys.products).display"-->
+              <!--                        (subscribeAction)="addIngredientView($event)"-->
+              <!--                        *ngSwitchCase="btnSetupKeys.products"-->
+              <!--                      ></app-table-content-products>-->
+              <!--                      <app-table-content-ingredients-->
+              <!--                        class="content"-->
+              <!--                        [headers]="searchable.btnSetup.get(btnSetupKeys.ingredients).headers"-->
+              <!--                        [display]="searchable.btnSetup.get(btnSetupKeys.ingredients).display"-->
+              <!--                        (subscribeAction)="removeIngredientView($event)"-->
+              <!--                        *ngSwitchCase="btnSetupKeys.ingredients">-->
+              <!--                      </app-table-content-ingredients>-->
+              <!--                    </div>-->
+
+              <!--                  </app-multi-select-search>-->
+              <!--                </div>-->
+              <!--              </div>-->
+
+              <hr/>
+              <div class="columns">
+                <div class="column">
+                  <button (click)="onCreate()" class="button is-success is-fullwidth">Create</button>
+                </div>
+                <div class="column">
+                  <button (click)="onUpdate()" class="button is-info is-disabled is-fullwidth" disabled>Update</button>
+                </div>
+                <div class="column">
+                  <button (click)="onDelete()"
+                          [disabled]="(ngFrmCtrl.frm.value != null && ngFrmCtrl.frm.value.id == null)"
+                          class="button is-danger is-fullwidth"
+                  >Delete
+                  </button>
+                </div>
+                <div class="column">
+                  <button (click)="onReset()" class="button is-warning is-fullwidth">Reset</button>
+                </div>
+              </div>
+            </div>
+          </app-spinner-wrapper>
+        </div>
+      </section>
+    </div>
+  </div>
+
+</div>
