@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-module-navigation',
@@ -9,6 +9,7 @@ export class ModuleNavigationComponent implements OnInit {
 
   @Input() active: number = 0;
   @Input() navs: any;
+  @Output() update = new EventEmitter<number>()
 
   constructor() { }
 
@@ -17,5 +18,6 @@ export class ModuleNavigationComponent implements OnInit {
 
   changeActiveTab(inx: number) {
     this.active = inx;
+    this.update.emit(inx);
   }
 }

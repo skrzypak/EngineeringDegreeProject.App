@@ -15,9 +15,21 @@ export class GastronomyComponent implements OnInit {
     {name: 'Participants', routerLink: 'participants'},
   ];
 
-  constructor() { }
+  active = 0;
+
+  constructor() {
+    let acv = localStorage.getItem('gastronomy-nav-active')
+    if(acv != null) {
+      this.active = parseInt(acv);
+    } else {
+      this.onUpdate(0);
+    }
+  }
 
   ngOnInit(): void {
   }
 
+  onUpdate(e: number) {
+    localStorage.setItem('gastronomy-nav-active', e.toString());
+  }
 }

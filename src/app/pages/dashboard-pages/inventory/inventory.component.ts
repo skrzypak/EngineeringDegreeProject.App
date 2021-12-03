@@ -15,9 +15,22 @@ export class InventoryComponent implements OnInit {
     {name: 'Statistics', routerLink: 'statistics'},
   ];
 
-  constructor() { }
+  active = 0;
+
+  constructor() {
+    let acv = localStorage.getItem('inventory-nav-active')
+    if(acv != null) {
+      this.active = parseInt(acv);
+    } else {
+      this.onUpdate(0);
+    }
+  }
 
   ngOnInit(): void {
+  }
+
+  onUpdate(e: number) {
+    localStorage.setItem('inventory-nav-active', e.toString());
   }
 
 }

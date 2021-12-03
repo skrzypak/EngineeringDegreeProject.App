@@ -13,9 +13,22 @@ export class InvoicingComponent implements OnInit {
     {name: 'Statistics', routerLink: 'statistics'},
   ];
 
-  constructor() { }
+  active = 0;
+
+  constructor() {
+    let acv = localStorage.getItem('invoicing-nav-active')
+    if(acv != null) {
+      this.active = parseInt(acv);
+    } else {
+      this.onUpdate(0);
+    }
+  }
 
   ngOnInit(): void {
+  }
+
+  onUpdate(e: number) {
+    localStorage.setItem('invoicing-nav-active', e.toString());
   }
 
 }

@@ -1,6 +1,8 @@
 <div>
   <app-module-navigation
+    [active]="active"
     [navs]="navs"
+    (update)="onUpdate($event)"
   ></app-module-navigation>
   <router-outlet></router-outlet>
 </div>
