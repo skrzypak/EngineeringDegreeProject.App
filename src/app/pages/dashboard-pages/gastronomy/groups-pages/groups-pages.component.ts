@@ -207,17 +207,22 @@ export class GroupsPagesComponent implements OnInit {
     try {
 
       let resp = await this.nutritionGroupService.fetchGetById(id);
+      const {name, description, nutritionPlans, participants} = resp;
 
       this.ngFrmCtrl.frm.setValue({
         id: resp.id,
-        name: resp.name,
-        description: resp.description
+        name: name,
+        description: description
       });
 
       const {list} = this.searchable.plans.keys
-      this.searchable.plans.btnSetup.get(list).fetched = resp.participants;
+      this.searchable.plans.btnSetup.get(list).fetched = nutritionPlans;
       this.searchable.plans.current = list;
-      this.publishSearchablePlansLength(resp.participants.length);
+      const {selected} = this.searchable.participants.keys
+      this.searchable.participants.btnSetup.get(selected).fetched = participants;
+      this.searchable.participants.current = selected;
+      this.publishSearchablePlansLength(nutritionPlans.length);
+      this.publishSearchableParticipantsLength(participants.length);
     } catch (e) {
       console.log(e)
       this.ngFrmCtrl.frm.reset();
@@ -237,8 +242,6 @@ export class GroupsPagesComponent implements OnInit {
       let plans = this.searchable.plans.btnSetup.get(list).tmp.add.map((o: any) => {
         return (({ nutritionPlanId, startDate, endDate }) => ({ nutritionPlanId, startDate, endDate }))(o);
       })
-
-      console.log(participants, plans)
 
       await this.nutritionGroupService.fetchCreate({
         "name": this.ngFrmCtrl.frm.value.name,
