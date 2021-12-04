@@ -5,14 +5,14 @@
         <img class="is-rounded" src="assets/icons/flaticon/meal.png" >
       </figure>
     </a>
-    <div class="navbar-burger" data-target="navbarExampleTransparentExample">
-      <span></span>
-      <span></span>
-      <span></span>
+    <div class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu" (click)="toggleNavbarBurger()">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
     </div>
   </div>
 
-  <div id="navbarExampleTransparentExample" class="navbar-menu">
+  <div id="navMenu" class="navbar-menu">
     <div class="navbar-start">
       <a class="navbar-item" routerLink="">
         Home
