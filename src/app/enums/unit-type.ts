@@ -4,5 +4,5 @@ export enum UnitType {
   dag,
   kg,
   ml,
-  piece
+  piece,
 }

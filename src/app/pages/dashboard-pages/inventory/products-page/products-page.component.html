@@ -31,7 +31,7 @@
                 <tr class="is-clickable" *ngFor="let f of this.fetched.products.display" (click)="onSelect(f.id)">
                   <td class="py-2">{{f.name}}</td>
                   <td class="py-2">{{f.code}}</td>
-                  <td class="py-2">{{f.Unit}}</td>
+                  <td class="py-2">{{unitPackage.convert(f.unit)}}</td>
                   <td class="py-2">{{f.description}}</td>
                 </tbody>
               </table>
@@ -65,6 +65,18 @@
               </div>
             </div>
 
+            <!-- Unit -->
+            <div class="field">
+              <label for="unit" class="label">Unit</label>
+              <div class="control">
+                <div class="select">
+                  <select formControlName="unit" id="unit" name="unit">
+                    <option *ngFor="let uInx of unitPackage.list" [value]="uInx">{{unitPackage.convert(uInx)}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
             <!-- Category -->
             <div class="field">
               <label for="category" class="label">Category</label>
@@ -76,7 +88,6 @@
                 </div>
               </div>
             </div>
-
 
             <!-- Allergens -->
             <app-multi-select

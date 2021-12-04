@@ -5,6 +5,7 @@ import {ProductsService} from "../../../../services/msv/inventory-msv/products/p
 import {MultiSelectComponent} from "../../../../components/multi-select/multi-select.component";
 import {AllergensService} from "../../../../services/msv/inventory-msv/allergens/allergens.service";
 import {CategoriesService} from "../../../../services/msv/inventory-msv/categories/categories.service";
+import {UnitPackage} from "../../../../classes/unit-package";
 
 @Component({
   selector: 'app-products-page',
@@ -12,6 +13,8 @@ import {CategoriesService} from "../../../../services/msv/inventory-msv/categori
   styleUrls: ['./products-page.component.css']
 })
 export class ProductsPageComponent implements OnInit {
+
+  unitPackage: UnitPackage = new UnitPackage;
 
   @ViewChild(MultiSelectComponent) frmAllergensChild!: MultiSelectComponent;
 
@@ -45,6 +48,9 @@ export class ProductsPageComponent implements OnInit {
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(300),
+      ]),
+      unit: new FormControl(0,[
+        Validators.required,
       ]),
       description: new FormControl('',[
         Validators.maxLength(3000),
@@ -102,6 +108,7 @@ export class ProductsPageComponent implements OnInit {
         id: resp.id,
         code: resp.code,
         name: resp.name,
+        unit: resp.unit,
         description: resp.description,
         category: resp.category.id
       });
@@ -118,6 +125,7 @@ export class ProductsPageComponent implements OnInit {
     try {
       let data = this.ngFrmCtrl.frm.value
       delete data.id;
+      data.unit = Number(data.unit)
       data.allergens = this.frmAllergensChild.localRight;
       data.allergens = data.allergens.map((o: any) => o.id);
       await this.productsService.fetchCreate(data);
