@@ -98,7 +98,7 @@ export class GroupsPagesComponent implements OnInit {
           color: "is-primary",
           display: Array<any>(),
           fetched: Array<any>(),
-          hidden: Array<any>(),
+          original: Array<any>(),
           func: () => {
             const {available} = this.searchable.participants.keys
             const {btnSetup} = this.searchable.participants;
@@ -182,6 +182,7 @@ export class GroupsPagesComponent implements OnInit {
       // data.forEach((o : any) => o["selected"] = false);
       const {available} = this.searchable.participants.keys
       this.searchable.participants.btnSetup.get(available).fetched = data;
+      this.searchable.participants.btnSetup.get(available).original = data;
       this.publishSearchableParticipantsLength(data.length);
     } catch (e) {
       this.publishSearchableParticipantsLength(0);
@@ -224,8 +225,6 @@ export class GroupsPagesComponent implements OnInit {
       this.searchable.participants.btnSetup.get(selected).fetched = participants;
 
       // Uniq available
-      this.searchable.participants.btnSetup.get(available).hidden = participants;
-
       participants.forEach((r: any) => {
         this.searchable.participants.btnSetup.get(available).fetched =
           this.searchable.participants.btnSetup.get(available).fetched.filter((o: any) => {
@@ -306,9 +305,9 @@ export class GroupsPagesComponent implements OnInit {
     this.searchable.participants.btnSetup.get(selected).tmp.add = [];
     this.searchable.participants.btnSetup.get(selected).tmp.remove = [];
 
-    this.searchable.participants.btnSetup.get(available).fetched
-      .concat(this.searchable.participants.btnSetup.get(available).hidden)
-    this.searchable.participants.btnSetup.get(available).hidden = [];
+    const {original} = this.searchable.participants.btnSetup.get(available);
+    this.searchable.participants.btnSetup.get(available).fetched = original;
+    this.publishSearchableParticipantsLength(original.length);
 
     this.ngFrmCtrl.frm.reset();
   }
