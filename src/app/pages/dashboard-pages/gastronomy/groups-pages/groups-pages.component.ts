@@ -98,6 +98,7 @@ export class GroupsPagesComponent implements OnInit {
           color: "is-primary",
           display: Array<any>(),
           fetched: Array<any>(),
+          hidden: Array<any>(),
           func: () => {
             const {available} = this.searchable.participants.keys
             const {btnSetup} = this.searchable.participants;
@@ -205,6 +206,7 @@ export class GroupsPagesComponent implements OnInit {
 
   async onSelectGroup(id: number) {
     try {
+      this.onReset();
 
       let resp = await this.nutritionGroupService.fetchGetById(id);
       const {name, description, nutritionPlans, participants} = resp;
@@ -218,11 +220,22 @@ export class GroupsPagesComponent implements OnInit {
       const {list} = this.searchable.plans.keys
       this.searchable.plans.btnSetup.get(list).fetched = nutritionPlans;
       this.searchable.plans.current = list;
-      const {selected} = this.searchable.participants.keys
+      const {selected, available} = this.searchable.participants.keys
       this.searchable.participants.btnSetup.get(selected).fetched = participants;
+
+      // Uniq available
+      this.searchable.participants.btnSetup.get(available).hidden = participants;
+
+      participants.forEach((r: any) => {
+        this.searchable.participants.btnSetup.get(available).fetched =
+          this.searchable.participants.btnSetup.get(available).fetched.filter((o: any) => {
+            return o.id != r.id;
+          })
+      });
+
       this.searchable.participants.current = selected;
       this.publishSearchablePlansLength(nutritionPlans.length);
-      this.publishSearchableParticipantsLength(participants.length);
+      this.publishSearchableParticipantsLength(this.searchable.participants.btnSetup.get(available).fetched.length);
     } catch (e) {
       console.log(e)
       this.ngFrmCtrl.frm.reset();
@@ -292,6 +305,11 @@ export class GroupsPagesComponent implements OnInit {
     this.searchable.participants.btnSetup.get(selected).display = [];
     this.searchable.participants.btnSetup.get(selected).tmp.add = [];
     this.searchable.participants.btnSetup.get(selected).tmp.remove = [];
+
+    this.searchable.participants.btnSetup.get(available).fetched
+      .concat(this.searchable.participants.btnSetup.get(available).hidden)
+    this.searchable.participants.btnSetup.get(available).hidden = [];
+
     this.ngFrmCtrl.frm.reset();
   }
 
@@ -398,6 +416,10 @@ export class GroupsPagesComponent implements OnInit {
         this.searchable.participants.btnSetup.get(selected).tmp.add.filter((o: any) => {
           return o.id != id;
         });
+
+      // Restore to original fetch
+      e.id = e.participantId;
+      delete e.participantId;
     } else {
       this.searchable.participants.btnSetup.get(selected).fetched =
         this.searchable.participants.btnSetup.get(selected).fetched.filter((o: any) => {
@@ -406,9 +428,6 @@ export class GroupsPagesComponent implements OnInit {
       this.searchable.participants.btnSetup.get(selected).tmp.remove.push(id)
     }
 
-    // Restore to original fetch
-    e.id = e.participantId;
-    delete e.participantId;
     this.searchable.participants.btnSetup.get(available).fetched.push(e)
 
     let len = this.searchable.participants.btnSetup.get(selected).fetched.length;
