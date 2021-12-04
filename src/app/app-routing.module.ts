@@ -9,7 +9,7 @@ import {NoAuthGuard} from "./services/guards/noAuth/no-auth.guard";
 import {EnterprisesPageComponent} from "./pages/dashboard-pages/auth/enterprises-page/enterprises-page.component";
 import {ParticipantsPageComponent} from "./pages/dashboard-pages/gastronomy/participants-page/participants-page.component";
 import {WarehousePageComponent} from "./pages/dashboard-pages/inventory/warehouse-page/warehouse-page.component";
-import {SuppliersPageComponent} from "./pages/dashboard-pages/invoicing/suppliers-page/suppliers-page.component";
+import {SuppliersPageComponent} from "./pages/dashboard-pages/invoicing/suppliers-page-router/suppliers-page/suppliers-page.component";
 import {SettingsPageComponent} from "./pages/settings-page/settings-page.component";
 import {GastronomyComponent} from "./pages/dashboard-pages/gastronomy/gastronomy.component";
 import {InventoryComponent} from "./pages/dashboard-pages/inventory/inventory.component";
@@ -25,6 +25,14 @@ import {AllergensPageComponent} from "./pages/dashboard-pages/inventory/allergen
 import {
   InventoryStatisticPageComponent
 } from "./pages/dashboard-pages/inventory/inventory-statistic-page/inventory-statistic-page.component";
+import {DocumentsPageComponent} from "./pages/dashboard-pages/invoicing/documents-page/documents-page.component";
+import {StatisticsPageComponent} from "./pages/dashboard-pages/invoicing/statistics-page/statistics-page.component";
+import {
+  SupplierContactsComponent
+} from "./pages/dashboard-pages/invoicing/suppliers-page-router/supplier-contacts/supplier-contacts.component";
+import {
+  SuppliersPageRouterComponent
+} from "./pages/dashboard-pages/invoicing/suppliers-page-router/suppliers-page-router.component";
 
 const routes: Routes = [
   {path: '', redirectTo: '/enterprise', pathMatch: 'full'},
@@ -61,9 +69,16 @@ const routes: Routes = [
         path: 'invoicing', component: InvoicingComponent,
         children: [
           {path:'', redirectTo: 'suppliers', pathMatch: 'full'},
-          {path: 'statistics', component: SuppliersPageComponent},
-          {path: 'documents', component: SuppliersPageComponent},
-          {path: 'suppliers', component: SuppliersPageComponent},
+          {path: 'statistics', component: StatisticsPageComponent},
+          {path: 'documents', component: DocumentsPageComponent},
+          {
+            path: 'suppliers',
+            component: SuppliersPageRouterComponent,
+            children: [
+              {path: '', component: SuppliersPageComponent},
+              {path: 'contacts/:supplierId', component: SupplierContactsComponent},
+            ]
+          }
         ]
       },
       {path: 'settings', component: SettingsPageComponent},

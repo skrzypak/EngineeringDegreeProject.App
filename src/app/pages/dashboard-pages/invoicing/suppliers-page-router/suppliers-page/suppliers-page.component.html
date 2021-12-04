@@ -1,0 +1,197 @@
+<div class="is-fullwidth">
+  <div class="columns">
+    <div class="column is-narrow is-12">
+      <section class="section px-5 py-0">
+        <div class="box">
+          <app-pagination
+            [numOfItemsObservable]="fetched.suppliers.rxjs.asObservable()"
+            [maxItemsDisplay]="15"
+            (rendererEmitter)="subscribeRenderer($event)"
+          ></app-pagination>
+        </div>
+      </section>
+    </div>
+  </div>
+  <div class="columns">
+    <div class="column is-6">
+      <section class="section px-5 py-5" *ngIf="this.fetched.suppliers.display.length > 0">
+        <div class="container">
+          <div class="box">
+            <div class="table-container">
+              <table class="table is-fullwidth is-striped">
+                <thead>
+                <tr><th>Company name</th><th>Code</th><th>NIP</th><th class="has-text-centered">Archive</th></tr>
+                </thead>
+                <tbody>
+                <tr class="is-clickable" *ngFor="let f of this.fetched.suppliers.display" (click)="onSelect(f.id)">
+                  <td class="py-2">{{f.companyName}}</td>
+                  <td class="py-2">{{f.code}}</td>
+                  <td class="py-2">{{f.nip}}</td>
+                  <td class="py-2 has-text-centered">
+                    <span class="icon" *ngIf="!f.archive">
+                     <i class="fa-solid fa-check has-text-danger"></i>
+                    </span>
+                    <span class="icon" *ngIf="f.archive">
+                      <i class="fa-solid fa-x has-text-primary"></i>
+                    </span>
+                  </td>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="column is-6">
+      <section class="section px-5 py-5">
+        <div class="container">
+          <div class="box" [formGroup]="ngFrmCtrl.frm">
+
+            <div class="field">
+              <button type="button"  [routerLink]="['contacts', ngFrmCtrl.frm.value.id]"
+                      class="button has-background-info has-text-light is-fullwidth"
+                      [disabled]="(ngFrmCtrl.frm.value != null && ngFrmCtrl.frm.value.id == null)"
+              >
+                Show company contacts ({{ ngFrmCtrl.frm.value.companyName}})
+              </button>
+            </div>
+
+            <hr />
+
+            <div class="field">
+              <label for="companyName" class="label">Company name <span class="has-text-danger">*</span></label>
+              <div class="control">
+                <input formControlName="companyName" id="companyName" name="companyName" type="text" class="input" placeholder="1-300">
+              </div>
+            </div>
+            <div class="field">
+              <label for="code" class="label">Code</label>
+              <div class="control">
+                <input formControlName="code" id="code" name="code" type="text" class="input" placeholder="0-6">
+              </div>
+            </div>
+            <div class="field">
+              <label for="description" class="label">Description</label>
+              <div class="control">
+                <textarea formControlName="description"
+                          id="description" name="description" class="textarea" placeholder="0-3000"></textarea>
+              </div>
+            </div>
+
+            <hr />
+
+            <div class="field">
+              <label for="nip" class="label">NIP <span class="has-text-danger">*</span></label>
+              <div class="control">
+                <input formControlName="nip" id="nip" name="nip" type="text" class="input" placeholder="10">
+              </div>
+            </div>
+            <div class="field">
+              <label for="krs" class="label">KRS</label>
+              <div class="control">
+                <input formControlName="krs" id="krs" name="krs" type="text" class="input" placeholder="10">
+              </div>
+            </div>
+            <div class="field">
+              <label for="regon" class="label">Regon</label>
+              <div class="control">
+                <input formControlName="regon" id="regon" name="regon" type="text" class="input" placeholder="9">
+              </div>
+            </div>
+
+            <hr />
+
+            <div class="field">
+              <label for="email" class="label">Email</label>
+              <div class="control">
+                <input formControlName="email" id="email" name="email" type="email"  class="input"
+                       pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" placeholder="">
+              </div>
+            </div>
+            <div class="field">
+              <label for="phoneNumber" class="label">Phone</label>
+              <div class="control">
+                <input formControlName="phoneNumber" id="phoneNumber" name="phoneNumber" type="tel"  class="input"
+                       pattern="[0-9]{9}" placeholder="12">
+              </div>
+            </div>
+            <div class="field">
+              <label for="fax" class="label">Fax</label>
+              <div class="control">
+                <input formControlName="fax" id="fax" name="fax" type="tel"  class="input"
+                       pattern="[0-9]{9}" placeholder="40">
+              </div>
+            </div>
+
+            <hr />
+
+            <div class="field">
+              <label for="streetAddress" class="label">Street address</label>
+              <div class="control">
+                <input formControlName="streetAddress" id="streetAddress" name="streetAddress" type="text" class="input"
+                       placeholder="100">
+              </div>
+            </div>
+            <div class="field">
+              <label for="postalCode" class="label">Postal code</label>
+              <div class="control">
+                <input formControlName="postalCode" id="postalCode" name="postalCode" type="text" class="input"
+                       placeholder="00-000">
+              </div>
+            </div>
+            <div class="field">
+              <label for="city" class="label">City</label>
+              <div class="control">
+                <input formControlName="city" id="city" name="city" type="text" class="input" placeholder="100">
+              </div>
+            </div>
+            <div class="field">
+              <label for="state" class="label">State</label>
+              <div class="control">
+                <input formControlName="state" id="state" name="state" type="text" class="input" placeholder="100">
+              </div>
+            </div>
+
+            <hr />
+
+            <div class="field">
+              <label for="homepage" class="label">Homepage</label>
+              <div class="control">
+                <input formControlName="homepage" id="homepage" name="homepage" type="text" class="input" placeholder="300">
+              </div>
+            </div>
+            <div class="field">
+              <label for="archive" class="label">Archive</label>
+              <div class="select">
+                <select formControlName="archive" id="archive">
+                  <option [ngValue]=false>False</option>
+                  <option [ngValue]=true>True</option>
+                </select>
+              </div>
+            </div>
+
+            <hr />
+            <div class="columns">
+              <div class="column">
+                <button class="button is-success is-fullwidth" [disabled]="ngFrmCtrl.frm.invalid" (click)="onCreate()">Create</button>
+              </div>
+              <div class="column">
+                <button class="button is-info is-disabled is-fullwidth" (click)="onUpdate()" disabled>Update</button>
+              </div>
+              <div class="column">
+                <button class="button is-danger is-fullwidth" (click)="onDelete()"
+                        [disabled]="(ngFrmCtrl.frm.value != null && ngFrmCtrl.frm.value.id == null)"
+                >Delete</button>
+              </div>
+              <div class="column">
+                <button class="button is-warning is-fullwidth" (click)="onReset()">Reset</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
