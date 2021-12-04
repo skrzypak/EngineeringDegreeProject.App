@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-invoicing',
@@ -8,14 +9,14 @@ import { Component, OnInit } from '@angular/core';
 export class InvoicingComponent implements OnInit {
 
   navs = [
+    {name: 'Statistics', routerLink: 'statistics'},
     {name: 'Documents', routerLink: 'documents'},
     {name: 'Suppliers', routerLink: 'suppliers'},
-    {name: 'Statistics', routerLink: 'statistics'},
   ];
 
   active = 0;
 
-  constructor() {
+  constructor(private router: Router) {
     let acv = localStorage.getItem('invoicing-nav-active')
     if(acv != null) {
       this.active = parseInt(acv);
@@ -24,7 +25,10 @@ export class InvoicingComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    if(this.active > 0) {
+      await this.router.navigate([`invoicing/${this.navs[this.active].routerLink}`])
+    }
   }
 
   onUpdate(e: number) {

@@ -41,6 +41,10 @@ import { TableContentPlansComponent } from './pages/dashboard-pages/gastronomy/g
 import { TableContentListComponent } from './pages/dashboard-pages/gastronomy/groups-pages/table-content/plans/table-content-list/table-content-list.component';
 import { TableContentSelectedComponent } from './pages/dashboard-pages/gastronomy/groups-pages/table-content/participants/table-content-selected/table-content-selected.component';
 import { TableContentAvailableComponent } from './pages/dashboard-pages/gastronomy/groups-pages/table-content/participants/table-content-available/table-content-available.component';
+import { ProductsPageComponent } from './pages/dashboard-pages/inventory/products-page/products-page.component';
+import { CategoriesPageComponent } from './pages/dashboard-pages/inventory/categories-page/categories-page.component';
+import { AllergensPageComponent } from './pages/dashboard-pages/inventory/allergens-page/allergens-page.component';
+import { InventoryStatisticPageComponent } from './pages/dashboard-pages/inventory/inventory-statistic-page/inventory-statistic-page.component';
 
 @NgModule({
   declarations: [
@@ -79,6 +83,10 @@ import { TableContentAvailableComponent } from './pages/dashboard-pages/gastrono
     TableContentListComponent,
     TableContentSelectedComponent,
     TableContentAvailableComponent,
+    ProductsPageComponent,
+    CategoriesPageComponent,
+    AllergensPageComponent,
+    InventoryStatisticPageComponent,
   ],
   imports: [
     BrowserModule,

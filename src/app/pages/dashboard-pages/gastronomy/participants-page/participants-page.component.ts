@@ -39,6 +39,14 @@ export class ParticipantsPageComponent implements OnInit, AfterViewInit {
     });
   }
 
+  async ngOnInit(): Promise<void> {
+    await this.fetchParticipants();
+  }
+
+  async ngAfterViewInit(): Promise<void> {
+    await this.fetchNutritionGroups();
+  }
+
   async fetchParticipants() {
     try {
       let data = await this.participantsService.fetchGet();
@@ -108,14 +116,6 @@ export class ParticipantsPageComponent implements OnInit, AfterViewInit {
   onReset() {
     this.ngFrmCtrl.frm.reset();
     this.frmNutritionGroupChild.hardReset();
-  }
-
-  async ngOnInit(): Promise<void> {
-    await this.fetchParticipants();
-  }
-
-  async ngAfterViewInit(): Promise<void> {
-    await this.fetchNutritionGroups();
   }
 
   publishParticipants(o: Array<any>) {

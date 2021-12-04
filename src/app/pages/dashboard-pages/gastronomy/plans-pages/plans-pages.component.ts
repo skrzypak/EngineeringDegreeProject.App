@@ -110,7 +110,6 @@ export class PlansPagesComponent implements OnInit {
       let data = await this.menusService.fetchGet();
       // data.forEach((o : any) => o["selected"] = false);
       this.searchable.btnSetup.get(this.btnSetupKeys.menus).fetched = data;
-      console.log(data)
       this.publishSearchableLength(data.length);
     } catch (e) {
       this.publishSearchableLength(0);

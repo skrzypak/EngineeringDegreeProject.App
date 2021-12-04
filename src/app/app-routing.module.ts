@@ -19,6 +19,12 @@ import {DishesPageComponent} from "./pages/dashboard-pages/gastronomy/dishes-pag
 import {GroupsPagesComponent} from "./pages/dashboard-pages/gastronomy/groups-pages/groups-pages.component";
 import {PlansPagesComponent} from "./pages/dashboard-pages/gastronomy/plans-pages/plans-pages.component";
 import {MenusPagesComponent} from "./pages/dashboard-pages/gastronomy/menus-pages/menus-pages.component";
+import {ProductsPageComponent} from "./pages/dashboard-pages/inventory/products-page/products-page.component";
+import {CategoriesPageComponent} from "./pages/dashboard-pages/inventory/categories-page/categories-page.component";
+import {AllergensPageComponent} from "./pages/dashboard-pages/inventory/allergens-page/allergens-page.component";
+import {
+  InventoryStatisticPageComponent
+} from "./pages/dashboard-pages/inventory/inventory-statistic-page/inventory-statistic-page.component";
 
 const routes: Routes = [
   {path: '', redirectTo: '/enterprise', pathMatch: 'full'},
@@ -45,12 +51,18 @@ const routes: Routes = [
         children: [
           {path:'', redirectTo: 'warehouse', pathMatch: 'full'},
           {path: 'warehouse', component: WarehousePageComponent},
+          {path: 'products', component: ProductsPageComponent},
+          {path: 'categories', component: CategoriesPageComponent},
+          {path: 'allergens', component: AllergensPageComponent},
+          {path: 'statistics', component: InventoryStatisticPageComponent},
         ]
       },
       {
         path: 'invoicing', component: InvoicingComponent,
         children: [
           {path:'', redirectTo: 'suppliers', pathMatch: 'full'},
+          {path: 'statistics', component: SuppliersPageComponent},
+          {path: 'documents', component: SuppliersPageComponent},
           {path: 'suppliers', component: SuppliersPageComponent},
         ]
       },

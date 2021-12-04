@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-gastronomy',
@@ -17,7 +18,7 @@ export class GastronomyComponent implements OnInit {
 
   active = 0;
 
-  constructor() {
+  constructor(private router: Router) {
     let acv = localStorage.getItem('gastronomy-nav-active')
     if(acv != null) {
       this.active = parseInt(acv);
@@ -26,7 +27,10 @@ export class GastronomyComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    if(this.active > 0) {
+      await this.router.navigate([`gastronomy/${this.navs[this.active].routerLink}`])
+    }
   }
 
   onUpdate(e: number) {
