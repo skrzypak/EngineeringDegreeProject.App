@@ -35,4 +35,20 @@ export class DocumentsService {
     let resp = await this.universalService.fetchCustomGet(`${this.moduleBaseUri}/types`);
     return resp.data;
   }
+
+  async fetchGetTypeById(id: number) {
+    let resp = await this.universalService.fetchCustomGet(`${this.moduleBaseUri}/types/${id}`);
+    return resp.data;
+  }
+
+  async fetchCreateType(data: any) {
+    let resp = await this.universalService.fetchCustomPost(`${this.moduleBaseUri}/types`, data);
+    return resp.data;
+  }
+
+  async fetchDeleteType(id: number) {
+    let resp = await this.universalService.fetchCustomDelete(`${this.moduleBaseUri}/types/${id}`);
+    return resp.data;
+  }
+
 }

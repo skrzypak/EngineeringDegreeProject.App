@@ -45,11 +45,12 @@ import { ProductsPageComponent } from './pages/dashboard-pages/inventory/product
 import { CategoriesPageComponent } from './pages/dashboard-pages/inventory/categories-page/categories-page.component';
 import { AllergensPageComponent } from './pages/dashboard-pages/inventory/allergens-page/allergens-page.component';
 import { InventoryStatisticPageComponent } from './pages/dashboard-pages/inventory/inventory-statistic-page/inventory-statistic-page.component';
-import { DocumentsPageComponent } from './pages/dashboard-pages/invoicing/documents-page/documents-page.component';
+import { DocumentsPageComponent } from './pages/dashboard-pages/invoicing/documents-page-router/documents-page/documents-page.component';
 import { StatisticsPageComponent } from './pages/dashboard-pages/invoicing/statistics-page/statistics-page.component';
-import { DocumentTypesComponent } from './pages/dashboard-pages/invoicing/documents-page/document-types/document-types.component';
+import { DocumentTypesComponent } from './pages/dashboard-pages/invoicing/documents-page-router/document-types/document-types.component';
 import { SupplierContactsComponent } from './pages/dashboard-pages/invoicing/suppliers-page-router/supplier-contacts/supplier-contacts.component';
 import { SuppliersPageRouterComponent } from './pages/dashboard-pages/invoicing/suppliers-page-router/suppliers-page-router.component';
+import { DocumentsPageRouterComponent } from './pages/dashboard-pages/invoicing/documents-page-router/documents-page-router.component';
 
 @NgModule({
   declarations: [
@@ -97,6 +98,7 @@ import { SuppliersPageRouterComponent } from './pages/dashboard-pages/invoicing/
     DocumentTypesComponent,
     SupplierContactsComponent,
     SuppliersPageRouterComponent,
+    DocumentsPageRouterComponent,
   ],
   imports: [
     BrowserModule,

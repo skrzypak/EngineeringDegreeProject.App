@@ -1,0 +1,97 @@
+<div class="is-fullwidth">
+  <div class="columns">
+    <div class="column is-narrow is-12">
+      <section class="section px-5 py-0">
+        <div class="box">
+          <app-pagination
+            [numOfItemsObservable]="fetched.types.rxjs.asObservable()"
+            [maxItemsDisplay]="15"
+            (rendererEmitter)="subscribeRenderer($event)"
+          ></app-pagination>
+        </div>
+      </section>
+    </div>
+  </div>
+  <div class="columns">
+    <div class="column is-6">
+      <section class="section px-5 py-5" *ngIf="this.fetched.types.display.length > 0">
+        <div class="container">
+          <div class="box">
+            <div class="table-container">
+              <table class="table is-fullwidth is-striped">
+                <thead>
+                <tr><th>Name</th><th>Code</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                <tr class="is-clickable" *ngFor="let f of this.fetched.types.display" (click)="onSelect(f.id)">
+                  <td class="py-2">{{f.name}}</td>
+                  <td class="py-2">{{f.code}}</td>
+                  <td class="py-2">{{f.description}}</td>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="column is-6">
+      <section class="section px-5 py-5">
+        <div class="container">
+          <div class="box" [formGroup]="ngFrmCtrl.frm">
+
+            <div class="field">
+              <button type="button" (click)="navigateBackPage()" class="button has-background-black has-text-light is-fullwidth">
+                Back
+              </button>
+            </div>
+
+            <hr />
+
+            <div class="field">
+              <label for="name" class="label">Name <span class="has-text-danger">*</span></label>
+              <div class="control">
+                <input formControlName="name" id="name" name="name" type="text" class="input" placeholder="1-300">
+              </div>
+            </div>
+            <div class="field">
+              <label for="code" class="label">Code <span class="has-text-danger">*</span></label>
+              <div class="control">
+                <input formControlName="code" id="code" name="code" type="text" class="input" placeholder="6">
+              </div>
+            </div>
+            <div class="field">
+              <label for="description" class="label">Description <span class="has-text-danger">*</span></label>
+              <div class="control">
+                <textarea formControlName="description"
+                          id="description" name="description" class="textarea" placeholder="3000"></textarea>
+              </div>
+            </div>
+
+            <hr />
+
+            <div class="columns">
+              <div class="column">
+                <button class="button is-success is-fullwidth" (click)="onCreate()"
+                        [disabled]="(ngFrmCtrl.frm.invalid || ngFrmCtrl.frm.value.id != null)"
+                >Create</button>
+              </div>
+              <div class="column">
+                <button class="button is-info is-disabled is-fullwidth" (click)="onUpdate()" disabled>Update</button>
+              </div>
+              <div class="column">
+                <button class="button is-danger is-fullwidth" (click)="onDelete()"
+                        [disabled]="(ngFrmCtrl.frm.value != null && ngFrmCtrl.frm.value.id == null)"
+                >Delete</button>
+              </div>
+              <div class="column">
+                <button class="button is-warning is-fullwidth" (click)="onReset()">Reset</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+

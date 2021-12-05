@@ -25,7 +25,7 @@ import {AllergensPageComponent} from "./pages/dashboard-pages/inventory/allergen
 import {
   InventoryStatisticPageComponent
 } from "./pages/dashboard-pages/inventory/inventory-statistic-page/inventory-statistic-page.component";
-import {DocumentsPageComponent} from "./pages/dashboard-pages/invoicing/documents-page/documents-page.component";
+import {DocumentsPageComponent} from "./pages/dashboard-pages/invoicing/documents-page-router/documents-page/documents-page.component";
 import {StatisticsPageComponent} from "./pages/dashboard-pages/invoicing/statistics-page/statistics-page.component";
 import {
   SupplierContactsComponent
@@ -33,6 +33,12 @@ import {
 import {
   SuppliersPageRouterComponent
 } from "./pages/dashboard-pages/invoicing/suppliers-page-router/suppliers-page-router.component";
+import {
+  DocumentsPageRouterComponent
+} from "./pages/dashboard-pages/invoicing/documents-page-router/documents-page-router.component";
+import {
+  DocumentTypesComponent
+} from "./pages/dashboard-pages/invoicing/documents-page-router/document-types/document-types.component";
 
 const routes: Routes = [
   {path: '', redirectTo: '/enterprise', pathMatch: 'full'},
@@ -70,7 +76,14 @@ const routes: Routes = [
         children: [
           {path:'', redirectTo: 'suppliers', pathMatch: 'full'},
           {path: 'statistics', component: StatisticsPageComponent},
-          {path: 'documents', component: DocumentsPageComponent},
+          {
+            path: 'documents',
+            component: DocumentsPageRouterComponent,
+            children: [
+              {path: '', component: DocumentsPageComponent},
+              {path: 'types', component: DocumentTypesComponent},
+            ]
+          },
           {
             path: 'suppliers',
             component: SuppliersPageRouterComponent,

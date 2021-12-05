@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {BehaviorSubject} from "rxjs";
-import {DocumentsService} from "../../../../services/msv/invoicing-msv/documents/documents.service";
-import {SuppliersService} from "../../../../services/msv/invoicing-msv/suppliers/suppliers.service";
+import {DocumentsService} from "../../../../../services/msv/invoicing-msv/documents/documents.service";
+import {SuppliersService} from "../../../../../services/msv/invoicing-msv/suppliers/suppliers.service";
 import {compareSegments} from "@angular/compiler-cli/src/ngtsc/sourcemaps/src/segment_marker";
-import {DocumentStatesPackage} from "../../../../classes/document-states-package";
+import {DocumentStatesPackage} from "../../../../../classes/document-states-package";
 
 @Component({
   selector: 'app-documents-page',
@@ -159,10 +159,4 @@ export class DocumentsPageComponent implements OnInit {
     this.fetched.documents.display = this.fetched.documents.data.slice(e[0], e[1]);
   }
 
-  navigateBackPage() {
-  }
-
-  navigateToDocumentTypes() {
-
-  }
 }
