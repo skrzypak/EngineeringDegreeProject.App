@@ -24,15 +24,16 @@
                 </thead>
                 <tbody>
                 <tr class="is-clickable" *ngFor="let f of this.fetched.suppliers.display" (click)="onSelect(f.id)">
-                  <td class="py-2">{{f.companyName}}</td>
+                  <td class="py-2" *ngIf="f.homepage == null">{{f.companyName}}</td>
+                  <td class="py-2" *ngIf="f.homepage != null"><a [href]="f.homepage" target="_blank">{{f.companyName}}</a></td>
                   <td class="py-2">{{f.code}}</td>
                   <td class="py-2">{{f.nip}}</td>
                   <td class="py-2 has-text-centered">
                     <span class="icon" *ngIf="!f.archive">
-                     <i class="fa-solid fa-check has-text-danger"></i>
+                      <i class="fa-solid fa-x has-text-primary"></i>
                     </span>
                     <span class="icon" *ngIf="f.archive">
-                      <i class="fa-solid fa-x has-text-primary"></i>
+                      <i class="fa-solid fa-check has-text-danger"></i>
                     </span>
                   </td>
                 </tbody>

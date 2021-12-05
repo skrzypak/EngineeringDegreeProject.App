@@ -1,1 +1,151 @@
-<p>documents-page works!</p>
+<div class="is-fullwidth">
+  <div class="columns">
+    <div class="column is-narrow is-12">
+      <section class="section px-5 py-0">
+        <div class="box">
+          <app-pagination
+            [numOfItemsObservable]="fetched.documents.rxjs.asObservable()"
+            [maxItemsDisplay]="15"
+            (rendererEmitter)="subscribeRenderer($event)"
+          ></app-pagination>
+        </div>
+      </section>
+    </div>
+  </div>
+  <div class="columns">
+    <div class="column is-6">
+      <section class="section px-5 py-5" *ngIf="this.fetched.documents.display.length > 0">
+        <div class="container">
+          <div class="box">
+            <div class="table-container">
+              <table class="table is-fullwidth is-striped">
+                <thead>
+                <tr><th>Signature</th><th>Number</th><th>Supplier</th><th>Type</th><th>Date</th><th>State</th></tr>
+                </thead>
+                <tbody>
+                <tr class="is-clickable" *ngFor="let f of this.fetched.documents.display" (click)="onSelect(f.id)">
+                  <td class="py-2">{{f.signature}}</td>
+                  <td class="py-2">{{f.number}}</td>
+                  <td class="py-2">{{f.supplier.companyName}}</td>
+                  <td class="py-2">{{f.documentType.name}}</td>
+                  <td class="py-2">{{f.date}}</td>
+                  <td class="py-2">{{documentStatesPackage.convert(f.state)}}</td>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="column is-6">
+      <section class="section px-5 py-5">
+        <div class="container">
+          <div class="box" [formGroup]="ngFrmCtrl.frm">
+
+            <div class="field">
+              <button type="button"  [routerLink]="['products', ngFrmCtrl.frm.value.id]"
+                      class="button has-background-info has-text-light is-fullwidth"
+                      [disabled]="(ngFrmCtrl.frm.value != null && ngFrmCtrl.frm.value.id == null)"
+              >
+                Manage items ({{ ngFrmCtrl.frm.value.signature}})
+              </button>
+            </div>
+
+            <hr />
+
+            <div class="field">
+              <label for="signature" class="label">Signature <span class="has-text-danger">*</span></label>
+              <div class="control">
+                <input formControlName="signature" id="signature" name="signature" type="text" class="input" placeholder="1-300">
+              </div>
+            </div>
+            <div class="field">
+              <label for="number" class="label">Number <span class="has-text-danger">*</span></label>
+              <div class="control">
+                <input formControlName="number" id="number" name="number" type="number" class="input">
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="type" class="label">Type <span class="has-text-danger">*</span></label>
+              <div class="control">
+                <div class="select">
+                  <select formControlName="type" id="type" name="type">
+                    <option *ngFor="let d of fetched.documentsTypes.data" [ngValue]="d.id">{{d.name}} - {{d.code}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="date" class="label">Date <span class="has-text-danger">*</span></label>
+              <div class="control">
+                <input formControlName="date" id="date" name="date" type="date"  class="input">
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="supplier" class="label">Supplier <span class="has-text-danger">*</span></label>
+              <div class="control">
+                <div class="select">
+                  <select formControlName="supplier" id="supplier" name="supplier">
+                    <option *ngFor="let supp of fetched.suppliers.data" [ngValue]="supp.id">{{supp.companyName}} - {{supp.code}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="state" class="label">State <span class="has-text-danger">*</span></label>
+              <div class="control">
+                <div class="select">
+                  <select formControlName="state" id="state" name="state">
+                    <option *ngFor="let dsp of documentStatesPackage.list" [ngValue]="dsp">{{documentStatesPackage.convert(dsp)}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="description" class="label">Description</label>
+              <div class="control">
+                <textarea formControlName="description"
+                          id="description" name="description" class="textarea" placeholder="3000"></textarea>
+              </div>
+            </div>
+
+            <hr />
+
+            <div class="columns">
+              <div class="column">
+                <button class="button is-success is-fullwidth" (click)="onCreate()"
+                        [disabled]="(ngFrmCtrl.frm.invalid || ngFrmCtrl.frm.value.id != null)"
+                >Create</button>
+              </div>
+              <div class="column">
+                <button class="button is-info is-disabled is-fullwidth" (click)="onUpdate()" disabled>Update</button>
+              </div>
+              <div class="column">
+                <button class="button is-danger is-fullwidth" (click)="onDelete()"
+                        [disabled]="(ngFrmCtrl.frm.value != null && ngFrmCtrl.frm.value.id == null)"
+                >Delete</button>
+              </div>
+              <div class="column">
+                <button class="button is-warning is-fullwidth" (click)="onReset()">Reset</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <button class="button is-info" id="btn-settings" (click)="navigateToDocumentTypes()">
+    <span class="icon">
+      <i class="fa-solid fa-cogs"></i>
+    </span>
+  </button>
+
+</div>
+

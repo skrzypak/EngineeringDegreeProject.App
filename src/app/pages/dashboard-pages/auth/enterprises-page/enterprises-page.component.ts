@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {EnterprisesService} from "../../../../services/msv/auth-msv/enterprise/enterprises.service";
 import {FormControl, FormGroup} from "@angular/forms";
 import {ModalState} from "../../../../enums/modal-state";
@@ -11,7 +11,7 @@ import {ModalState} from "../../../../enums/modal-state";
 export class EnterprisesPageComponent implements OnInit {
 
   modalState = ModalState.READ;
-  @ViewChild("modal", {read: ElementRef, static: true}) modalRef: ElementRef | undefined;
+  modal: boolean = false;
 
   fetchEnterprises: Array<any> = [];
 
@@ -74,7 +74,7 @@ export class EnterprisesPageComponent implements OnInit {
       let resp = await this.enterprisesService.fetchGetById(id);
 
       this.ngForm.setValue({
-        id: resp.id,
+        id: resp.enterpriseId,
         nip: resp.nip,
         companyName: resp.companyName,
         email: resp.email,
@@ -87,6 +87,7 @@ export class EnterprisesPageComponent implements OnInit {
 
       this.showModal(ModalState.READ);
     } catch (e) {
+      console.log(e)
       this.ngForm.reset();
     }
   }
@@ -108,13 +109,13 @@ export class EnterprisesPageComponent implements OnInit {
 
   public showModal(state : ModalState) {
     this.modalState = state;
-    (this.modalRef?.nativeElement).style.display = 'flex';
+    this.modal = true;
   }
 
   public hideModal() {
     if (this.fetchEnterprises.length > 0) {
       this.ngForm.reset();
-      (this.modalRef?.nativeElement).style.display = 'none';
+      this.modal = false;
     }
   }
 

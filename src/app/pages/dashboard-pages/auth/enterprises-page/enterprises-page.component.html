@@ -1,4 +1,4 @@
-<div #modal class="modal" [formGroup]="ngForm">
+<div [class.is-active]="modal"  class="modal" [formGroup]="ngForm">
   <div class="modal-background"></div>
   <div class="modal-card">
     <header class="modal-card-head">
@@ -82,9 +82,9 @@
       </div>
     </div>
   </div>
-  <div class="columns is-centered">
-    <div class="column is-2">
-      <button class="button is-info is-fullwidth" (click)="showModal(0)">Create</button>
-    </div>
-  </div>
+  <button class="button is-primary" id="btn-plus" (click)="showModal(0)">
+    <span class="icon">
+      <i class="fa-solid fa-plus"></i>
+    </span>
+  </button>
 </section>

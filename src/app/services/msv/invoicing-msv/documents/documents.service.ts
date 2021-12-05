@@ -30,4 +30,9 @@ export class DocumentsService {
     let resp = await this.universalService.fetchDelete(this.moduleBaseUri, id);
     return resp.data;
   }
+
+  async fetchGetTypes() {
+    let resp = await this.universalService.fetchCustomGet(`${this.moduleBaseUri}/types`);
+    return resp.data;
+  }
 }

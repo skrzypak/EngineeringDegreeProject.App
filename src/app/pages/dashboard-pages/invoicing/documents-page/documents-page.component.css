@@ -1,0 +1,8 @@
+#btn-settings {
+  border-radius: 50%;
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  height: 72px;
+  width: 72px;
+}
