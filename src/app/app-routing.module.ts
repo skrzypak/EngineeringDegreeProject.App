@@ -39,6 +39,9 @@ import {
 import {
   DocumentTypesComponent
 } from "./pages/dashboard-pages/invoicing/documents-page-router/document-types/document-types.component";
+import {
+  DocumentProductsComponent
+} from "./pages/dashboard-pages/invoicing/documents-page-router/document-products/document-products.component";
 
 const routes: Routes = [
   {path: '', redirectTo: '/enterprise', pathMatch: 'full'},
@@ -81,6 +84,7 @@ const routes: Routes = [
             component: DocumentsPageRouterComponent,
             children: [
               {path: '', component: DocumentsPageComponent},
+              {path: 'products/:documentId', component: DocumentProductsComponent},
               {path: 'types', component: DocumentTypesComponent},
             ]
           },

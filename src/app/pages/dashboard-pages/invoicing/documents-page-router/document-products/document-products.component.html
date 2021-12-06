@@ -1,0 +1,168 @@
+<div class="is-fullwidth">
+  <div class="columns">
+    <div class="column is-narrow is-12">
+      <section class="section px-5 py-0">
+        <div class="box">
+          <app-pagination
+            [numOfItemsObservable]="fetched.documentProducts.rxjs.asObservable()"
+            [maxItemsDisplay]="15"
+            (rendererEmitter)="subscribeRenderer($event)"
+          ></app-pagination>
+        </div>
+      </section>
+    </div>
+  </div>
+  <div class="columns">
+    <div class="column is-6">
+      <section class="section px-5 py-5" *ngIf="this.fetched.documentProducts.display.length > 0">
+        <div class="container">
+          <div class="box">
+            <div class="table-container">
+              <table class="table is-fullwidth is-striped">
+                <thead>
+                <tr><th>Product</th><th>Quantity</th><th>Gross Value</th><th>Expiration</th></tr>
+                </thead>
+                <tbody>
+                <tr class="is-clickable" *ngFor="let f of this.fetched.documentProducts.display" (click)="onSelect(f.id)">
+                  <td class="py-2">{{f.product.name}}</td>
+                  <td class="py-2">{{f.quantity}} x {{f.unitMeasureValue}} {{unitPackage.convert(f.product.unit)}}</td>
+                  <td class="py-2">{{f.grossValue}}</td>
+                  <td class="py-2">{{f.expirationDate}}</td>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="column is-6">
+      <section class="section px-5 py-5">
+        <div class="container">
+          <div class="box" [formGroup]="ngFrmCtrl.frm">
+
+            <div class="field">
+              <button type="button" (click)="navigateBackPage()"
+                      class="button has-background-black has-text-light is-fullwidth">
+                Back
+              </button>
+            </div>
+
+            <hr />
+
+            <div class="level">
+              <!-- Left side -->
+              <div class="level-left">
+                <div class="level-item">
+                  <div class="field">
+                    <label for="product" class="label">Product <span class="has-text-danger">*</span></label>
+                    <div class="control">
+                      <div class="select">
+                        <select formControlName="product" id="product"  (change)="onProductChanged()">
+                          <option [ngValue]="p.id" *ngFor="let p of fetched.products.data">{{p.name}} [{{unitPackage.convert(p.unit)}}]</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="level-item">
+                  <div class="field" *ngIf="ngFrmCtrl.frm.get('product').value">
+                    <label for="unitMeasureValue" class="label">{{this.unitPackage.convert(fetched.products.selectedProduct.unit)}} <span class="has-text-danger">*</span></label>
+                    <div class="control">
+                      <input formControlName="unitMeasureValue" id="unitMeasureValue" name="unitMeasureValue" type="number" class="input">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right side -->
+              <div class="level-right">
+                <div class="level-item"></div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="quantity" class="label">Quantity <span class="has-text-danger">*</span></label>
+              <div class="control">
+                <input formControlName="quantity" id="quantity" name="quantity" type="number" class="input">
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="unitNetPrice" class="label">Price for one unit <span class="has-text-danger">*</span></label>
+              <div class="control">
+                <input formControlName="unitNetPrice" step="0.01" id="unitNetPrice" name="unitNetPrice" type="number" class="input">
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="percentageVat" class="label">Vat rate <span class="has-text-danger">*</span></label>
+              <div class="control">
+                <div class="select">
+                  <select formControlName="percentageVat" id="percentageVat">
+                    <option value="5">5%</option>
+                    <option value="8">8%</option>
+                    <option value="23">23%</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="expirationDate" class="label">Expiration date</label>
+              <div class="control">
+                <input formControlName="expirationDate" id="expirationDate" name="expirationDate" type="date" class="input">
+              </div>
+            </div>
+
+            <hr />
+
+            <div class="field">
+              <label for="netValue" class="label">Net value <span class="has-text-danger">*</span></label>
+              <div class="control">
+                <input formControlName="netValue" step="0.01" id="netValue" name="netValue" type="number" class="input">
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="vatValue" class="label">Vat value <span class="has-text-danger">*</span></label>
+              <div class="control">
+                <input formControlName="vatValue" step="0.01" id="vatValue" name="vatValue" type="number" class="input">
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="grossValue" class="label">Gross value <span class="has-text-danger">*</span></label>
+              <div class="control">
+                <input formControlName="grossValue" step="0.01" id="grossValue" name="grossValue" type="number" class="input">
+              </div>
+            </div>
+
+
+            <hr />
+
+            <div class="columns">
+              <div class="column">
+                <button class="button is-success is-fullwidth" (click)="onCreate()"
+                        [disabled]="(ngFrmCtrl.frm.invalid)"
+                >Create</button>
+              </div>
+              <div class="column">
+                <button class="button is-info is-disabled is-fullwidth" (click)="onUpdate()" disabled>Update</button>
+              </div>
+              <div class="column">
+                <button class="button is-danger is-fullwidth" (click)="onDelete()"
+                        [disabled]="(ngFrmCtrl.frm.value != null && ngFrmCtrl.frm.value.id == null)"
+                >Delete</button>
+              </div>
+              <div class="column">
+                <button class="button is-warning is-fullwidth" (click)="onReset()">Reset</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+

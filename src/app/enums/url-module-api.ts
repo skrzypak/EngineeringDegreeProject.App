@@ -18,4 +18,5 @@ export enum UrlModuleApi {
   INVOICING_MSV = "invoicing/msv",
   INVOICING_DOCUMENTS = "invoicing/documents",
   INVOICING_SUPPLIERS = "invoicing/suppliers",
+  INVOICING_PRODUCTS = "invoicing/products",
 }

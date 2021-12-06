@@ -15,7 +15,7 @@ export class UnitPackage {
       case UnitType.ml:
         return "ml";
       case UnitType.piece:
-        return "-";
+        return "no.";
       default:
         return "Unknown";
     }

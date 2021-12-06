@@ -51,4 +51,23 @@ export class DocumentsService {
     return resp.data;
   }
 
+  async fetchGetDocumentProducts(documentId: number) {
+    let resp = await this.universalService.fetchCustomGet(`${this.moduleBaseUri}/${documentId}/products`);
+    return resp.data;
+  }
+
+  async fetchGetDocumentProductsById(documentId: number, documentProductId: number) {
+    let resp = await this.universalService.fetchCustomGet(`${this.moduleBaseUri}/${documentId}/products/${documentProductId}`);
+    return resp.data;
+  }
+
+  async fetchCreateDocumentProduct(documentId: number, data: any) {
+    let resp = await this.universalService.fetchCustomPost(`${this.moduleBaseUri}/${documentId}/products`, data);
+    return resp.data;
+  }
+
+  async fetchDeleteDocumentProduct(documentId: number, documentProductId: number) {
+    let resp = await this.universalService.fetchCustomDelete(`${this.moduleBaseUri}/${documentId}/products/${documentProductId}`);
+    return resp.data;
+  }
 }

@@ -51,6 +51,7 @@ import { DocumentTypesComponent } from './pages/dashboard-pages/invoicing/docume
 import { SupplierContactsComponent } from './pages/dashboard-pages/invoicing/suppliers-page-router/supplier-contacts/supplier-contacts.component';
 import { SuppliersPageRouterComponent } from './pages/dashboard-pages/invoicing/suppliers-page-router/suppliers-page-router.component';
 import { DocumentsPageRouterComponent } from './pages/dashboard-pages/invoicing/documents-page-router/documents-page-router.component';
+import { DocumentProductsComponent } from './pages/dashboard-pages/invoicing/documents-page-router/document-products/document-products.component';
 
 @NgModule({
   declarations: [
@@ -99,6 +100,7 @@ import { DocumentsPageRouterComponent } from './pages/dashboard-pages/invoicing/
     SupplierContactsComponent,
     SuppliersPageRouterComponent,
     DocumentsPageRouterComponent,
+    DocumentProductsComponent,
   ],
   imports: [
     BrowserModule,
