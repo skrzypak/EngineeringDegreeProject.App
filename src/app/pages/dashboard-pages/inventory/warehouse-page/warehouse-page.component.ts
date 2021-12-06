@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {InventoryService} from "../../../../services/msv/inventory-msv/inventory.service";
+import {BehaviorSubject} from "rxjs";
 
 @Component({
   selector: 'app-warehouse-page',
@@ -7,9 +9,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WarehousePageComponent implements OnInit {
 
-  constructor() { }
+  fetched: any = {
+    msv: {
+      display: Array<any>(),
+      data: Array<any>(),
+      rxjs: new BehaviorSubject<number>(0)
+    },
+  }
 
-  ngOnInit(): void {
+  constructor(private msvService: InventoryService) { }
+
+  async ngOnInit(): Promise<void> {
+    await this.fetch();
+  }
+
+
+  async fetch() {
+    try {
+      this.fetched.msv.data = await this.msvService.fetchGetWarehouse();
+    } catch (e) {
+      console.log(e)
+    }
   }
 
 }

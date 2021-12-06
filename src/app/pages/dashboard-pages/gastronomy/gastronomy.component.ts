@@ -28,7 +28,7 @@ export class GastronomyComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    if(this.active > 0) {
+    if(this.active >= 0) {
       await this.router.navigate([`gastronomy/${this.navs[this.active].routerLink}`])
     }
   }
