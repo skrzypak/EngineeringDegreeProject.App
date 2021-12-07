@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {InventoryService} from "../../../../services/msv/inventory-msv/inventory.service";
 import {BehaviorSubject} from "rxjs";
+import {UnitPackage} from "../../../../classes/unit-package";
+import {InventoryOperationType} from "../../../../enums/inventory-operation-type";
 
 @Component({
   selector: 'app-warehouse-page',
@@ -17,6 +19,11 @@ export class WarehousePageComponent implements OnInit {
     },
   }
 
+  unitPackage: UnitPackage = new UnitPackage();
+  settle: InventoryOperationType = InventoryOperationType.Settle;
+  spoile: InventoryOperationType = InventoryOperationType.Spoile;
+  damage: InventoryOperationType = InventoryOperationType.Damage
+
   constructor(private msvService: InventoryService) { }
 
   async ngOnInit(): Promise<void> {
@@ -32,4 +39,23 @@ export class WarehousePageComponent implements OnInit {
     }
   }
 
+  onSelectCategory(id: number) {
+
+  }
+
+  onSelectItem(inventoryId: number) {
+
+  }
+
+  async onClickOperation(operationType: InventoryOperationType, productId: number, productUnit: number, unitMeasureValue: number, total: number) {
+    let value = (<HTMLInputElement>document.getElementById(`${productId}-${productUnit}-${unitMeasureValue}`)).value;
+
+    try {
+      let resp = await this.msvService.fetchPatchWarehouseProduct(operationType, productId, unitMeasureValue, Number(value));
+      window.location.reload();
+    } catch (e) {
+      console.log(e);
+    }
+
+  }
 }

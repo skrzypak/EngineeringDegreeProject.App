@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {GlobalConstants} from "../../common/global-constants";
 import {MessageType} from "../../enums/message-type";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import axios from "axios";
 import {AuthService} from "../../services/msv/auth-msv/auth.service";
 
 @Component({

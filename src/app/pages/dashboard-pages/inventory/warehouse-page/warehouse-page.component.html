@@ -1,1 +1,62 @@
-<p>{{fetched.msv.data | json}}</p>
+<div class="is-fullwidth">
+  <section class="section px-5 py-5">
+    <div class="container">
+      <div class="box">
+        <div class="table-container">
+          <table class="table is-fullwidth table is-bordered is-striped is-narrow">
+            <ng-container *ngFor="let category of this.fetched.msv.data" (click)="onSelectCategory(category.key.id)">
+              <thead>
+                <tr><th colspan="3">{{category.key.name}}</th></tr>
+                <tr><th>Name</th><th>Code</th><th>Description</th></tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let product of category.products">
+                  <tr>
+                    <td class="py-2">{{product.key.productName}}</td>
+                    <td class="py-2">{{product.key.productCode}}</td>
+                    <td class="py-2">{{product.key.productDescription}}</td>
+                  </tr>
+                  <ng-container *ngFor="let items of product.items">
+                    <tr class="has-text-right">
+                      <td class="py-2" colspan="2">
+                        {{items.totalNumOfAvailable}} x {{items.key.unitMeasureValue}}{{unitPackage.convert(product.key.productUnit)}}
+                      </td>
+                      <td class="py-2">
+                        <article class="level">
+                          <div class="level-left"></div>
+                          <div class="level-right">
+                            <div class="level-item">
+                              <input class="input is-primary" value="1" min="1" [max]="items.totalNumOfAvailable" id="{{product.key.productId}}-{{product.key.productUnit}}-{{items.key.unitMeasureValue}}" type="number" placeholder="0">
+                            </div>
+                            <div class="level-item">
+                              <button class="button is-primary is-fullwidth" (click)="onClickOperation(settle, product.key.productId, product.key.productUnit, items.key.unitMeasureValue, items.totalNumOfAvailable)">Settle</button>
+                            </div>
+                            <div class="level-item">
+                              <button class="button is-warning is-fullwidth" (click)="onClickOperation(spoile, product.key.productId, product.key.productUnit, items.key.unitMeasureValue, items.totalNumOfAvailable)">Spoile</button>
+                            </div>
+                            <div class="level-item">
+                              <button class="button is-danger is-fullwidth" (click)="onClickOperation(damage,product.key.productId, product.key.productUnit, items.key.unitMeasureValue, items.totalNumOfAvailable)">Damage</button>
+                            </div>
+                          </div>
+                        </article>
+                      </td>
+                    </tr>
+<!--                    <tr>-->
+<!--                      <td>Name</td><td>Code</td><td>Description</td>-->
+<!--                    </tr>-->
+<!--                    <tr class="has-text-left" *ngFor="let item of items.itemsInventoryIds" (click)="onSelectItem(item.inventoryId)">-->
+<!--                      <td class="py-2" colspan="2">{{item.numOfAvailable}}</td>-->
+<!--                      <td class="py-2">{{getDate(item.expirationDate)}}</td>-->
+<!--                    </tr>-->
+                  </ng-container>
+                </ng-container>
+              </tbody>
+            </ng-container>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!--<pre>{{fetched.msv.data | json}}</pre>-->
+

@@ -26,7 +26,7 @@ export class InventoryStatisticPageComponent implements OnInit {
 
   async fetch() {
     try {
-      this.fetched.msv.data = await this.msvService.fetchGetSummary();
+      this.fetched.msv.data = await this.msvService.fetchGetSummary("2020-01-01", "2025-01-01");
     } catch (e) {
       console.log(e)
     }
