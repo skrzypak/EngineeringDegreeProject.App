@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
 import {InventoryService} from "../../../../services/msv/inventory-msv/inventory.service";
+import {UnitPackage} from "../../../../classes/unit-package";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-inventory-statistic-page',
@@ -8,6 +10,8 @@ import {InventoryService} from "../../../../services/msv/inventory-msv/inventory
   styleUrls: ['./inventory-statistic-page.component.css']
 })
 export class InventoryStatisticPageComponent implements OnInit {
+
+  @ViewChild('searchBtn') searchBtn!: ElementRef;
 
   fetched: any = {
     msv: {
@@ -17,19 +21,44 @@ export class InventoryStatisticPageComponent implements OnInit {
     },
   }
 
-  constructor(private msvService: InventoryService) { }
+  ngFrmCtrl: any = {
+    frm: FormGroup,
+  }
+
+  unitPackage: UnitPackage = new UnitPackage();
+
+  constructor(private msvService: InventoryService, private fb: FormBuilder) {
+    this.ngFrmCtrl.frm = this.fb.group({
+      startDate: new FormControl(''),
+      endDate: new FormControl('')
+    });
+  }
 
   async ngOnInit(): Promise<void> {
     await this.fetch();
   }
 
-
   async fetch() {
     try {
-      this.fetched.msv.data = await this.msvService.fetchGetSummary("2020-01-01", "2025-01-01");
+      const {startDate, endDate} = this.ngFrmCtrl.frm.value;
+      this.fetched.msv.data = await this.msvService.fetchGetSummary(startDate, endDate);
     } catch (e) {
       console.log(e)
     }
   }
 
+  onReset() {
+    this.ngFrmCtrl.frm.reset();
+  }
+
+  async search() {
+    try {
+      this.searchBtn.nativeElement.classList.add('is-loading')
+      await this.fetch();
+    } catch (e) {
+      console.log(e)
+    } finally {
+      this.searchBtn.nativeElement.classList.remove('is-loading')
+    }
+  }
 }

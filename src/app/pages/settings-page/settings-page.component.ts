@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {AuthService} from "../../services/msv/auth-msv/auth.service";
 
 @Component({
   selector: 'app-settings-page',
@@ -8,18 +9,27 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 })
 export class SettingsPageComponent implements OnInit {
 
+  result = {
+    msg: '',
+    code: -1
+  }
+  @ViewChild('btnUpdate') btnUpdate!: ElementRef;
+
   ngFrmCtrl: any = {
     frm: FormGroup,
   }
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private authService: AuthService) {
     this.ngFrmCtrl.frm = this.fb.group({
-      new: new FormControl(),
-      confirm: new FormControl('',[
+      newPassword: new FormControl('',[
+          Validators.required,
+          Validators.minLength(8),
+      ]),
+      confirmPassword: new FormControl('',[
         Validators.required,
         Validators.minLength(8),
       ]),
-      current: new FormControl('',[
+      currentPassword: new FormControl('',[
         Validators.required,
         Validators.minLength(8),
       ]),
@@ -30,14 +40,30 @@ export class SettingsPageComponent implements OnInit {
   }
 
   onReset() {
+    this.result.msg = '';
+    this.result.code = -1;
     this.ngFrmCtrl.frm.reset();
   }
 
-  onCloseAccount() {
-
+  async onCloseAccount() {
+    let isConfirmed = confirm("Are you sure that you want close this account?");
+    if(isConfirmed){
+      await this.authService.fetchCloseAccount();
+    }
   }
 
-  onUpdate() {
-
+  async onUpdate() {
+    try {
+      this.btnUpdate.nativeElement.classList.add('is-loading')
+      const {currentPassword, newPassword, confirmPassword} = this.ngFrmCtrl.frm.value
+      this.result.msg = await this.authService.fetchPasswordChange(currentPassword, newPassword, confirmPassword);
+      this.result.code = 0;
+    } catch (e: any) {
+      this.result.msg = e.data;
+      this.result.code = 1;
+      console.log(e);
+    }  finally {
+      this.btnUpdate.nativeElement.classList.remove('is-loading')
+    }
   }
 }

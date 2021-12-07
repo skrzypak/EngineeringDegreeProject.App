@@ -24,6 +24,12 @@ export class InventoryService {
   }
 
   async fetchGetSummary(startDate: string, endDate: string): Promise<any> {
+    if (startDate === '') {
+      startDate = "1970-01-01"
+    }
+    if (endDate === '') {
+      endDate = "9999-12-12"
+    }
     let resp = await this.universalService.fetchCustomGet(`${this.moduleBaseUri}/summary?startDate=${startDate}&endDate=${endDate}`);
     return resp.data;
   }

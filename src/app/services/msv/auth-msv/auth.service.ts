@@ -57,11 +57,13 @@ export class AuthService {
     await this.universalService.fetchCustomPost(`${this.moduleBaseUri}/refresh-token`, {}, false);
   }
 
-  async fetchPasswordChange(passwords: any) {
-    await this.universalService.fetchCustomPatch(`${this.moduleBaseUri}/change/password`, {
-      "new": passwords.newPassword,
-      "confirm": passwords.confirmPassword,
+  async fetchPasswordChange(currentPassword: string, newPassword: string, confirmPassword: string) {
+    let resp = await this.universalService.fetchCustomPatch(`${this.moduleBaseUri}/change/password`, {
+      "new": newPassword,
+      "confirm": confirmPassword,
+      "current": currentPassword,
     }, false);
+    return resp.data;
   }
 
   async fetchPasswordReset(username: string, passwords: any) {

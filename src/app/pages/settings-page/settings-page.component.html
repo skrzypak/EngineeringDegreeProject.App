@@ -5,24 +5,24 @@
 
       <div [formGroup]="ngFrmCtrl.frm" class="box">
         <div class="field">
-          <label class="label" for="current">Password</label>
+          <label class="label" for="currentPassword">Password</label>
           <div class="control">
-            <input class="input" formControlName="current" id="current" name="current" type="password">
+            <input class="input" formControlName="currentPassword" id="currentPassword" name="currentPassword" type="password">
           </div>
         </div>
 
         <div class="field">
-          <label class="label" for="new">New password</label>
+          <label class="label" for="newPassword">New password</label>
           <div class="control">
-            <input class="input" formControlName="new" id="new" name="new" type="password">
+            <input class="input" formControlName="newPassword" id="newPassword" name="newPassword" type="password">
           </div>
 
-          <div *ngIf="ngFrmCtrl.frm.new?.invalid && (ngFrmCtrl.frm.new?.dirty || ngFrmCtrl.frm.new?.touched)"
+          <div *ngIf="ngFrmCtrl.frm.newPassword?.invalid && (ngFrmCtrl.frm.newPassword?.dirty || ngFrmCtrl.frm.newPassword?.touched)"
                class="notification is-danger p-2 mt-3">
-            <div *ngIf="ngFrmCtrl.frm.new?.errors?.['required']">
+            <div *ngIf="ngFrmCtrl.frm.newPassword?.errors?.['required']">
               Password is required
             </div>
-            <div *ngIf="ngFrmCtrl.frm.new?.errors?.['minlength']">
+            <div *ngIf="ngFrmCtrl.frm.newPassword?.errors?.['minlength']">
               Password must be at least 8 characters long
             </div>
           </div>
@@ -30,18 +30,23 @@
         </div>
 
         <div class="field">
-          <label class="label" for="confirm">Confirm password</label>
+          <label class="label" for="confirmPassword">Confirm password</label>
           <div class="control">
-            <input class="input" formControlName="confirm" id="confirm" name="confirm" type="password">
+            <input class="input" formControlName="confirmPassword" id="confirmPassword" name="confirmPassword" type="password">
           </div>
         </div>
 
         <hr/>
 
+        <div class="notification" [class.is-primary]="result.code == 0" [class.is-danger]="result.code == 1" *ngIf="result.code > -1">
+          {{result.msg}}
+        </div>
+
+
         <div class="columns">
 
           <div class="column">
-            <button (click)="onUpdate()" class="button is-info is-disabled is-fullwidth">Update</button>
+            <button (click)="onUpdate()" [disabled]="this.ngFrmCtrl.frm.valid == false" #btnUpdate class="button is-info is-disabled is-fullwidth">Update</button>
           </div>
           <div class="column">
             <button (click)="onReset()" class="button is-warning is-fullwidth">Reset</button>
