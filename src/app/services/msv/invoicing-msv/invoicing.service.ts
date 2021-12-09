@@ -11,8 +11,15 @@ export class InvoicingService {
 
   constructor(private universalService: UniversalService) { }
 
-  async fetchGetSummary(): Promise<Array<any>> {
-    let resp = await this.universalService.fetchCustomGet(`${this.moduleBaseUri}/summary`);
+  async fetchGetSuppliersProductsSummary(query: any): Promise<any> {
+    let url = `${this.moduleBaseUri}/suppliers-products-summary?`
+    let resp = await this.universalService.fetchCustomGet(url);
+    return resp.data;
+  }
+
+  async fetchGetProductsSummary(query: any): Promise<any> {
+    let url = `${this.moduleBaseUri}/products-summary?`
+    let resp = await this.universalService.fetchCustomGet(url);
     return resp.data;
   }
 }

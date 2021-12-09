@@ -52,7 +52,7 @@ export class DocumentsService {
   }
 
   async fetchGetDocumentProducts(documentId: number) {
-    let resp = await this.universalService.fetchCustomGet(`${this.moduleBaseUri}/${documentId}/products`);
+    let resp = await this.universalService.fetchCustomGet(`${this.moduleBaseUri}/${documentId}/products?hardReset=true`);
     return resp.data;
   }
 
@@ -67,7 +67,7 @@ export class DocumentsService {
   }
 
   async fetchDeleteDocumentProduct(documentId: number, documentProductId: number) {
-    let resp = await this.universalService.fetchCustomDelete(`${this.moduleBaseUri}/${documentId}/products/${documentProductId}`);
+    let resp = await this.universalService.fetchCustomDelete(`${this.moduleBaseUri}/${documentId}/products/${documentProductId}?hardReset=true`);
     return resp.data;
   }
 }

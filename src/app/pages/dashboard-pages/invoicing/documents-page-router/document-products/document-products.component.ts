@@ -98,9 +98,39 @@ export class DocumentProductsComponent implements OnInit {
       }
     }
 
+    this.onChanges();
+
     await this.fetchProducts();
     await this.fetchMain();
 
+  }
+
+  onChanges(): void {
+    this.ngFrmCtrl.frm.get('quantity').valueChanges.subscribe((val: number) => {
+      const {unitNetPrice, percentageVat} = this.ngFrmCtrl.frm.value;
+      let netValue = Number((val * unitNetPrice).toFixed(2));
+      let vatValue = Number((netValue * (percentageVat / 100)).toFixed(2));
+      let grossValue = Number((netValue + vatValue).toFixed(2));
+      this.ngFrmCtrl.frm.controls['netValue'].setValue(netValue);
+      this.ngFrmCtrl.frm.controls['vatValue'].setValue(vatValue);
+      this.ngFrmCtrl.frm.controls['grossValue'].setValue(grossValue);
+    });
+    this.ngFrmCtrl.frm.get('unitNetPrice').valueChanges.subscribe((val: number) => {
+      const {quantity, percentageVat} = this.ngFrmCtrl.frm.value
+      let netValue = Number((quantity * val).toFixed(2));
+      let vatValue = Number((netValue * (percentageVat / 100)).toFixed(2));
+      let grossValue = Number((netValue + vatValue).toFixed(2));
+      this.ngFrmCtrl.frm.controls['netValue'].setValue(netValue);
+      this.ngFrmCtrl.frm.controls['vatValue'].setValue(vatValue);
+      this.ngFrmCtrl.frm.controls['grossValue'].setValue(grossValue);
+    });
+    this.ngFrmCtrl.frm.get('percentageVat').valueChanges.subscribe((val: number) => {
+      const {netValue} = this.ngFrmCtrl.frm.value;
+      let vatValue = Number((netValue * (val / 100)).toFixed(2));
+      let grossValue = Number((netValue + vatValue).toFixed(2));
+      this.ngFrmCtrl.frm.controls['vatValue'].setValue(vatValue);
+      this.ngFrmCtrl.frm.controls['grossValue'].setValue(grossValue);
+    });
   }
 
   async fetchMain() {
