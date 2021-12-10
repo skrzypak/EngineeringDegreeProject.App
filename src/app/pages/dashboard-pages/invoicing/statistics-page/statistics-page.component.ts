@@ -1,8 +1,12 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
 import {InvoicingService} from "../../../../services/msv/invoicing-msv/invoicing.service";
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {UnitPackage} from "../../../../classes/unit-package";
+import {SuppliersService} from "../../../../services/msv/invoicing-msv/suppliers/suppliers.service";
+import {DocumentsService} from "../../../../services/msv/invoicing-msv/documents/documents.service";
+import {ProductsService} from "../../../../services/msv/invoicing-msv/products/products.service";
+import {DocumentStatesPackage} from "../../../../classes/document-states-package";
 
 @Component({
   selector: 'app-statistics-page',
@@ -19,35 +23,85 @@ export class StatisticsPageComponent implements OnInit {
       data: Array<any>(),
       rxjs: new BehaviorSubject<number>(0)
     },
+    suppliers: {
+      data: Array<any>(),
+    },
+    documentTypes: {
+      data: Array<any>(),
+    },
+    products: {
+      data: Array<any>(),
+    },
   }
 
   ngFrmCtrl: any = {
     frm: FormGroup,
+    currentView: 0
   }
 
+  documentStatesPackage: DocumentStatesPackage = new DocumentStatesPackage();
   unitPackage: UnitPackage = new UnitPackage();
 
-  constructor(private msvService: InvoicingService, private fb: FormBuilder) {
+  constructor(
+    private msvService: InvoicingService,
+    private fb: FormBuilder,
+    private suppliersService: SuppliersService,
+    private documentsService: DocumentsService,
+    private productsService: ProductsService
+  ) {
     this.ngFrmCtrl.frm = this.fb.group({
       startDate: new FormControl(null),
       endDate: new FormControl(null),
-      suppliersIds: new FormControl([]),
-      documentTypesIds: new FormControl([]),
-      documentStates: new FormControl([]),
-      productsIds: new FormControl([]),
+      suppliersIds: new FormControl(null),
+      documentTypesIds: new FormControl(null),
+      documentStates: new FormControl(null),
+      productsIds: new FormControl(null),
+      viewMode: new FormControl(0, [
+        Validators.required
+      ]),
     });
   }
 
+
   async ngOnInit(): Promise<void> {
-    await this.fetchProductsView();
-    //await this.fetchSuppliersView();
+    await this.fetchSuppliers();
+    await this.fetchProducts();
+    await this.fetchDocumentTypes();
+
+    if(this.ngFrmCtrl.frm.value.viewMode == 0) {
+      await this.fetchProductsView();
+    } else {
+      await this.fetchSuppliersView();
+    }
+  }
+
+  async fetchSuppliers() {
+    try {
+      this.fetched.suppliers.data = await this.suppliersService.fetchGet();
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  async fetchDocumentTypes() {
+    try {
+      this.fetched.documentTypes.data = await this.documentsService.fetchGetTypes();
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  async fetchProducts() {
+    try {
+      this.fetched.products.data = await this.productsService.fetchGet();
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   async fetchProductsView() {
     try {
-      let query = this.ngFrmCtrl.frm.value;
-      delete query.suppliersIds
-      this.fetched.msv.data = await this.msvService.fetchGetProductsSummary(query);
+      this.fetched.msv.data = await this.msvService.fetchGetProductsSummary(this.ngFrmCtrl.frm.value);
     } catch (e) {
       console.log(e)
     }
@@ -68,13 +122,14 @@ export class StatisticsPageComponent implements OnInit {
   async search() {
     try {
       this.searchBtn.nativeElement.classList.add('is-loading')
-      const {suppliersIds} =  this.ngFrmCtrl.frm.suppliersIds;
 
-      if(suppliersIds == null || suppliersIds.length == 0) {
+      if(this.ngFrmCtrl.frm.value.viewMode == 0) {
         await this.fetchProductsView();
       } else {
         await this.fetchSuppliersView();
       }
+
+      this.ngFrmCtrl.currentView = this.ngFrmCtrl.frm.value.viewMode;
 
     } catch (e) {
       console.log(e)
@@ -83,4 +138,28 @@ export class StatisticsPageComponent implements OnInit {
     }
   }
 
+  resetFromAttribute(atr: string) {
+    switch (atr) {
+      case 'suppliersIds':
+        this.ngFrmCtrl.frm.patchValue({
+          suppliersIds: null
+        });
+        break;
+      case 'documentTypesIds':
+        this.ngFrmCtrl.frm.patchValue({
+          documentTypesIds: null
+        });
+        break;
+      case 'documentStates':
+        this.ngFrmCtrl.frm.patchValue({
+          documentStates: null
+        });
+        break;
+      case 'productsIds':
+        this.ngFrmCtrl.frm.patchValue({
+          productsIds: null
+        });
+        break;
+    }
+  }
 }

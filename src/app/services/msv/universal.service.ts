@@ -110,9 +110,15 @@ export class UniversalService {
       if(!u.includes("?")) {
         u = u + `/?espId=${espId}`
       } else {
-        u = u + `&espId=${espId}`
+        let character = u.charAt(u.length - 1)
+        if(character != "&") {
+          u = u + `&espId=${espId}`
+        } else {
+          u = u + `espId=${espId}`
+        }
       }
     }
+    console.log(u)
     return u;
   }
 }

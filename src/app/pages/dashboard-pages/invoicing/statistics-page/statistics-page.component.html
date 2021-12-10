@@ -1,161 +1,221 @@
-<div class="">
+<div class="columns">
+  <div class="column is-3">
+    <section class="section px-5 py-5">
+      <div class="container">
+        <div class="box">
+          <ng-container [formGroup]="ngFrmCtrl.frm">
+            <nav class="level">
+              <div class="select is-multiple is-fullwidth">
+                <label for="suppliersIds" class="label">
+                  <p class="alignleft">Suppliers</p>
+                  <p class="alignright icon is-small is-clickable has-text-danger" (click)="resetFromAttribute('suppliersIds')"><i class="fa-solid fa-xmark"></i></p>
+                  <p style="clear: both;"></p>
+                </label>
+                <select formControlName="suppliersIds" id="suppliersIds" name="documentStates"  multiple size="2">
+                  <option *ngFor="let s of fetched.suppliers.data" [ngValue]="s.id">{{s.companyName}}</option>
+                </select>
+              </div>
+            </nav>
+            <nav class="level">
+              <div class="select is-multiple is-fullwidth">
+                <label for="productsIds" class="label">
+                  <p class="alignleft">Products</p>
+                  <p class="alignright icon is-small is-clickable has-text-danger" (click)="resetFromAttribute('productsIds')"><i class="fa-solid fa-xmark"></i></p>
+                  <p style="clear: both;"></p>
+                </label>
+                <select formControlName="productsIds" id="productsIds" name="productsIds"  multiple size="2">
+                  <option *ngFor="let p of fetched.products.data" [ngValue]="p.id">{{p.name}}</option>
+                </select>
+              </div>
+            </nav>
+            <nav class="level">
+              <div class="select is-multiple is-fullwidth">
+                <label for="documentTypesIds" class="label">
+                  <p class="alignleft">Types</p>
+                  <p class="alignright icon is-small is-clickable has-text-danger" (click)="resetFromAttribute('documentTypesIds')"><i class="fa-solid fa-xmark"></i></p>
+                  <p style="clear: both;"></p>
+                </label>
+                <select formControlName="documentTypesIds" id="documentTypesIds" name="documentTypesIds"  multiple size="2">
+                  <option *ngFor="let dt of fetched.documentTypes.data" [ngValue]="dt.id">{{dt.name}}</option>
+                </select>
+              </div>
+            </nav>
+            <nav class="level">
+              <div class="select is-multiple is-fullwidth">
+                <label for="documentStates" class="label">
+                  <p class="alignleft">States</p>
+                  <p class="alignright icon is-small is-clickable has-text-danger" (click)="resetFromAttribute('documentStates')"><i class="fa-solid fa-xmark"></i></p>
+                  <p style="clear: both;"></p>
+                </label>
+                <select formControlName="documentStates" id="documentStates" name="documentStates"  multiple size="2">
+                  <option *ngFor="let dsp of documentStatesPackage.list" [ngValue]="dsp">{{documentStatesPackage.convert(dsp)}}</option>
+                </select>
+              </div>
+            </nav>
+            <nav class="level is-fullwidth">
+              <div class="field is-fullwidth" style="width: 100%">
+                <label for="viewMode" class="label">Mode</label>
+                <div class="select is-fullwidth">
+                  <select formControlName="viewMode" id="viewMode" name="viewMode" >
+                    <option [ngValue]="0">Products</option>
+                    <option [ngValue]="1">Suppliers</option>
+                  </select>
+                </div>
+              </div>
+            </nav>
+            <nav class="level">
+              <input formControlName="startDate" id="startDate" onfocus="(this.type='date')" name="startDate" type="text" class="input is-fullwidth" placeholder="Start">
+            </nav>
+            <nav class="level">
+              <input formControlName="endDate" id="endDate" onfocus="(this.type='date')" name="endDate" type="text" class="input is-fullwidth" placeholder="End">
+            </nav>
+            <nav class="level">
+              <button class="button is-info is-fullwidth" #searchBtn (click)="search()">Search</button>
+            </nav>
+          </ng-container>
+          </div>
+        </div>
+    </section>
+  </div>
+  <div class="column">
+    <section class="section px-5 py-5">
+      <div class="container">
+        <div class="box">
+          <ng-container [ngSwitch]="this.ngFrmCtrl.currentView">
+            <ng-container *ngSwitchCase="0">
+              <div class="table-container" *ngIf="this.fetched.msv.data.length > 0">
+                <table class="table is-fullwidth table is-bordered is-narrow">
+                  <ng-container *ngFor="let product of this.fetched.msv.data">
+                    <thead>
+                    <tr class="has-background-link-light"><th>Name</th><th>Code</th><th colspan="4">Description</th></tr>
+                    </thead>
+                    <tbody>
+                    <ng-container>
+                      <tr>
+                        <td class="py-2">{{product.key.name}}</td>
+                        <td class="py-2">{{product.key.code}}</td>
+                        <td class="py-2" colspan="4">{{product.key.description}}</td>
+                      </tr>
+                      <tr class="has-background-warning-light"><th>Unit</th><th>Total quantity</th><th>Total Net Value</th><th>Total Vat Value</th><th>Total Gross Value</th></tr>
+                      <ng-container *ngFor="let value of product.values">
+                        <ng-container *ngFor="let v of value.values">
+                          <tr class="has-text-left">
+                            <td class="py-2">
+                              {{v.key.unitMeasureValue}} {{unitPackage.convert(value.unit)}}
+                            </td>
+                            <td class="py-2">
+                              {{v.totalQuantity}}
+                            </td>
+                            <td class="py-2">
+                              {{v.totalNetValue}}
+                            </td>
+                            <td class="py-2">
+                              {{v.totalVatValue}}
+                            </td>
+                            <td class="py-2">
+                              {{v.totalGrossValue}}
+                            </td>
+                          </tr>
+                        </ng-container>
+                      </ng-container>
+                    </ng-container>
+                    <br />
+                    </tbody>
+                  </ng-container>
+                </table>
+              </div>
+            </ng-container>
+            <ng-container *ngSwitchCase="1">
+              <div class="table-container" *ngIf="this.fetched.msv.data.length > 0 ">
+                <table class="table is-fullwidth table is-bordered is-narrow">
+                  <ng-container *ngFor="let supplier of this.fetched.msv.data">
+                    <thead>
+                    <tr class="has-background-link-light"><th colspan="4">Name</th><th>NIP</th></tr>
+                    </thead>
+                    <tbody>
+                    <ng-container>
+                      <tr>
+                        <td class="py-2" colspan="4">{{supplier.key.companyName}}</td>
+                        <td class="py-2">{{supplier.key.nip}}</td>
+                      </tr>
 
-  <section class="section px-5 py-5">
-    <div class="container">
-      <div class="box">
+                      <ng-container *ngFor="let product of supplier.products">
+                        <tr class="has-text-centered has-background-warning-light">
+                          <th class="py-2" colspan="4">{{product.key.name}}</th>
+                          <th class="py-2">{{product.key.code}}</th>
+                        </tr>
+                        <tr class="has-background-warning-light"><th>Package</th><th>Total Quantity</th><th>Total Net</th><th>Total Vat</th><th>Total Gross</th></tr>
 
-        <nav class="level" [formGroup]="ngFrmCtrl.frm">
-          <!-- Left side -->
-          <div class="level-left">
+                        <ng-container *ngFor="let unit of product.units">
+                          <tr class="has-text-left">
+                            <td class="py-2">
+                              {{unit.key.unitMeasureValue}} {{unitPackage.convert(product.key.unit)}}
+                            </td>
+                            <td class="py-2">
+                              {{unit.productQuantity}}
+                            </td>
+                            <td class="py-2">
+                              {{unit.productNetValue}}
+                            </td>
+                            <td class="py-2">
+                              {{unit.productVatValue}}
+                            </td>
+                            <td class="py-2">
+                              {{unit.productGrossValue}}
+                            </td>
+                          </tr>
+                        </ng-container>
 
+                        <tr class="has-text-left has-background-warning">
+                          <td class="py-2">
+                            {{product.totalMeasureUnitValue}} {{unitPackage.convert(product.key.unit)}}
+                          </td>
+                          <td class="py-2">
+                            -
+                          </td>
+                          <td class="py-2">
+                            {{product.totalNetValue}}
+                          </td>
+                          <td class="py-2">
+                            {{product.totalVatValue}}
+                          </td>
+                          <td class="py-2">
+                            {{product.totalGrossValue}}
+                          </td>
+                        </tr>
+                      </ng-container>
+
+                      <tr class="has-background-info-dark"><th colspan="2">Documents</th><th>Total Net</th><th>Total Vat</th><th>Total Gross</th></tr>
+                      <tr class="has-text-left">
+                        <td class="py-2" colspan="2">
+                          {{supplier.numberOfDocuments}}
+                        </td>
+                        <td class="py-2">
+                          {{supplier.totalNetValue}}
+                        </td>
+                        <td class="py-2">
+                          {{supplier.totalVatValue}}
+                        </td>
+                        <td class="py-2">
+                          {{supplier.totalGrossValue}}
+                        </td>
+                      </tr>
+
+                    </ng-container>
+                    <br />
+                    </tbody>
+                  </ng-container>
+                </table>
+              </div>
+            </ng-container>
+          </ng-container>
+
+          <div *ngIf="this.fetched.msv.data.length == 0" class="has-text-centered">
+            NOT FOUND ANY ITEMS
           </div>
 
-          <!-- Right side -->
-          <div class="level-right">
-            <div class="level-item">
-              <input style="width: 145px" formControlName="startDate" id="startDate" onfocus="(this.type='date')" name="startDate" type="text" class="input" placeholder="Start">
-            </div>
-            <div class="level-item">
-              <input style="width: 145px" formControlName="endDate" id="endDate" onfocus="(this.type='date')" name="endDate" type="text" class="input" placeholder="End">
-            </div>
-            <div class="level-item">
-              <button class="button is-info" #searchBtn (click)="search()">Search</button>
-            </div>
-
-          </div>
-        </nav>
-
-        <div class="table-container" *ngIf="this.fetched.msv.data.length > 0">
-          <table class="table is-fullwidth table is-bordered is-narrow">
-            <ng-container *ngFor="let product of this.fetched.msv.data">
-              <thead>
-              <tr class="has-background-link-light"><th>Name</th><th>Code</th><th colspan="4">Description</th></tr>
-              </thead>
-              <tbody>
-              <ng-container>
-                <tr>
-                  <td class="py-2">{{product.key.name}}</td>
-                  <td class="py-2">{{product.key.code}}</td>
-                  <td class="py-2" colspan="4">{{product.key.description}}</td>
-                </tr>
-                <tr class="has-background-warning-light"><th>Unit</th><th>Total quantity</th><th>Total Net Value</th><th>Total Vat Value</th><th>Total Gross Value</th></tr>
-                <ng-container *ngFor="let value of product.values">
-                  <ng-container *ngFor="let v of value.values">
-                    <tr class="has-text-left">
-                      <td class="py-2">
-                        {{v.key.unitMeasureValue}} {{unitPackage.convert(value.unit)}}
-                      </td>
-                      <td class="py-2">
-                        {{v.totalQuantity}}
-                      </td>
-                      <td class="py-2">
-                        {{v.totalNetValue}}
-                      </td>
-                      <td class="py-2">
-                        {{v.totalVatValue}}
-                      </td>
-                      <td class="py-2">
-                        {{v.totalGrossValue}}
-                      </td>
-                    </tr>
-                  </ng-container>
-                </ng-container>
-              </ng-container>
-              <br />
-              </tbody>
-            </ng-container>
-          </table>
         </div>
-
-        <div class="table-container" *ngIf="this.fetched.msv.data.length > 0 "><!--&& this.ngFrmCtrl.frm.value.suppliersIds.length > 0">-->
-          <table class="table is-fullwidth table is-bordered is-narrow">
-            <ng-container *ngFor="let supplier of this.fetched.msv.data">
-              <thead>
-              <tr style="background-color: #507ee1"><th colspan="4">Name</th><th>NIP</th></tr>
-              </thead>
-              <tbody>
-              <ng-container>
-                <tr>
-                  <td class="py-2" colspan="4">{{supplier.key.companyName}}</td>
-                  <td class="py-2">{{supplier.key.nip}}</td>
-                </tr>
-
-                <ng-container *ngFor="let product of supplier.products">
-                  <tr style="background-color: #dc774f" class="has-text-centered">
-                    <th class="py-2" colspan="4">{{product.key.name}}</th>
-                    <th class="py-2">{{product.key.code}}</th>
-                  </tr>
-                  <tr style="background-color: #dc774f"><th>Package</th><th>Total Quantity</th><th>Total Net</th><th>Total Vat</th><th>Total Gross</th></tr>
-
-                  <ng-container *ngFor="let unit of product.units">
-                    <tr class="has-text-left">
-                      <td class="py-2">
-                        {{unit.key.unitMeasureValue}} {{unitPackage.convert(product.key.unit)}}
-                      </td>
-                      <td class="py-2">
-                        {{unit.productQuantity}}
-                      </td>
-                      <td class="py-2">
-                        {{unit.productNetValue}}
-                      </td>
-                      <td class="py-2">
-                        {{unit.productVatValue}}
-                      </td>
-                      <td class="py-2">
-                        {{unit.productGrossValue}}
-                      </td>
-                    </tr>
-                  </ng-container>
-
-                  <tr class="has-text-left" style="background-color: #e0e708">
-                    <td class="py-2">
-                      {{product.totalMeasureUnitValue}} {{unitPackage.convert(product.key.unit)}}
-                    </td>
-                    <td class="py-2">
-                      -
-                    </td>
-                    <td class="py-2">
-                      {{product.totalNetValue}}
-                    </td>
-                    <td class="py-2">
-                      {{product.totalVatValue}}
-                    </td>
-                    <td class="py-2">
-                      {{product.totalGrossValue}}
-                    </td>
-                  </tr>
-                </ng-container>
-
-                <tr style="background-color: #507ee1"><th colspan="2">Documents</th><th>Total Net</th><th>Total Vat</th><th>Total Gross</th></tr>
-                <tr class="has-text-left">
-                  <td class="py-2" colspan="2">
-                    {{supplier.numberOfDocuments}}
-                  </td>
-                  <td class="py-2">
-                    {{supplier.totalNetValue}}
-                  </td>
-                  <td class="py-2">
-                    {{supplier.totalVatValue}}
-                  </td>
-                  <td class="py-2">
-                    {{supplier.totalGrossValue}}
-                  </td>
-                </tr>
-
-              </ng-container>
-              <br />
-              </tbody>
-            </ng-container>
-          </table>
-        </div>
-
-<!--        <pre>{{fetched.msv.data | json}}</pre>-->
-
-        <div *ngIf="this.fetched.msv.data.length == 0" class="has-text-centered">
-          NOT FOUND ANY ITEMS
-        </div>
-
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
