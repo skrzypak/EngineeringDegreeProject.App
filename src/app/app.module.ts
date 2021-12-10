@@ -52,6 +52,7 @@ import { SupplierContactsComponent } from './pages/dashboard-pages/invoicing/sup
 import { SuppliersPageRouterComponent } from './pages/dashboard-pages/invoicing/suppliers-page-router/suppliers-page-router.component';
 import { DocumentsPageRouterComponent } from './pages/dashboard-pages/invoicing/documents-page-router/documents-page-router.component';
 import { DocumentProductsComponent } from './pages/dashboard-pages/invoicing/documents-page-router/document-products/document-products.component';
+import { PasswordResetComponent } from './pages/password-reset/password-reset.component';
 
 @NgModule({
   declarations: [
@@ -101,6 +102,7 @@ import { DocumentProductsComponent } from './pages/dashboard-pages/invoicing/doc
     SuppliersPageRouterComponent,
     DocumentsPageRouterComponent,
     DocumentProductsComponent,
+    PasswordResetComponent,
   ],
   imports: [
     BrowserModule,

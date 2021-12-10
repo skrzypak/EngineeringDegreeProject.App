@@ -42,11 +42,13 @@ import {
 import {
   DocumentProductsComponent
 } from "./pages/dashboard-pages/invoicing/documents-page-router/document-products/document-products.component";
+import {PasswordResetComponent} from "./pages/password-reset/password-reset.component";
 
 const routes: Routes = [
   {path: '', redirectTo: '/enterprise', pathMatch: 'full'},
   {path: 'signup', component: SignUpPageComponent, canActivate: [NoAuthGuard]},
   {path: 'login', component: LogInPageComponent, canActivate: [NoAuthGuard]},
+  {path: 'password-reset/:username', component: PasswordResetComponent, canActivate: [NoAuthGuard]},
   {
     path: '', component: AppPageComponent, canActivate: [AuthGuard],
     children: [

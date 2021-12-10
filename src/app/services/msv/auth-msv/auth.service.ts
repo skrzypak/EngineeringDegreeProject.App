@@ -66,12 +66,12 @@ export class AuthService {
     return resp.data;
   }
 
-  async fetchPasswordReset(username: string, passwords: any) {
-    await this.universalService.fetchCustomPost(`${this.moduleBaseUri}/no/request/${username}/password-reset`,{
-      "new": passwords.newPassword,
-      "confirm": passwords.confirmPassword,
+  async fetchPasswordReset(data: any) {
+    let resp = await this.universalService.fetchCustomPost(`${this.moduleBaseUri}/no/request/${data.username}/password-reset`,{
+      "new": data.new,
+      "confirm": data.confirm,
     }, false);
-    await this.router.navigateByUrl('/login');
+    return resp.data;
   }
 
   async fetchLogout() {
