@@ -6,6 +6,7 @@ import {DishesService} from "../../../../services/msv/gastronomy-msv/dishes/dish
 import {MultiSelectSearchComponent} from "../../../../components/multi-select-search/multi-select-search.component";
 import {MealType} from "../../../../enums/meal-type";
 import {SpinnerWrapperComponent} from "../../../../components/spinner-wrapper/spinner-wrapper.component";
+import {UnitPackage} from "../../../../classes/unit-package";
 
 @Component({
   selector: 'app-menus-pages',
@@ -26,6 +27,10 @@ export class MenusPagesComponent implements OnInit {
       display: Array<any>(),
       data: Array<any>(),
       rxjs: new BehaviorSubject<number>(0)
+    },
+    menuInfo: {
+      allergens: Array<any>(),
+      ingredients: Array<any>(),
     }
   }
 
@@ -71,6 +76,8 @@ export class MenusPagesComponent implements OnInit {
     ]),
     rxjs: new BehaviorSubject<number>(0),
   }
+
+  unitPackage: UnitPackage = new UnitPackage();
 
   constructor(private menusService: MenusService, private dishesService: DishesService, private fb: FormBuilder) {
     this.ngFrmCtrl.frm = this.fb.group({
@@ -151,6 +158,9 @@ export class MenusPagesComponent implements OnInit {
 
       this.searchable.currentBtnKey = this.btnSetupKeys.meals;
 
+      this.fetched.menuInfo.allergens = resp.allergens;
+      this.fetched.menuInfo.ingredients = resp.ingredients;
+
       this.changeMealView(this.searchable.btnSetup.get(this.btnSetupKeys.meals).currMeal);
     } catch (e) {
       console.log(e)
@@ -205,6 +215,8 @@ export class MenusPagesComponent implements OnInit {
     this.searchable.btnSetup.get(this.btnSetupKeys.meals).tmp.add = [];
     this.searchable.btnSetup.get(this.btnSetupKeys.meals).tmp.remove = [];
     this.searchable.currentBtnKey = this.btnSetupKeys.available;
+    this.fetched.menuInfo.allergens = [];
+    this.fetched.menuInfo.ingredients =[];
     this.ngFrmCtrl.frm.reset();
   }
 

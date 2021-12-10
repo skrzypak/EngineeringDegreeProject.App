@@ -48,7 +48,11 @@ export class SettingsPageComponent implements OnInit {
   async onCloseAccount() {
     let isConfirmed = confirm("Are you sure that you want close this account?");
     if(isConfirmed){
-      await this.authService.fetchCloseAccount();
+      try {
+        await this.authService.fetchCloseAccount();
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
 
@@ -56,7 +60,8 @@ export class SettingsPageComponent implements OnInit {
     try {
       this.btnUpdate.nativeElement.classList.add('is-loading')
       const {currentPassword, newPassword, confirmPassword} = this.ngFrmCtrl.frm.value
-      this.result.msg = await this.authService.fetchPasswordChange(currentPassword, newPassword, confirmPassword);
+      await this.authService.fetchPasswordChange(currentPassword, newPassword, confirmPassword);
+      this.result.msg = 'Password successful updated';
       this.result.code = 0;
     } catch (e: any) {
       this.result.msg = e.data;

@@ -16,7 +16,7 @@
       <tr>
         <td *ngFor="let header of headers | keyvalue: zero" class="py-1"
             style="vertical-align: middle">
-          {{item[header.key]}}
+          {{header.key != "unit" ?  item[header.key] : unitPackage.convert(item[header.key]) }}
         </td>
         <td class="btn-action">
           <div class="level">

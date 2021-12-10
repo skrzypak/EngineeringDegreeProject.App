@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {UnitPackage} from "../../../../../classes/unit-package";
 
 @Component({
   selector: 'app-table-content-ingredients',
@@ -12,6 +13,8 @@ export class TableContentIngredientsComponent implements OnInit {
   @Output() subscribeAction = new EventEmitter<any>()
 
   constructor() { }
+
+  unitPackage: UnitPackage = new UnitPackage();
 
   ngOnInit(): void {
   }
