@@ -38,7 +38,7 @@ export class AuthService {
   }
 
   async fetchRegister(data: any) {
-    await this.universalService.fetchCustomPost(`${this.moduleBaseUri}/no/register`, {
+    let resp = await this.universalService.fetchCustomPost(`${this.moduleBaseUri}/no/register`, {
       "username": data.username,
       "password": data.password,
       "confirmedPassword": data.repeatPassword,
@@ -50,7 +50,7 @@ export class AuthService {
         "phoneNumber": data.phoneNumber === '' ? '' : `+${data.phoneNumberPrefix}${data.phoneNumber}`
       }
     }, false);
-    await this.router.navigateByUrl('/login');
+    return resp.data;
   }
 
   async fetchRefreshToken() {

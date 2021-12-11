@@ -3,6 +3,7 @@ import {GlobalConstants} from "../../common/global-constants";
 import {MessageType} from "../../enums/message-type";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../services/msv/auth-msv/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-sign-up-page',
@@ -39,7 +40,7 @@ export class SignUpPageComponent implements OnInit {
   get password() { return this.ngForm.get('password'); }
   get repeatPassword() { return this.ngForm.get('repeatPassword'); }
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -48,13 +49,14 @@ export class SignUpPageComponent implements OnInit {
     this.btnLoadingOnSubmit = true;
 
     try {
-      await this.authService.fetchRegister(this.ngForm.value);
+      let resp = await this.authService.fetchRegister(this.ngForm.value);
       this.messageType = MessageType.Success;
-      this.message = "Register complete successfully";
+      this.message = `Register complete successfully [DEV]: ${this.apiBaseURL}/auth/msv/no/register/confirmation/${resp}`;
+      //await this.router.navigateByUrl('/login');
     } catch (error: any) {
       this.messageType = MessageType.Error;
-      if(error.response.status != 500) {
-        this.message = error.response.data
+      if(error.status != 500) {
+        this.message = error.data
       } else {
         this.message = "Unable complete register";
       }

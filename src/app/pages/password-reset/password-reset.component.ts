@@ -4,6 +4,7 @@ import {ActivatedRoute} from "@angular/router";
 import {FormControl, FormGroup} from "@angular/forms";
 import {AuthService} from "../../services/msv/auth-msv/auth.service";
 import {MessageType} from "../../enums/message-type";
+import {GlobalConstants} from "../../common/global-constants";
 
 @Component({
   selector: 'app-password-reset',
@@ -17,6 +18,7 @@ export class PasswordResetComponent implements OnInit {
     private location: Location,
     private route: ActivatedRoute,) { }
 
+  apiBaseURL = GlobalConstants.apiBaseURL;
   ngForm = new FormGroup({
     username: new FormControl(''),
     new: new FormControl(''),
@@ -40,7 +42,8 @@ export class PasswordResetComponent implements OnInit {
     try {
       let resp = await this.authService.fetchPasswordReset(this.ngForm.value)
       this.messageType = MessageType.Success;
-      this.message = resp
+      this.message = `Password confirmation link [DEV]: ${this.apiBaseURL}/auth/msv/no/request/password-reset/confirmation/${resp}`;
+
     } catch (error: any) {
       this.messageType = MessageType.Error;
       this.message = error.msg;
