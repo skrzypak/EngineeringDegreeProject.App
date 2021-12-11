@@ -4,7 +4,18 @@
       <div class="container">
         <div class="box">
           <ng-container [formGroup]="ngFrmCtrl.frm">
-            <nav class="level">
+            <nav class="level is-fullwidth">
+              <div class="field is-fullwidth" style="width: 100%">
+                <label for="viewMode" class="label">Mode</label>
+                <div class="select is-fullwidth">
+                  <select formControlName="viewMode" id="viewMode" name="viewMode" >
+                    <option [ngValue]="0">Products</option>
+                    <option [ngValue]="1">Suppliers</option>
+                  </select>
+                </div>
+              </div>
+            </nav>
+            <nav class="level" *ngIf="this.ngFrmCtrl.frm.value.viewMode == 1">
               <div class="select is-multiple is-fullwidth">
                 <label for="suppliersIds" class="label">
                   <p class="alignleft">Suppliers</p>
@@ -50,17 +61,6 @@
                 <select formControlName="documentStates" id="documentStates" name="documentStates"  multiple size="2">
                   <option *ngFor="let dsp of documentStatesPackage.list" [ngValue]="dsp">{{documentStatesPackage.convert(dsp)}}</option>
                 </select>
-              </div>
-            </nav>
-            <nav class="level is-fullwidth">
-              <div class="field is-fullwidth" style="width: 100%">
-                <label for="viewMode" class="label">Mode</label>
-                <div class="select is-fullwidth">
-                  <select formControlName="viewMode" id="viewMode" name="viewMode" >
-                    <option [ngValue]="0">Products</option>
-                    <option [ngValue]="1">Suppliers</option>
-                  </select>
-                </div>
               </div>
             </nav>
             <nav class="level">
