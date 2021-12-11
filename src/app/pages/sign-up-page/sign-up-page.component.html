@@ -131,7 +131,7 @@
               </div>
             </div>
 
-            <div class="field" *ngIf="this.message.length">
+            <div class="field" *ngIf="this.message !== ''">
               <article class="message" [ngClass]="{'is-primary': messageType == 0, 'is-danger': messageType != 0}">
                 <div class="message-body">{{this.message}}</div>
               </article>

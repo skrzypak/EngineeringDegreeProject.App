@@ -28,6 +28,7 @@ export class AuthService {
         "username": username,
         "password": password
       }, false);
+      localStorage.clear();
       await this.router.navigateByUrl('/');
     } catch (e: any) {
       throw {
@@ -76,11 +77,13 @@ export class AuthService {
 
   async fetchLogout() {
     await this.universalService.fetchCustomDelete(`${this.moduleBaseUri}/no/logout`,false);
+    localStorage.clear();
     await this.router.navigateByUrl('/login');
   }
 
   async fetchCloseAccount() {
     await this.universalService.fetchCustomDelete(`${this.moduleBaseUri}/close-account`, false);
+    localStorage.clear();
     await this.router.navigateByUrl('/login');
   }
 

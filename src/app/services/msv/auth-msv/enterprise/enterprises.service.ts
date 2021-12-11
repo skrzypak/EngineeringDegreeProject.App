@@ -63,15 +63,9 @@ export class EnterprisesService {
   }
 
   async fetchGet(): Promise<Array<any>> {
-    let item = this.getLocalEnterprises();
-
-    if(item.length > 0) {
-      return item;
-    } else {
-      let resp = await this.universalService.fetchCustomGet(this.moduleBaseUri, false);
-      this.fetched = resp.data;
-      return resp.data;
-    }
+    let resp = await this.universalService.fetchCustomGet(this.moduleBaseUri, false);
+    this.fetched = resp.data;
+    return resp.data;
   }
 
   async fetchGetById(id: number) {
