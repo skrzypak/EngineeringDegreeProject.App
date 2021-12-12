@@ -46,6 +46,7 @@ export class UniversalService {
   async fetchCustomPost(path: string, data: any, esp: boolean = true) : Promise<any> {
     let u = this.setupCustomUrl(path, esp);
     try {
+      console.log(data)
       let resp = await axios.post(u, data, {withCredentials: true});
       console.log(resp)
       return resp;
@@ -70,6 +71,7 @@ export class UniversalService {
   async fetchCustomPut(path: string, data: any, esp: boolean = true) : Promise<any> {
     let u = this.setupCustomUrl(path, esp);
     try {
+      console.log(data)
       let resp = await axios.put(u, data, {withCredentials: true});
       console.log(resp)
       return resp;
@@ -82,6 +84,7 @@ export class UniversalService {
   async fetchCustomPatch(path: string, data: any, esp: boolean = true) : Promise<any> {
     let u = this.setupCustomUrl(path, esp);
     try {
+      console.log(data)
       let resp = await axios.patch(u, data, {withCredentials: true});
       console.log(resp)
       return resp;
