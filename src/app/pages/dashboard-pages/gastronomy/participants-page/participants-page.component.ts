@@ -93,7 +93,7 @@ export class ParticipantsPageComponent implements OnInit, AfterViewInit {
       data.nutritionGroups = this.frmNutritionGroupChild.localRight;
       data.nutritionGroups = data.nutritionGroups.map((o: any) => o.id);
       await this.participantsService.fetchCreate(data);
-      window.location.reload();
+      setTimeout( function () {window.location.reload()}, 1500)
       this.onReset()
     } catch (e) {
       console.log(e)
@@ -106,7 +106,7 @@ export class ParticipantsPageComponent implements OnInit, AfterViewInit {
       data.nutritionGroups = this.frmNutritionGroupChild.localRight;
       data.nutritionGroups = data.nutritionGroups.map((o: any) => o.id);
       await this.participantsService.fetchUpdate(data);
-      window.location.reload();
+      setTimeout( function () {window.location.reload()}, 1500)
       this.onReset()
     } catch (e) {
       console.log(e)
@@ -116,7 +116,7 @@ export class ParticipantsPageComponent implements OnInit, AfterViewInit {
   async onDelete() {
     try {
       await this.participantsService.fetchDelete(this.ngFrmCtrl.frm.value.id);
-      window.location.reload();
+      setTimeout( function () {window.location.reload()}, 1500)
     } catch (e) {
       console.log(e)
       this.onReset();

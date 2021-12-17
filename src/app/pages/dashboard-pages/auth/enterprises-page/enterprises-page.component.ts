@@ -65,7 +65,7 @@ export class EnterprisesPageComponent implements OnInit {
   async onDeleteEnterprise(id: number) {
     try {
       await this.enterprisesService.fetchDelete(id);
-      window.location.reload();
+      setTimeout( function () {window.location.reload()}, 1500)
     } catch (e) {}
   }
 
@@ -98,7 +98,7 @@ export class EnterprisesPageComponent implements OnInit {
       delete data.id;
       await this.enterprisesService.fetchCreate(data);
       this.hideModal();
-      window.location.reload();
+      setTimeout( function () {window.location.reload()}, 1500)
     } catch (e) {}
   }
 

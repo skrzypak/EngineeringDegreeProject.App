@@ -95,14 +95,13 @@ export class EnterprisesService {
   }
 
   async fetchDelete(id: number) {
-    await this.universalService.fetchDelete(this.moduleBaseUri, id);
-
     try {
+      await this.universalService.fetchDelete(this.moduleBaseUri, id);
       if (parseInt(this.espService.getEspId()) == id) {
         localStorage.removeItem("esp")
       }
     } catch (e: any) {} finally {
-      window.location.reload();
+      setTimeout( function () {window.location.reload()}, 1500)
     }
   }
 

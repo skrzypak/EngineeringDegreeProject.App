@@ -129,7 +129,7 @@ export class ProductsPageComponent implements OnInit {
       data.allergens = this.frmAllergensChild.localRight;
       data.allergens = data.allergens.map((o: any) => o.id);
       await this.productsService.fetchCreate(data);
-      window.location.reload();
+      setTimeout( function () {window.location.reload()}, 1500)
       this.onReset()
     } catch (e) {
       console.log(e)
@@ -143,7 +143,7 @@ export class ProductsPageComponent implements OnInit {
       data.allergens = this.frmAllergensChild.localRight;
       data.allergens = data.allergens.map((o: any) => o.id);
       await this.productsService.fetchUpdate(data);
-      window.location.reload();
+      setTimeout( function () {window.location.reload()}, 1500)
       this.onReset()
     } catch (e) {
       console.log(e)
@@ -153,7 +153,7 @@ export class ProductsPageComponent implements OnInit {
   async onDelete() {
     try {
       await this.productsService.fetchDelete(this.ngFrmCtrl.frm.value.id);
-      window.location.reload();
+      setTimeout( function () {window.location.reload()}, 1500)
     } catch (e) {
       console.log(e)
       this.onReset();

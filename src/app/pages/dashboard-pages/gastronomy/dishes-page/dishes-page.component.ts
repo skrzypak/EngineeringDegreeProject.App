@@ -176,7 +176,7 @@ export class DishesPageComponent implements OnInit {
       });
 
       this.onReset();
-      window.location.reload();
+      setTimeout( function () {window.location.reload()}, 1500)
     } catch (e) {
       console.log(e)
     } finally {
@@ -213,7 +213,7 @@ export class DishesPageComponent implements OnInit {
       });
 
       this.onReset();
-      window.location.reload();
+      setTimeout( function () {window.location.reload()}, 1500)
     } catch (e) {
       console.log(e)
     } finally {
@@ -225,7 +225,7 @@ export class DishesPageComponent implements OnInit {
     try {
       this.frmProductsChildSpinner.setState(true);
       await this.dishesService.fetchDelete(this.ngFrmCtrl.frm.value.id);
-      window.location.reload();
+      setTimeout( function () {window.location.reload()}, 1500)
     } catch (e) {
       console.log(e)
     } finally {

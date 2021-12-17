@@ -187,7 +187,7 @@ export class MenusPagesComponent implements OnInit {
       });
 
       this.onReset();
-      window.location.reload();
+      setTimeout( function () {window.location.reload()}, 1500)
     } catch (e) {
       console.log(e)
     } finally {
@@ -235,7 +235,7 @@ export class MenusPagesComponent implements OnInit {
       });
 
       this.onReset();
-      window.location.reload();
+      setTimeout( function () {window.location.reload()}, 1500)
     } catch (e) {
       console.log(e)
     } finally {
@@ -246,7 +246,7 @@ export class MenusPagesComponent implements OnInit {
   async onDelete() {
     try {
       await this.menusService.fetchDelete(this.ngFrmCtrl.frm.value.id);
-      window.location.reload();
+      setTimeout( function () {window.location.reload()}, 1500)
     } catch (e) {
       console.log(e)
     } finally {

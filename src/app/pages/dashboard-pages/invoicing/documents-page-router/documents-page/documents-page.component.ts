@@ -125,7 +125,7 @@ export class DocumentsPageComponent implements OnInit {
       data.products = [];
       data.id = await this.documentsService.fetchCreate(data);
       this.onReset()
-      window.location.reload();
+      setTimeout( function () {window.location.reload()}, 1500)
     } catch (e) {
       console.log(e)
     }
@@ -144,7 +144,7 @@ export class DocumentsPageComponent implements OnInit {
         description: data.description,
       });
       this.onReset()
-      window.location.reload();
+      setTimeout( function () {window.location.reload()}, 1500)
     } catch (e) {
       console.log(e)
     }

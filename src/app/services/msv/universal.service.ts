@@ -3,6 +3,7 @@ import {GlobalConstants} from "../../common/global-constants";
 import axios from "axios";
 import {UrlModuleApi} from "../../enums/url-module-api";
 import {EspService} from "../common/local-managments/esp.service";
+import {ToastrService} from "ngx-toastr";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class UniversalService {
 
   apiBaseURL = GlobalConstants.apiBaseURL;
 
-  constructor(private espService: EspService) { }
+  constructor(private espService: EspService, private toastr: ToastrService) { }
 
   async fetchPost(uri: UrlModuleApi, data: any) : Promise<any> {
     return await this.fetchCustomPost(uri, data);
@@ -48,13 +49,16 @@ export class UniversalService {
     try {
       console.log(data)
       let resp = await axios.post(u, data, {withCredentials: true});
+      this.toastr.success('', 'Success')
       console.log(resp)
       return resp;
     } catch (e: any) {
+      this.toastr.error('','Failed');
       console.log(e.response)
       throw e.response;
     }
   }
+
 
   async fetchCustomGet(path: string, esp: boolean = true) : Promise<any> {
     let u = this.setupCustomUrl(path, esp);
@@ -73,9 +77,11 @@ export class UniversalService {
     try {
       console.log(data)
       let resp = await axios.put(u, data, {withCredentials: true});
+      this.toastr.success('', 'Success');
       console.log(resp)
       return resp;
     } catch (e: any) {
+      this.toastr.error('','Failed');
       console.log(e.response)
       throw e.response;
     }
@@ -86,9 +92,11 @@ export class UniversalService {
     try {
       console.log(data)
       let resp = await axios.patch(u, data, {withCredentials: true});
+      this.toastr.success('', 'Success');
       console.log(resp)
       return resp;
     } catch (e: any) {
+      this.toastr.error('','Failed');
       console.log(e.response)
       throw e.response;
     }
@@ -98,9 +106,11 @@ export class UniversalService {
     try {
       let u = this.setupCustomUrl(path, esp);
       let resp = await axios.delete(u, {withCredentials: true});
+      this.toastr.success('', 'Success');
       console.log(resp)
       return resp;
     } catch (e: any) {
+      this.toastr.error('','Failed');
       console.log(e.response)
       throw e.response;
     }

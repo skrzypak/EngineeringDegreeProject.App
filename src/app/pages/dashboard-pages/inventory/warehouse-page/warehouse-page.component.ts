@@ -52,7 +52,7 @@ export class WarehousePageComponent implements OnInit {
 
     try {
       let resp = await this.msvService.fetchPatchWarehouseProduct(operationType, productId, unitMeasureValue, Number(value));
-      window.location.reload();
+      setTimeout( function () {window.location.reload()}, 1500)
     } catch (e) {
       console.log(e);
     }

@@ -78,7 +78,7 @@ export class AllergensPageComponent implements OnInit {
       let data = this.ngFrmCtrl.frm.value
       delete data.id;
       await this.allergensService.fetchCreate(data);
-      window.location.reload();
+      setTimeout( function () {window.location.reload()}, 1500)
       this.onReset()
     } catch (e) {
       console.log(e)
@@ -89,7 +89,7 @@ export class AllergensPageComponent implements OnInit {
     try {
       let data = this.ngFrmCtrl.frm.value
       await this.allergensService.fetchUpdate(data);
-      window.location.reload();
+      setTimeout( function () {window.location.reload()}, 1500)
       this.onReset()
     } catch (e) {
       console.log(e)
@@ -99,7 +99,7 @@ export class AllergensPageComponent implements OnInit {
   async onDelete() {
     try {
       await this.allergensService.fetchDelete(this.ngFrmCtrl.frm.value.id);
-      window.location.reload();
+      setTimeout( function () {window.location.reload()}, 1500)
     } catch (e) {
       console.log(e)
       this.onReset();

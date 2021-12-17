@@ -128,7 +128,7 @@ export class SuppliersPageComponent implements OnInit {
       delete data.id;
       data.supplierContactPersons = [];
       await this.suppliersService.fetchCreate(data);
-      window.location.reload();
+      setTimeout( function () {window.location.reload()}, 1500)
       this.onReset()
     } catch (e) {
       console.log(e)
@@ -139,7 +139,7 @@ export class SuppliersPageComponent implements OnInit {
     try {
       let data = this.ngFrmCtrl.frm.value
       await this.suppliersService.fetchUpdate(data);
-      window.location.reload();
+      setTimeout( function () {window.location.reload()}, 1500)
       this.onReset()
     } catch (e) {
       console.log(e)
@@ -149,7 +149,7 @@ export class SuppliersPageComponent implements OnInit {
   async onDelete() {
     try {
       await this.suppliersService.fetchDelete(this.ngFrmCtrl.frm.value.id);
-      window.location.reload();
+      setTimeout( function () {window.location.reload()}, 1500)
     } catch (e) {
       console.log(e)
       this.onReset();

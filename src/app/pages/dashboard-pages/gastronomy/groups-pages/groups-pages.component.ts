@@ -263,7 +263,9 @@ export class GroupsPagesComponent implements OnInit {
       });
 
       this.onReset();
-      window.location.reload();
+
+      setTimeout( function () {window.location.reload()}, 1500)
+
     } catch (e) {
       console.log(e)
     } finally {
@@ -300,7 +302,7 @@ export class GroupsPagesComponent implements OnInit {
       });
 
       this.onReset();
-      window.location.reload();
+      setTimeout( function () {window.location.reload()}, 1500)
     } catch (e) {
       console.log(e)
     } finally {
@@ -312,7 +314,7 @@ export class GroupsPagesComponent implements OnInit {
     try {
       this.frmNutritionGroupsChildSpinner.setState(true);
       await this.nutritionGroupService.fetchDelete(this.ngFrmCtrl.frm.value.id);
-      window.location.reload();
+      setTimeout( function () {window.location.reload()}, 1500)
     } catch (e) {
       console.log(e)
     } finally {

@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -109,6 +111,11 @@ import { PasswordResetComponent } from './pages/password-reset/password-reset.co
     ReactiveFormsModule,
     SweetAlert2Module.forRoot(),
     AppRoutingModule,
+    BrowserAnimationsModule, // required animations module
+    ToastrModule.forRoot({
+      timeOut: 1250,
+      positionClass: 'toast-bottom-right'
+    })
   ],
   providers: [
     LoaderService
