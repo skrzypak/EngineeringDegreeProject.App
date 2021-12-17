@@ -30,4 +30,9 @@ export class ParticipantsService {
     let resp = await this.universalService.fetchDelete(this.moduleBaseUri, id);
     return resp.data;
   }
+
+  async fetchUpdate(data: any) {
+    let resp = await this.universalService.fetchPut(this.moduleBaseUri, data.id, data);
+    return resp.data;
+  }
 }

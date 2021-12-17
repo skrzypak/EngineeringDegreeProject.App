@@ -30,7 +30,8 @@ export class TableContentProductsComponent implements OnInit {
         "productId": item.id,
         "name": item.name,
         "code": item.code,
-        "valueOfUse": value
+        "valueOfUse": value,
+        "unit": item.unit,
     }
     this.subscribeAction.emit(ingredient);
   }

@@ -185,7 +185,41 @@ export class DishesPageComponent implements OnInit {
   }
 
   async onUpdate() {
+    try {
+      this.frmProductsChildSpinner.setState(true);
 
+      let fetched = this.searchable.btnSetup.get(this.btnSetupKeys.ingredients).fetched.map((o: any) => {
+        return (({ productId, valueOfUse }) => ({ productId, valueOfUse }))(o);
+      })
+
+
+      let remove = this.searchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.add.map((o: any) => {
+        return (({ productId, valueOfUse }) => ({ productId, valueOfUse }))(o);
+      })
+
+      let ingredients = fetched.filter((o: any) => {
+        return !remove.includes(o);
+      });
+
+      let add = this.searchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.add.map((o: any) => {
+        return (({ productId, valueOfUse }) => ({ productId, valueOfUse }))(o);
+      })
+
+      ingredients = ingredients.concat(add);
+
+      await this.dishesService.fetchUpdate(this.ngFrmCtrl.frm.value.id, {
+        "name": this.ngFrmCtrl.frm.value.name,
+        "description": this.ngFrmCtrl.frm.value.description,
+        "ingredients": ingredients,
+      });
+
+      this.onReset();
+      window.location.reload();
+    } catch (e) {
+      console.log(e)
+    } finally {
+      this.frmProductsChildSpinner.setState(false);
+    }
   }
 
   async onDelete() {

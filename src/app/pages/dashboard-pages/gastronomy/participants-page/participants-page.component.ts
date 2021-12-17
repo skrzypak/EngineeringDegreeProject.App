@@ -101,6 +101,16 @@ export class ParticipantsPageComponent implements OnInit, AfterViewInit {
   }
 
   async onUpdate() {
+    try {
+      let data = this.ngFrmCtrl.frm.value
+      data.nutritionGroups = this.frmNutritionGroupChild.localRight;
+      data.nutritionGroups = data.nutritionGroups.map((o: any) => o.id);
+      await this.participantsService.fetchUpdate(data);
+      window.location.reload();
+      this.onReset()
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   async onDelete() {

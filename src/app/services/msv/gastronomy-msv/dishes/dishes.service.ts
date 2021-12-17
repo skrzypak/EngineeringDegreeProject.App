@@ -30,4 +30,9 @@ export class DishesService {
     let resp = await this.universalService.fetchDelete(this.moduleBaseUri, id);
     return resp.data;
   }
+
+  async fetchUpdate(id: number,  data: { name: any; description: any; ingredients: any }) {
+    let resp = await this.universalService.fetchPut(this.moduleBaseUri, id, data);
+    return resp.data;
+  }
 }
