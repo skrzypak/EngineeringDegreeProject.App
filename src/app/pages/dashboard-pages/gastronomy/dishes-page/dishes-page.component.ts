@@ -192,7 +192,6 @@ export class DishesPageComponent implements OnInit {
         return (({ productId, valueOfUse }) => ({ productId, valueOfUse }))(o);
       })
 
-
       let remove = this.searchable.btnSetup.get(this.btnSetupKeys.ingredients).tmp.add.map((o: any) => {
         return (({ productId, valueOfUse }) => ({ productId, valueOfUse }))(o);
       })

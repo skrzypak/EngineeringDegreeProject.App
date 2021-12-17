@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MenusService} from "../../../../services/msv/gastronomy-msv/menus/menus.service";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, retry} from "rxjs";
 import {DishesService} from "../../../../services/msv/gastronomy-msv/dishes/dishes.service";
 import {MultiSelectSearchComponent} from "../../../../components/multi-select-search/multi-select-search.component";
 import {MealType} from "../../../../enums/meal-type";
@@ -196,7 +196,51 @@ export class MenusPagesComponent implements OnInit {
   }
 
   async onUpdate() {
+    try {
+      this.frmMenuChildSpinner.setState(true);
 
+      let fetched = this.searchable.btnSetup.get(this.btnSetupKeys.meals).fetched.map((o: any) => {
+        return o.dishes.map((o1: any) => {
+          return {
+            "dish": o1.dishId,
+            "mealType": parseInt(o.key.meal)
+          }
+        });
+      })
+
+      if(fetched.length > 0) {
+        fetched = [].concat.apply([], fetched);
+      }
+
+      let remove = this.searchable.btnSetup.get(this.btnSetupKeys.meals).tmp.remove;
+
+      let dishes = fetched.filter((o: any) => {
+        return !remove.includes(o);
+      });
+
+      let add = this.searchable.btnSetup.get(this.btnSetupKeys.meals).tmp.add.map((o: any) => {
+        return {
+          "dish": o.value.dishId,
+          "mealType": parseInt(o.meal)
+        }
+      })
+
+      dishes = dishes.concat(add);
+
+      await this.menusService.fetchUpdate(this.ngFrmCtrl.frm.value.id, {
+        "name": this.ngFrmCtrl.frm.value.name,
+        "code": this.ngFrmCtrl.frm.value.code,
+        "description": this.ngFrmCtrl.frm.value.description,
+        "dishes": dishes
+      });
+
+      this.onReset();
+      window.location.reload();
+    } catch (e) {
+      console.log(e)
+    } finally {
+      this.frmMenuChildSpinner.setState(false);
+    }
   }
 
   async onDelete() {
@@ -277,7 +321,11 @@ export class MenusPagesComponent implements OnInit {
       }
 
       this.searchable.btnSetup.get(this.btnSetupKeys.meals).fetched = fetched;
-      this.searchable.btnSetup.get(this.btnSetupKeys.meals).tmp.remove.push(e)
+      this.searchable.btnSetup.get(this.btnSetupKeys.meals).tmp.remove.push({
+        "dish": e,
+        "mealType": parseInt(currMealKey)
+      })
+
     }
 
     this.changeMealView(currMealKey);
