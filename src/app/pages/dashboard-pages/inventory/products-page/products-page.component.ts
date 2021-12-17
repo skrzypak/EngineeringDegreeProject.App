@@ -137,6 +137,17 @@ export class ProductsPageComponent implements OnInit {
   }
 
   async onUpdate() {
+    try {
+      let data = this.ngFrmCtrl.frm.value
+      data.unit = Number(data.unit)
+      data.allergens = this.frmAllergensChild.localRight;
+      data.allergens = data.allergens.map((o: any) => o.id);
+      await this.productsService.fetchUpdate(data);
+      window.location.reload();
+      this.onReset()
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   async onDelete() {

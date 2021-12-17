@@ -30,4 +30,9 @@ export class CategoriesService {
     let resp = await this.universalService.fetchDelete(this.moduleBaseUri, id);
     return resp.data;
   }
+
+  async fetchUpdate(data: any) {
+    let resp = await this.universalService.fetchCustomPatch(this.moduleBaseUri, data);
+    return resp.data;
+  }
 }

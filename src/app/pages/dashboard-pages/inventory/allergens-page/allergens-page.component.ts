@@ -86,6 +86,14 @@ export class AllergensPageComponent implements OnInit {
   }
 
   async onUpdate() {
+    try {
+      let data = this.ngFrmCtrl.frm.value
+      await this.allergensService.fetchUpdate(data);
+      window.location.reload();
+      this.onReset()
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   async onDelete() {

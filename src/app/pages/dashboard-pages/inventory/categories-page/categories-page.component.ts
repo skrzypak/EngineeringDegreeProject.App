@@ -86,6 +86,14 @@ export class CategoriesPageComponent implements OnInit {
   }
 
   async onUpdate() {
+    try {
+      let data = this.ngFrmCtrl.frm.value
+      await this.categoriesService.fetchUpdate(data);
+      window.location.reload();
+      this.onReset()
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   async onDelete() {
