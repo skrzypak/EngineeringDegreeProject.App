@@ -177,7 +177,41 @@ export class PlansPagesComponent implements OnInit {
   }
 
   async onUpdate() {
+    try {
+      this.frmPlansChildSpinner.setState(true);
 
+      let fetched = this.searchable.btnSetup.get(this.btnSetupKeys.details).fetched.map((o: any) => {
+        return {"menu": o.menuId, "order": o.order}
+      })
+
+      let remove = this.searchable.btnSetup.get(this.btnSetupKeys.details).tmp.remove.map((o: any) => {
+        return {"menu": o.menuId, "order": o.order}
+      })
+
+      let menus = fetched.filter((o: any) => {
+        return !remove.includes(o);
+      });
+
+      let add = this.searchable.btnSetup.get(this.btnSetupKeys.details).tmp.add.map((o: any) => {
+        return {"menu": o.menuId, "order": o.order}
+      })
+
+      menus = menus.concat(add);
+
+      await this.nutritionPlansService.fetchUpdate(this.ngFrmCtrl.frm.value.id, {
+        "code": this.ngFrmCtrl.frm.value.code,
+        "name": this.ngFrmCtrl.frm.value.name,
+        "description": this.ngFrmCtrl.frm.value.description,
+        "menus": menus
+      });
+
+      this.onReset();
+      //window.location.reload();
+    } catch (e) {
+      console.log(e)
+    } finally {
+      this.frmPlansChildSpinner.setState(false);
+    }
   }
 
   async onDelete() {

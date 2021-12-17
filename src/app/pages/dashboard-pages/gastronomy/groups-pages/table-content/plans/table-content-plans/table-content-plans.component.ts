@@ -24,6 +24,7 @@ export class TableContentPlansComponent implements OnInit {
     let startDate = (<HTMLInputElement>document.getElementById(`${item.id}_start_date`)).value;
     let endDate = (<HTMLInputElement>document.getElementById(`${item.id}_end_date`)).value;
 
+
     if((startDate === "" || endDate === "") || startDate > endDate) {
       return;
     }

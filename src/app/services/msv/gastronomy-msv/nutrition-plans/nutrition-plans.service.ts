@@ -30,4 +30,9 @@ export class NutritionPlansService {
     let resp = await this.universalService.fetchDelete(this.moduleBaseUri, id);
     return resp.data;
   }
+
+  async fetchUpdate(id: number, data: { code: any; name: any; description: any; menus: any }) {
+    let resp = await this.universalService.fetchPut(this.moduleBaseUri, id, data);
+    return resp.data;
+  }
 }

@@ -272,7 +272,40 @@ export class GroupsPagesComponent implements OnInit {
   }
 
   async onUpdate() {
+    try {
+      this.frmNutritionGroupsChildSpinner.setState(true);
 
+      const {selected} = this.searchable.participants.keys
+
+      let participantsToAdd = this.searchable.participants.btnSetup.get(selected).tmp.add.map((o: any) => {
+        return (({ participantId, startDate, endDate }) => ({ participantId, startDate, endDate }))(o)
+      })
+
+      const {list} = this.searchable.plans.keys
+      let plansToAdd = this.searchable.plans.btnSetup.get(list).tmp.add.map((o: any) => {
+        return (({ nutritionPlanId, startDate, endDate }) => ({ nutritionPlanId, startDate, endDate }))(o);
+      })
+
+      let participantsToRemove = this.searchable.participants.btnSetup.get(selected).tmp.remove;
+      console.log(participantsToRemove)
+      let plansToRemove = this.searchable.plans.btnSetup.get(list).tmp.remove;
+
+      await this.nutritionGroupService.fetchUpdate(this.ngFrmCtrl.frm.value.id, {
+        "name": this.ngFrmCtrl.frm.value.name,
+        "description": this.ngFrmCtrl.frm.value.description,
+        "participantsToAdd": participantsToAdd,
+        "participantsToRemove": participantsToRemove,
+        "plansToAdd": plansToAdd,
+        "plansToRemove": plansToRemove
+      });
+
+      this.onReset();
+      window.location.reload();
+    } catch (e) {
+      console.log(e)
+    } finally {
+      this.frmNutritionGroupsChildSpinner.setState(false);
+    }
   }
 
   async onDelete() {
@@ -398,7 +431,7 @@ export class GroupsPagesComponent implements OnInit {
       });
 
     this.searchable.participants.btnSetup.get(selected).tmp.remove =
-      this.searchable.participants.btnSetup.get(selected).fetched.filter((o: number) => {
+      this.searchable.participants.btnSetup.get(selected).tmp.remove.filter((o: number) => {
         return o != e.participantId;
       });
 

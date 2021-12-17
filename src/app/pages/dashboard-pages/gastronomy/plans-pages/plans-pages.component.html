@@ -101,7 +101,9 @@
                   <button (click)="onCreate()" class="button is-success is-fullwidth">Create</button>
                 </div>
                 <div class="column">
-                  <button (click)="onUpdate()" class="button is-info is-disabled is-fullwidth" disabled>Update</button>
+                  <button (click)="onUpdate()" class="button is-info is-disabled is-fullwidth"
+                          [disabled]="(ngFrmCtrl.frm.value != null && ngFrmCtrl.frm.value.id == null)"
+                  >Update</button>
                 </div>
                 <div class="column">
                   <button (click)="onDelete()"
