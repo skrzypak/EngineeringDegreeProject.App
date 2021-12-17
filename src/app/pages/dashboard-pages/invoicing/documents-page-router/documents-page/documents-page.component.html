@@ -89,8 +89,11 @@
               <label for="supplier" class="label">Supplier <span class="has-text-danger">*</span></label>
               <div class="control">
                 <div class="select">
-                  <select formControlName="supplier" id="supplier" name="supplier">
-                    <option *ngFor="let supp of fetched.suppliers.data" [ngValue]="supp.id">{{supp.companyName}} - {{supp.code}}</option>
+                  <select [class.has-background-grey-light]="(ngFrmCtrl.frm.value != null && ngFrmCtrl.frm.value.id != null)"
+                          formControlName="supplier" id="supplier" name="supplier" >
+                    <option
+                      [disabled]="(ngFrmCtrl.frm.value != null && ngFrmCtrl.frm.value.id != null)"
+                      *ngFor="let supp of fetched.suppliers.data" [ngValue]="supp.id">{{supp.companyName}} - {{supp.code}}</option>
                   </select>
                 </div>
               </div>
@@ -124,7 +127,9 @@
                 >Create</button>
               </div>
               <div class="column">
-                <button class="button is-info is-disabled is-fullwidth" (click)="onUpdate()" disabled>Update</button>
+                <button class="button is-info is-disabled is-fullwidth" (click)="onUpdate()"
+                        [disabled]="(ngFrmCtrl.frm.value != null && ngFrmCtrl.frm.value.id == null)"
+                >Update</button>
               </div>
               <div class="column">
                 <button class="button is-danger is-fullwidth" (click)="onDelete()"

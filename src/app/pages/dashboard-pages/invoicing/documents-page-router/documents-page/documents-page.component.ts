@@ -132,6 +132,22 @@ export class DocumentsPageComponent implements OnInit {
   }
 
   async onUpdate() {
+    try {
+      let data = this.ngFrmCtrl.frm.value
+      await this.documentsService.fetchUpdate({
+        id: data.id,
+        signature: data.signature,
+        number: data.number,
+        type : data.type,
+        date: data.date,
+        state: data.state,
+        description: data.description,
+      });
+      this.onReset()
+      window.location.reload();
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   async onDelete() {

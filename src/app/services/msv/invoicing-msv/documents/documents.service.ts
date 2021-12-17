@@ -26,6 +26,11 @@ export class DocumentsService {
     return resp.data;
   }
 
+  async fetchUpdate(data: any) {
+    let resp = await this.universalService.fetchPatch(this.moduleBaseUri, data.id, data);
+    return resp.data;
+  }
+
   async fetchDelete(id: number) {
     let resp = await this.universalService.fetchDelete(this.moduleBaseUri, id);
     return resp.data;
@@ -43,6 +48,11 @@ export class DocumentsService {
 
   async fetchCreateType(data: any) {
     let resp = await this.universalService.fetchCustomPost(`${this.moduleBaseUri}/types`, data);
+    return resp.data;
+  }
+
+  async fetchUpdateType(data: any) {
+    let resp = await this.universalService.fetchCustomPut(`${this.moduleBaseUri}/types`, data);
     return resp.data;
   }
 
@@ -70,4 +80,5 @@ export class DocumentsService {
     let resp = await this.universalService.fetchCustomDelete(`${this.moduleBaseUri}/${documentId}/products/${documentProductId}?hardReset=true`);
     return resp.data;
   }
+
 }

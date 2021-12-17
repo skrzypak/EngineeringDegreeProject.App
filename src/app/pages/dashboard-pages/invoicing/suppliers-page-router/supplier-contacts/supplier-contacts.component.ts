@@ -113,6 +113,16 @@ export class SupplierContactsComponent implements OnInit {
   }
 
   async onUpdate() {
+    try {
+      let data = this.ngFrmCtrl.frm.value
+      await this.suppliersService.fetchContactUpdate(this.supplierId, data);
+      let objIndex =  this.fetched.contacts.data.findIndex((obj: any) => obj.id == data.id)
+      this.fetched.contacts.data[objIndex] = data;
+      this.publish(this.fetched.contacts.data);
+      this.onReset()
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   async onDelete() {

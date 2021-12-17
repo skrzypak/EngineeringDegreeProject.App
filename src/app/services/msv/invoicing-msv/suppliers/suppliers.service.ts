@@ -26,6 +26,11 @@ export class SuppliersService {
     return resp.data;
   }
 
+  async fetchUpdate(data: any) {
+    let resp = await this.universalService.fetchPatch(this.moduleBaseUri, data.id, data);
+    return resp.data;
+  }
+
   async fetchDelete(id: number) {
     let resp = await this.universalService.fetchDelete(this.moduleBaseUri, id);
     return resp.data;
@@ -50,4 +55,11 @@ export class SuppliersService {
     let resp = await this.universalService.fetchCustomDelete(`${this.moduleBaseUri}/${supplierId}/contacts/${id}`);
     return resp.data;
   }
+
+  async fetchContactUpdate(supplierId: number, data: any) {
+    let resp = await this.universalService.fetchCustomPut(`${this.moduleBaseUri}/${supplierId}/contacts`, data);
+    return resp.data;
+  }
+
+
 }

@@ -77,7 +77,9 @@
                 >Create</button>
               </div>
               <div class="column">
-                <button class="button is-info is-disabled is-fullwidth" (click)="onUpdate()" disabled>Update</button>
+                <button class="button is-info is-disabled is-fullwidth" (click)="onUpdate()"
+                        [disabled]="(ngFrmCtrl.frm.value != null && ngFrmCtrl.frm.value.id == null)"
+                >Update</button>
               </div>
               <div class="column">
                 <button class="button is-danger is-fullwidth" (click)="onDelete()"

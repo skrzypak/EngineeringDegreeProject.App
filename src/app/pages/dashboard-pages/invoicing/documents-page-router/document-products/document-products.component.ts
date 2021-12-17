@@ -200,9 +200,6 @@ export class DocumentProductsComponent implements OnInit {
     }
   }
 
-  async onUpdate() {
-  }
-
   async onDelete() {
     try {
       let id = this.ngFrmCtrl.frm.value.id;

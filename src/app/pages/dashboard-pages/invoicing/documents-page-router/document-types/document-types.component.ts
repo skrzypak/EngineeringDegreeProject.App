@@ -90,6 +90,16 @@ export class DocumentTypesComponent implements OnInit {
   }
 
   async onUpdate() {
+    try {
+      let data = this.ngFrmCtrl.frm.value
+      await this.documentsService.fetchUpdateType(data);
+      let objIndex = this.fetched.types.data.findIndex((obj: any) => obj.id == data.id)
+      this.fetched.types.data[objIndex] = data;
+      this.publish(this.fetched.types.data);
+      this.onReset()
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   async onDelete() {

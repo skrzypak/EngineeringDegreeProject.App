@@ -136,6 +136,14 @@ export class SuppliersPageComponent implements OnInit {
   }
 
   async onUpdate() {
+    try {
+      let data = this.ngFrmCtrl.frm.value
+      await this.suppliersService.fetchUpdate(data);
+      window.location.reload();
+      this.onReset()
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   async onDelete() {
