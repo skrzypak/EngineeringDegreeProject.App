@@ -68,7 +68,7 @@
 <section class="section">
   <div class="columns is-multiline is-left">
     <div [id]="f.id" class="column is-3" *ngFor="let f of this.fetchEnterprises">
-      <div class="card" [style.opacity]="f.selected == false ? 1 : 0.25">
+      <div class="card" [style.opacity]="f.selected == true ? 1 : 0.25">
         <header class="card-header">
           <p class="card-header-title has-text-centered">
             {{f.companyName}}
