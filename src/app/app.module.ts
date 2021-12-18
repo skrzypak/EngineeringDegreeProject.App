@@ -113,7 +113,7 @@ import { PasswordResetComponent } from './pages/password-reset/password-reset.co
     AppRoutingModule,
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot({
-      timeOut: 1250,
+      timeOut: 4000,
       positionClass: 'toast-bottom-right'
     })
   ],

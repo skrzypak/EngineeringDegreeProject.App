@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-table-content-plans',
@@ -11,7 +12,7 @@ export class TableContentPlansComponent implements OnInit {
   @Input() display =  Array<any>();
   @Output() subscribeAction = new EventEmitter<any>()
 
-  constructor() { }
+  constructor(private toastr: ToastrService) { }
 
   ngOnInit(): void {
   }
@@ -26,6 +27,7 @@ export class TableContentPlansComponent implements OnInit {
 
 
     if((startDate === "" || endDate === "") || startDate > endDate) {
+      this.toastr.warning('Invalid start date or end date', 'Error')
       return;
     }
 

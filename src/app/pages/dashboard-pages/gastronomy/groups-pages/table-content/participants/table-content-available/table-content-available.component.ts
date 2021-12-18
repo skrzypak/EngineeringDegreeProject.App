@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-table-content-available',
@@ -11,7 +12,7 @@ export class TableContentAvailableComponent implements OnInit {
   @Input() display =  Array<any>();
   @Output() subscribeAction = new EventEmitter<any>()
 
-  constructor() { }
+  constructor(private toastr: ToastrService) { }
 
   ngOnInit(): void {
   }
@@ -25,6 +26,7 @@ export class TableContentAvailableComponent implements OnInit {
     let endDate = (<HTMLInputElement>document.getElementById(`${item.id}_end_date`)).value;
 
     if((startDate === "") || (endDate !== "" && (startDate > endDate))) {
+      this.toastr.warning('Invalid start date or end date', 'Error')
       return;
     }
 

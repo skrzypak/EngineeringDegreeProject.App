@@ -49,11 +49,15 @@ export class UniversalService {
     try {
       console.log(data)
       let resp = await axios.post(u, data, {withCredentials: true});
-      this.toastr.success('', 'Success')
+      this.toastr.success('', 'Success', {
+        timeOut: 1250
+      });
       console.log(resp)
       return resp;
     } catch (e: any) {
-      this.toastr.error('','Failed');
+      this.toastr.error('','Failed', {
+        timeOut: 1250
+      });
       console.log(e.response)
       throw e.response;
     }
@@ -77,11 +81,15 @@ export class UniversalService {
     try {
       console.log(data)
       let resp = await axios.put(u, data, {withCredentials: true});
-      this.toastr.success('', 'Success');
+      this.toastr.success('', 'Success', {
+        timeOut: 1250
+      });
       console.log(resp)
       return resp;
     } catch (e: any) {
-      this.toastr.error('','Failed');
+      this.toastr.error('','Failed', {
+        timeOut: 1250
+      });
       console.log(e.response)
       throw e.response;
     }
@@ -92,11 +100,15 @@ export class UniversalService {
     try {
       console.log(data)
       let resp = await axios.patch(u, data, {withCredentials: true});
-      this.toastr.success('', 'Success');
+      this.toastr.success('', 'Success', {
+        timeOut: 1250
+      });
       console.log(resp)
       return resp;
     } catch (e: any) {
-      this.toastr.error('','Failed');
+      this.toastr.error('','Failed', {
+        timeOut: 1250
+      });
       console.log(e.response)
       throw e.response;
     }
@@ -106,11 +118,15 @@ export class UniversalService {
     try {
       let u = this.setupCustomUrl(path, esp);
       let resp = await axios.delete(u, {withCredentials: true});
-      this.toastr.success('', 'Success');
+      this.toastr.success('', 'Success', {
+        timeOut: 1250
+      });
       console.log(resp)
       return resp;
     } catch (e: any) {
-      this.toastr.error('','Failed');
+      this.toastr.error('','Failed', {
+        timeOut: 1250
+      });
       console.log(e.response)
       throw e.response;
     }
