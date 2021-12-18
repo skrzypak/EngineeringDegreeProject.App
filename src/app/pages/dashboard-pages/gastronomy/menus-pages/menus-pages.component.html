@@ -95,30 +95,40 @@
                 </div>
               </div>
 
-              <hr *ngIf="this.ngFrmCtrl.frm.value.id > 0" />
-
               <!-- SUMMARY -->
-              <div class="field" *ngIf="this.ngFrmCtrl.frm.value.id > 0">
-                <label for="title" class="label">Shortcut summary</label>
-                <div class="columns has-text-centered is-narrow" id="title">
-                  <div class="column">
-                    <div class="select is-multiple is-fullwidth">
-                      <label for="left" class="label">Allergens</label>
-                      <select multiple id="left" style="height: 250px" name="left" size="4">
-                        <option *ngFor="let a of this.fetched.menuInfo.allergens">{{a.name}}</option>
-                      </select>
-                    </div>
+              <ng-container *ngIf="this.ngFrmCtrl.frm.value.id > 0">
+                <hr />
+                <div class="field">
+                  <label for="title" class="label">Summary</label>
+                  <div>
+                    <ul style="list-style-type: none;">
+                      <li>Calories: {{this.fetched.menuInfo.calories}}</li>
+                      <li>Proteins: {{this.fetched.menuInfo.proteins}}</li>
+                      <li>Carbohydrates: {{this.fetched.menuInfo.carbohydrates}}</li>
+                      <li>Fats: {{this.fetched.menuInfo.fats}}</li>
+                    </ul>
                   </div>
-                  <div class="column">
-                    <div class="select is-multiple is-fullwidth">
-                      <label for="right" class="label">Ingredients</label>
-                      <select multiple id="right" style="height: 250px" name="right" size="4">
-                        <option *ngFor="let i of this.fetched.menuInfo.ingredients">{{i.key.name}} {{i.total}}{{unitPackage.convert(i.key.unit)}}</option>
-                      </select>
+                  <br />
+                  <div class="columns has-text-centered is-narrow" id="title">
+                    <div class="column">
+                      <div class="select is-multiple is-fullwidth">
+                        <label for="left" class="label">Allergens</label>
+                        <select multiple id="left" style="height: 250px" name="left" size="4">
+                          <option *ngFor="let a of this.fetched.menuInfo.allergens">{{a.name}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="column">
+                      <div class="select is-multiple is-fullwidth">
+                        <label for="right" class="label">Ingredients</label>
+                        <select multiple id="right" style="height: 250px" name="right" size="4">
+                          <option *ngFor="let i of this.fetched.menuInfo.ingredients">{{i.key.name}} {{i.total}}{{unitPackage.convert(i.key.unit)}}</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </ng-container>
 
               <hr/>
 

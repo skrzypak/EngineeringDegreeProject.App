@@ -40,6 +40,8 @@
 
             <button type="button" [routerLink]="['/password-reset', ngForm.value.username]" class="button has-background-warning has-text-light is-fullwidth has-text-dark">Reset password</button>
 
+            <br *ngIf="this.message !== ''" />
+
             <div class="field" *ngIf="this.message !== ''">
               <article class="message is-danger">
                 <div class="message-body">{{this.message}}</div>

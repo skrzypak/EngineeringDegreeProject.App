@@ -31,6 +31,10 @@ export class MenusPagesComponent implements OnInit {
     menuInfo: {
       allergens: Array<any>(),
       ingredients: Array<any>(),
+      calories: 0,
+      proteins: 0,
+      carbohydrates: 0,
+      fats: 0,
     }
   }
 
@@ -154,12 +158,16 @@ export class MenusPagesComponent implements OnInit {
         description: resp.key.description
       });
 
+      this.fetched.menuInfo.calories = resp.calories;
+      this.fetched.menuInfo.proteins = resp.proteins;
+      this.fetched.menuInfo.carbohydrates = resp.carbohydrates;
+      this.fetched.menuInfo.fats = resp.fats;
+      this.fetched.menuInfo.allergens = resp.allergens;
+      this.fetched.menuInfo.ingredients = resp.ingredients;
+
       this.searchable.btnSetup.get(this.btnSetupKeys.meals).fetched = resp.meals;
 
       this.searchable.currentBtnKey = this.btnSetupKeys.meals;
-
-      this.fetched.menuInfo.allergens = resp.allergens;
-      this.fetched.menuInfo.ingredients = resp.ingredients;
 
       this.changeMealView(this.searchable.btnSetup.get(this.btnSetupKeys.meals).currMeal);
     } catch (e) {

@@ -87,6 +87,18 @@
                 </div>
               </div>
 
+              <ng-container *ngIf="(ngFrmCtrl.frm.value != null && ngFrmCtrl.frm.value.id != null)">
+                <hr />
+                <div>
+                  <ul style="list-style-type: none;">
+                    <li>Calories: {{this.fetched.dishSummary.calories}}</li>
+                    <li>Proteins: {{this.fetched.dishSummary.proteins}}</li>
+                    <li>Carbohydrates: {{this.fetched.dishSummary.carbohydrates}}</li>
+                    <li>Fats: {{this.fetched.dishSummary.fats}}</li>
+                  </ul>
+                </div>
+              </ng-container>
+
               <hr/>
               <div class="columns">
                 <div class="column">

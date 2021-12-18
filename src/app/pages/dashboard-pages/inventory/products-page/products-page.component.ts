@@ -58,6 +58,10 @@ export class ProductsPageComponent implements OnInit {
       category: new FormControl('',[
         Validators.required,
       ]),
+      calories: new FormControl(0,[]),
+      proteins: new FormControl(0,[]),
+      carbohydrates: new FormControl(0,[]),
+      fats: new FormControl(0,[]),
     });
   }
 
@@ -110,7 +114,11 @@ export class ProductsPageComponent implements OnInit {
         name: resp.name,
         unit: resp.unit,
         description: resp.description,
-        category: resp.category.id
+        category: resp.category.id,
+        calories: resp.calories,
+        proteins: resp.proteins,
+        carbohydrates: resp.carbohydrates,
+        fats: resp.fats,
       });
 
       this.frmAllergensChild.response = resp.allergens;

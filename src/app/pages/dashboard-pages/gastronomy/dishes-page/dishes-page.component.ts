@@ -25,6 +25,12 @@ export class DishesPageComponent implements OnInit {
       display: Array<any>(),
       data: Array<any>(),
       rxjs: new BehaviorSubject<number>(0)
+    },
+    dishSummary: {
+      calories: 0,
+      proteins: 0,
+      carbohydrates: 0,
+      fats: 0,
     }
   }
 
@@ -152,8 +158,14 @@ export class DishesPageComponent implements OnInit {
         description: resp.description
       });
 
+      this.fetched.dishSummary.calories = resp.calories;
+      this.fetched.dishSummary.proteins = resp.proteins;
+      this.fetched.dishSummary.carbohydrates = resp.carbohydrates;
+      this.fetched.dishSummary.fats = resp.fats;
+
       this.searchable.btnSetup.get(this.btnSetupKeys.ingredients).fetched = resp.ingredients;
       this.searchable.currentBtnKey = this.btnSetupKeys.ingredients
+
       this.publishSearchableLength(resp.ingredients.length);
     } catch (e) {
       console.log(e)
