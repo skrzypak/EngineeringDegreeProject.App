@@ -1,5 +1,8 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild, Inject } from '@angular/core';
 import {DashboardService} from "../../../../services/msv/gastronomy-msv/dashboard.service";
+
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable'
 
 @Component({
   selector: 'app-dashboard-page',
@@ -7,8 +10,6 @@ import {DashboardService} from "../../../../services/msv/gastronomy-msv/dashboar
   styleUrls: ['./dashboard-page.component.css']
 })
 export class DashboardPageComponent implements OnInit {
-
-  @ViewChild('participantsList') participantsList!:ElementRef;
 
   fetched: any = {
     msv: {
@@ -34,7 +35,15 @@ export class DashboardPageComponent implements OnInit {
     }
   }
 
-  participantsListToPdf() {
-
+  async participantsListToPdf() {
+    const doc = new jsPDF('l', 'pt', 'a4')
+    autoTable(doc, {
+      html: '#participantsList',
+      styles: {
+        font: 'Roboto',
+        fontStyle: 'normal',
+      }
+    })
+    doc.save(`participants-${this.now}.pdf`)
   }
 }

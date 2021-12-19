@@ -45,20 +45,22 @@
       <section class="section px-5 py-5">
         <div class="container">
           <div class="box">
-            <div class="table-container" #participantsList>
-              <table class="table is-fullwidth is-striped">
-                <thead>
-                  <th colspan="2">Participants ({{now}})</th>
-                </thead>
-                <tbody *ngFor="let group of this.fetched.msv.data">
-                  <ng-container *ngIf="group.currentParticipants != null && group.currentParticipants.length > 0">
-                    <tr>
-                      <th colspan="2">{{group.name}}</th>
-                    </tr>
-                    <tr *ngFor="let p of group.currentParticipants">
-                      <td>{{p.lastName}}</td>
-                      <td>{{p.firstName}}</td>
-                    </tr>
+            <div class="table-container">
+              <table class="table is-fullwidth is-striped" #participantsList id="participantsList">
+                <tbody>
+                  <tr>
+                    <th colspan="2">Participants ({{now}})</th>
+                  </tr>
+                  <ng-container *ngFor="let group of this.fetched.msv.data">
+                    <ng-container *ngIf="group.currentParticipants != null && group.currentParticipants.length > 0">
+                      <tr>
+                        <th colspan="2">{{group.name}}</th>
+                      </tr>
+                      <tr *ngFor="let p of group.currentParticipants">
+                        <td>{{p.lastName}}</td>
+                        <td>{{p.firstName}}</td>
+                      </tr>
+                    </ng-container>
                   </ng-container>
                 </tbody>
               </table>
