@@ -55,6 +55,7 @@ import { SuppliersPageRouterComponent } from './pages/dashboard-pages/invoicing/
 import { DocumentsPageRouterComponent } from './pages/dashboard-pages/invoicing/documents-page-router/documents-page-router.component';
 import { DocumentProductsComponent } from './pages/dashboard-pages/invoicing/documents-page-router/document-products/document-products.component';
 import { PasswordResetComponent } from './pages/password-reset/password-reset.component';
+import {DashboardPageComponent} from "./pages/dashboard-pages/gastronomy/dashboard-page/dashboard-page.component";
 
 @NgModule({
   declarations: [
@@ -105,6 +106,7 @@ import { PasswordResetComponent } from './pages/password-reset/password-reset.co
     DocumentsPageRouterComponent,
     DocumentProductsComponent,
     PasswordResetComponent,
+    DashboardPageComponent,
   ],
   imports: [
     BrowserModule,

@@ -9,6 +9,7 @@ import {Router} from "@angular/router";
 export class GastronomyComponent implements OnInit {
 
   navs = [
+    {name: 'Dashboard', routerLink: 'dashboard'},
     {name: 'Groups', routerLink: 'groups'},
     {name: 'Plans', routerLink: 'plans'},
     {name: 'Menus', routerLink: 'menus'},

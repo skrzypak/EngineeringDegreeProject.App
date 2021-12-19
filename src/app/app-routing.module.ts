@@ -43,6 +43,7 @@ import {
   DocumentProductsComponent
 } from "./pages/dashboard-pages/invoicing/documents-page-router/document-products/document-products.component";
 import {PasswordResetComponent} from "./pages/password-reset/password-reset.component";
+import {DashboardPageComponent} from "./pages/dashboard-pages/gastronomy/dashboard-page/dashboard-page.component";
 
 const routes: Routes = [
   {path: '', redirectTo: '/enterprise', pathMatch: 'full'},
@@ -57,7 +58,8 @@ const routes: Routes = [
       {
         path: 'gastronomy', component: GastronomyComponent,
         children: [
-          {path:'', redirectTo: 'groups', pathMatch: 'full'},
+          {path:'', redirectTo: 'dashboard', pathMatch: 'full'},
+          {path: 'dashboard', component: DashboardPageComponent},
           {path: 'groups', component: GroupsPagesComponent},
           {path: 'plans', component: PlansPagesComponent},
           {path: 'menus', component: MenusPagesComponent},

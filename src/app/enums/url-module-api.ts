@@ -3,6 +3,7 @@ export enum UrlModuleApi {
   AUTH_PERSONS = "auth/persons",
   AUTH_ENTERPRISES = "auth/enterprises",
 
+  GASTRONOMY_MSV = "gastronomy/msv",
   GASTRONOMY_DISHES = "gastronomy/dishes",
   GASTRONOMY_MENUS = "gastronomy/menus",
   GASTRONOMY_NUTRITION_GROUPS = "gastronomy/nutrition-groups",

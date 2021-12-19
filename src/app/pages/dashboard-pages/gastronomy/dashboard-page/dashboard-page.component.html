@@ -1,0 +1,73 @@
+<div class="is-fullwidth">
+  <div class="columns">
+
+    <div class="column is-6">
+      <section class="section px-5 py-5">
+        <div class="container">
+          <div class="box">
+            <div class="table-container">
+              <table class="table is-fullwidth is-striped">
+                <thead>
+                <tr>
+                  <th rowspan="2" style="text-align: center; vertical-align: middle;">Group</th>
+                  <th colspan="2" class="has-text-centered">Today ({{now}})</th>
+                </tr>
+                <tr>
+                  <th class="has-text-centered">Plan</th>
+                  <th class="has-text-centered">Menu</th>
+                </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let group of this.fetched.msv.data">
+                    <tr class="has-text-centered" *ngIf="group.currentPlan != null">
+                      <td class="py-2">{{group.name}}</td>
+                      <td class="py-2">
+                      <span *ngIf="group.currentPlan != null">
+                        {{group.currentPlan.name}}
+                      </span>
+                      </td>
+                      <td class="py-2">
+                        <ul style="list-style: none" *ngIf="group.currentPlan != null && group.currentPlan.currentMenu != null">
+                          <li *ngFor="let menu of group.currentPlan.currentMenu">{{menu.name}}</li>
+                        </ul>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="column is-6">
+      <section class="section px-5 py-5">
+        <div class="container">
+          <div class="box">
+            <div class="table-container" #participantsList>
+              <table class="table is-fullwidth is-striped">
+                <thead>
+                  <th colspan="2">Participants ({{now}})</th>
+                </thead>
+                <tbody *ngFor="let group of this.fetched.msv.data">
+                  <ng-container *ngIf="group.currentParticipants != null && group.currentParticipants.length > 0">
+                    <tr>
+                      <th colspan="2">{{group.name}}</th>
+                    </tr>
+                    <tr *ngFor="let p of group.currentParticipants">
+                      <td>{{p.lastName}}</td>
+                      <td>{{p.firstName}}</td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+            <button (click)="participantsListToPdf()" class="button is-info is-disabled is-fullwidth">PDF</button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+  </div>
+</div>
