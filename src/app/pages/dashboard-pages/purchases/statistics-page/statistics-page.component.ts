@@ -1,11 +1,11 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
-import {InvoicingService} from "../../../../services/msv/invoicing-msv/invoicing.service";
+import {PurchasesService} from "../../../../services/msv/purchases-msv/purchases.service";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {UnitPackage} from "../../../../classes/unit-package";
-import {SuppliersService} from "../../../../services/msv/invoicing-msv/suppliers/suppliers.service";
-import {DocumentsService} from "../../../../services/msv/invoicing-msv/documents/documents.service";
-import {ProductsService} from "../../../../services/msv/invoicing-msv/products/products.service";
+import {SuppliersService} from "../../../../services/msv/purchases-msv/suppliers/suppliers.service";
+import {DocumentsService} from "../../../../services/msv/purchases-msv/documents/documents.service";
+import {ProductsService} from "../../../../services/msv/purchases-msv/products/products.service";
 import {DocumentStatesPackage} from "../../../../classes/document-states-package";
 
 @Component({
@@ -43,7 +43,7 @@ export class StatisticsPageComponent implements OnInit {
   unitPackage: UnitPackage = new UnitPackage();
 
   constructor(
-    private msvService: InvoicingService,
+    private msvService: PurchasesService,
     private fb: FormBuilder,
     private suppliersService: SuppliersService,
     private documentsService: DocumentsService,

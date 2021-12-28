@@ -14,12 +14,12 @@ import { AppPageComponent } from './pages/app-page/app-page.component';
 import { NavbarComponent } from './pages/app-page/navbar/navbar.component';
 import { ParticipantsPageComponent } from './pages/dashboard-pages/gastronomy/participants-page/participants-page.component';
 import { WarehousePageComponent } from './pages/dashboard-pages/inventory/warehouse-page/warehouse-page.component';
-import { SuppliersPageComponent } from './pages/dashboard-pages/invoicing/suppliers-page-router/suppliers-page/suppliers-page.component';
+import { SuppliersPageComponent } from './pages/dashboard-pages/purchases/suppliers-page-router/suppliers-page/suppliers-page.component';
 import { EnterprisesPageComponent } from './pages/dashboard-pages/auth/enterprises-page/enterprises-page.component';
 import { SettingsPageComponent } from './pages/settings-page/settings-page.component';
 import { GastronomyComponent } from './pages/dashboard-pages/gastronomy/gastronomy.component';
 import { InventoryComponent } from './pages/dashboard-pages/inventory/inventory.component';
-import { InvoicingComponent } from './pages/dashboard-pages/invoicing/invoicing.component';
+import { PurchasesComponent } from './pages/dashboard-pages/purchases/purchases.component';
 import { MultiSelectComponent } from './components/multi-select/multi-select.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
@@ -47,13 +47,13 @@ import { ProductsPageComponent } from './pages/dashboard-pages/inventory/product
 import { CategoriesPageComponent } from './pages/dashboard-pages/inventory/categories-page/categories-page.component';
 import { AllergensPageComponent } from './pages/dashboard-pages/inventory/allergens-page/allergens-page.component';
 import { InventoryStatisticPageComponent } from './pages/dashboard-pages/inventory/inventory-statistic-page/inventory-statistic-page.component';
-import { DocumentsPageComponent } from './pages/dashboard-pages/invoicing/documents-page-router/documents-page/documents-page.component';
-import { StatisticsPageComponent } from './pages/dashboard-pages/invoicing/statistics-page/statistics-page.component';
-import { DocumentTypesComponent } from './pages/dashboard-pages/invoicing/documents-page-router/document-types/document-types.component';
-import { SupplierContactsComponent } from './pages/dashboard-pages/invoicing/suppliers-page-router/supplier-contacts/supplier-contacts.component';
-import { SuppliersPageRouterComponent } from './pages/dashboard-pages/invoicing/suppliers-page-router/suppliers-page-router.component';
-import { DocumentsPageRouterComponent } from './pages/dashboard-pages/invoicing/documents-page-router/documents-page-router.component';
-import { DocumentProductsComponent } from './pages/dashboard-pages/invoicing/documents-page-router/document-products/document-products.component';
+import { DocumentsPageComponent } from './pages/dashboard-pages/purchases/documents-page-router/documents-page/documents-page.component';
+import { StatisticsPageComponent } from './pages/dashboard-pages/purchases/statistics-page/statistics-page.component';
+import { DocumentTypesComponent } from './pages/dashboard-pages/purchases/documents-page-router/document-types/document-types.component';
+import { SupplierContactsComponent } from './pages/dashboard-pages/purchases/suppliers-page-router/supplier-contacts/supplier-contacts.component';
+import { SuppliersPageRouterComponent } from './pages/dashboard-pages/purchases/suppliers-page-router/suppliers-page-router.component';
+import { DocumentsPageRouterComponent } from './pages/dashboard-pages/purchases/documents-page-router/documents-page-router.component';
+import { DocumentProductsComponent } from './pages/dashboard-pages/purchases/documents-page-router/document-products/document-products.component';
 import { PasswordResetComponent } from './pages/password-reset/password-reset.component';
 import {DashboardPageComponent} from "./pages/dashboard-pages/gastronomy/dashboard-page/dashboard-page.component";
 
@@ -71,7 +71,7 @@ import {DashboardPageComponent} from "./pages/dashboard-pages/gastronomy/dashboa
     SettingsPageComponent,
     GastronomyComponent,
     InventoryComponent,
-    InvoicingComponent,
+    PurchasesComponent,
     MultiSelectComponent,
     PaginationComponent,
     NotFoundPageComponent,

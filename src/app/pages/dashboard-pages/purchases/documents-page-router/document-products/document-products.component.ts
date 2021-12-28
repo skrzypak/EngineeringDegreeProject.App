@@ -1,8 +1,8 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Location} from "@angular/common";
 import {ActivatedRoute} from "@angular/router";
-import {ProductsService} from "../../../../../services/msv/invoicing-msv/products/products.service";
-import {DocumentsService} from "../../../../../services/msv/invoicing-msv/documents/documents.service";
+import {ProductsService} from "../../../../../services/msv/purchases-msv/products/products.service";
+import {DocumentsService} from "../../../../../services/msv/purchases-msv/documents/documents.service";
 import {BehaviorSubject} from "rxjs";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {UnitPackage} from "../../../../../classes/unit-package";

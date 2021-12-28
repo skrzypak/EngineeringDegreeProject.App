@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-invoicing',
-  templateUrl: './invoicing.component.html',
-  styleUrls: ['./invoicing.component.css']
+  selector: 'app-purchases',
+  templateUrl: './purchases.component.html',
+  styleUrls: ['./purchases.component.css']
 })
-export class InvoicingComponent implements OnInit {
+export class PurchasesComponent implements OnInit {
 
   navs = [
     {name: 'Statistics', routerLink: 'statistics'},
@@ -17,7 +17,7 @@ export class InvoicingComponent implements OnInit {
   active = 0;
 
   constructor(private router: Router) {
-    let acv = localStorage.getItem('invoicing-nav-active')
+    let acv = localStorage.getItem('purchases-nav-active')
     if(acv != null) {
       this.active = parseInt(acv);
     } else {
@@ -27,12 +27,12 @@ export class InvoicingComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     if(this.active >= 0) {
-      await this.router.navigate([`invoicing/${this.navs[this.active].routerLink}`])
+      await this.router.navigate([`purchases/${this.navs[this.active].routerLink}`])
     }
   }
 
   onUpdate(e: number) {
-    localStorage.setItem('invoicing-nav-active', e.toString());
+    localStorage.setItem('purchases-nav-active', e.toString());
   }
 
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {BehaviorSubject} from "rxjs";
-import {SuppliersService} from "../../../../../services/msv/invoicing-msv/suppliers/suppliers.service";
+import {SuppliersService} from "../../../../../services/msv/purchases-msv/suppliers/suppliers.service";
 
 @Component({
   selector: 'app-suppliers-page',

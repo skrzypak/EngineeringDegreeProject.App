@@ -7,7 +7,7 @@ import {UniversalService} from "../../universal.service";
 })
 export class ProductsService {
 
-  moduleBaseUri = UrlModuleApi.INVOICING_PRODUCTS;
+  moduleBaseUri = UrlModuleApi.PURCHASES_PRODUCTS;
 
   constructor(private universalService: UniversalService) { }
 

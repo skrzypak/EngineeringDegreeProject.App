@@ -16,8 +16,8 @@ export enum UrlModuleApi {
   INVENTORY_CATEGORIES = "inventory/categories",
   INVENTORY_PRODUCTS = "inventory/products",
 
-  INVOICING_MSV = "invoicing/msv",
-  INVOICING_DOCUMENTS = "invoicing/documents",
-  INVOICING_SUPPLIERS = "invoicing/suppliers",
-  INVOICING_PRODUCTS = "invoicing/products",
+  PURCHASES_MSV = "purchases/msv",
+  PURCHASES_DOCUMENTS = "purchases/documents",
+  PURCHASES_SUPPLIERS = "purchases/suppliers",
+  PURCHASES_PRODUCTS = "purchases/products",
 }

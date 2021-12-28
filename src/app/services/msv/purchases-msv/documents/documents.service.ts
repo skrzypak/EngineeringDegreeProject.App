@@ -7,7 +7,7 @@ import {UniversalService} from "../../universal.service";
 })
 export class DocumentsService {
 
-  moduleBaseUri = UrlModuleApi.INVOICING_DOCUMENTS;
+  moduleBaseUri = UrlModuleApi.PURCHASES_DOCUMENTS;
 
   constructor(private universalService: UniversalService) { }
 

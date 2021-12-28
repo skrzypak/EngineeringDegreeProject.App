@@ -5,9 +5,9 @@ import {UniversalService} from "../universal.service";
 @Injectable({
   providedIn: 'root'
 })
-export class InvoicingService {
+export class PurchasesService {
 
-  moduleBaseUri = UrlModuleApi.INVOICING_MSV;
+  moduleBaseUri = UrlModuleApi.PURCHASES_MSV;
 
   constructor(private universalService: UniversalService) { }
 

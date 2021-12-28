@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {BehaviorSubject} from "rxjs";
-import {DocumentsService} from "../../../../../services/msv/invoicing-msv/documents/documents.service";
-import {SuppliersService} from "../../../../../services/msv/invoicing-msv/suppliers/suppliers.service";
+import {DocumentsService} from "../../../../../services/msv/purchases-msv/documents/documents.service";
+import {SuppliersService} from "../../../../../services/msv/purchases-msv/suppliers/suppliers.service";
 import {compareSegments} from "@angular/compiler-cli/src/ngtsc/sourcemaps/src/segment_marker";
 import {DocumentStatesPackage} from "../../../../../classes/document-states-package";
 
